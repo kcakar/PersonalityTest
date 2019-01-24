@@ -1,0 +1,14 @@
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 152px;
+  height: 100%;
+  padding: 0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/*# sourceMappingURL=App.css.map */
