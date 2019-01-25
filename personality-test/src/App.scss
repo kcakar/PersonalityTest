@@ -1,14 +1,90 @@
-header{
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Roboto');
+
+$secondary-font-color:#e96132;
+
+body {
+    padding-left: 85px;
+    width: calc(100%-85px);
+    font-family: 'Roboto', sans-serif;
+    font-weight: thin;
+    font-size:12px;
+}
+
+header {
     position: fixed;
     left: 0;
     top: 0;
-    width: 152px;
+    width: 85px;
     height: 100%;
     padding: 0;
     text-align: center;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color:$secondary-font-color
+}
+
+ul{
+    list-style: none;
+    margin:0;
+    padding: 0;
+
+    li{
+        padding-bottom:5px;
+    }
+}
+
+.ui.header{
+    color:$secondary-font-color;
+}
+
+.ui.inverted.menu {
+    background-size: contain;
+    background: url(./assets/bg.png);
+}
+
+.ui.segment.pushable {
+    border: 0;
+    border-radius: 0;
+}
+
+main {
+    display: flex;
+    align-content: center;
+    vertical-align: middle;
+    align-items: center;
+    height: 100vh;
+
+    &::after {
+        content: "";
+        background-size: contain;
+        background: url(./assets/test-bg.png);
+        opacity: 0.7;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
+}
+
+section.intro{
+    max-width: 600px;
+    margin:0 auto;
+
+    h1{
+        margin-bottom:10px;
+    }
+
+    ul{
+        margin-bottom:25px;
+    }
 }
 
 // https://www.workshape.io/person/incomplete
