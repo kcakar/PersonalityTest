@@ -21,7 +21,7 @@ class Intro extends React.Component{
         return(
             <Transition visible={this.state.visible} animation='scale' duration={500}>
                 <section className="intro">
-                    <Container className="intro">
+                    <Container>
                         <Segment textAlign='center' size='big'>           
                             <Header as='h1'>Kişilik testi</Header>     
                             <ul>
@@ -29,7 +29,7 @@ class Intro extends React.Component{
                                 <li>Test tek yönlüdür. Cevap verilen bir soruya tekrar geri dönemezsiniz.</li>
                                 <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
                             </ul>
-                            <PulseButton positive onClick={this.props.handleNextStep}>Teste başlayın</PulseButton>
+                            <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
                         </Segment>
                     </Container>
                 </section>

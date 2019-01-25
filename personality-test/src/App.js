@@ -5,18 +5,20 @@ import WebSidebar from './components/presentation/Sidebar';
 import Intro from './components/pages/Intro';
 
 import 'semantic-ui-css/semantic.min.css'
-import './App.css';
+import './style/App.css';
 
-import Test from './components/Test'
 
 class App extends Component {
   constructor(props){
     super(props);
     this.startTest=this.startTest.bind(this);
+
+    this.state={
+      testUrl:'Test'
+    }
   }
 
   startTest(){
-
   }
 
   render() {
@@ -27,12 +29,11 @@ class App extends Component {
             <WebSidebar></WebSidebar>
           </header>
             <main>
-              <Route exact path='/' component={()=>(<Intro  handleNextStep={this.startTest}/>)} />
+              <Route exact path='/' component={()=>(<Intro testUrl={this.state.testUrl} handleNextStep={this.startTest}/>)} />
               {/* <Route exact path='/Edit/:id' component={EditStudent} />
               <Route exact path='/Edit/' component={EditStudent} />
               <Route exact path='/Add/' component={EditStudent} /> */}
             </main>
-          <Test/>
         </div>
       </Router>
     );
