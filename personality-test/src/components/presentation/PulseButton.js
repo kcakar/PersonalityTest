@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button,Transition} from 'semantic-ui-react';
-import {Link ,withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 
 class PulseButton extends React.Component{
@@ -33,7 +33,7 @@ class PulseButton extends React.Component{
     render(){
         return (
             <Transition animation={this.state.animation} duration={this.state.duration} visible={this.state.visible}>
-                <Button positive onClick={this.handleClick} url={this.props.url}><Link to="">{this.props.children}</Link></Button>
+                <Button positive onClick={this.handleClick} url={this.props.url}>{this.props.children}</Button>
             </Transition>
         )
     }

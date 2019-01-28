@@ -82,9 +82,12 @@ main {
     }
 }
 
+.centered{
+    margin:0 auto;
+}
+
 section.intro{
     max-width: 600px;
-    margin:0 auto;
 
     h1{
         margin-bottom:10px;
@@ -92,6 +95,27 @@ section.intro{
 
     ul{
         margin-bottom:25px;
+    }
+}
+
+section.test{
+    .question{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .question-text{
+        font-size: 1.5rem;
+        margin-bottom:1rem;
+    }
+
+    .answers{
+        margin-bottom:1.5rem;
+        .answer{
+            text-align: left;
+            margin-bottom:0.5rem;
+        }
     }
 }
 

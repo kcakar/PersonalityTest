@@ -20,7 +20,7 @@ class Intro extends React.Component{
     render(){
         return(
             <Transition visible={this.state.visible} animation='scale' duration={500}>
-                <section className="intro">
+                <section className="intro centered">
                     <Container>
                         <Segment textAlign='center' size='big'>           
                             <Header as='h1'>Kişilik testi</Header>     
@@ -39,7 +39,7 @@ class Intro extends React.Component{
 }
 
 Intro.propTypes = {
-    handleNextStep:PropTypes.func.isRequired,
+    testUrl:PropTypes.any.isRequired,
 }
 
 export default Intro;
