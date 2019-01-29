@@ -59,38 +59,41 @@ class Test extends React.Component{
         }
 
         let content= !this.state.currentQuestion? <Loading/>:
-            <section className="test-container centered">
-                <div className="progress">
-                    <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questionCount} progress='ratio'/>
-                </div>
-                <Transition visible={this.state.visible} animation='scale' duration={500}>
-                    <section className="test">
-                        <Container>
-                            <Segment textAlign='center' size='big' className="question">           
-                                <div className="question-text">
-                                    <span>{this.state.currentQuestion.text}</span>
-                                </div>
-                                <div className="answers">
-                                    {this.state.currentQuestion.answers.map((answer,index)=>(
-                                        <div className="answer" key={index}>
-                                            <Radio
-                                                label={answer.text}
-                                                name='radioGroup'
-                                                value={index}
-                                                checked={this.state.currentAnswer === index}
-                                                onChange={()=>this.setState({currentAnswer:index})}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="submit">
-                                    <PulseButton onClick={()=>this.handleAnswer(this.state.currentQuestion.answers[this.state.currentAnswer])}>Cevapla</PulseButton>
-                                </div>
-                            </Segment>
-                        </Container>
-                    </section>
-                </Transition>
-            </section>;
+            <div className="flex-center">
+                <section className="test-container centered">
+                    <div className="progress">
+                        <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questionCount} progress='ratio'/>
+                    </div>
+                    <Transition visible={this.state.visible} animation='scale' duration={500}>
+                        <section className="test">
+                            <Container>
+                                <Segment textAlign='center' size='big' className="question">           
+                                    <div className="question-text">
+                                        <span>{this.state.currentQuestion.text}</span>
+                                    </div>
+                                    <div className="answers">
+                                        {this.state.currentQuestion.answers.map((answer,index)=>(
+                                            <div className="answer" key={index}>
+                                                <Radio
+                                                    label={answer.text}
+                                                    name='radioGroup'
+                                                    value={index}
+                                                    checked={this.state.currentAnswer === index}
+                                                    onChange={()=>this.setState({currentAnswer:index})}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="submit">
+                                        <PulseButton onClick={()=>this.handleAnswer(this.state.currentQuestion.answers[this.state.currentAnswer])}>Cevapla</PulseButton>
+                                    </div>
+                                </Segment>
+                            </Container>
+                        </section>
+                    </Transition>
+                </section>
+            </div>
+            ;
         return content;
     }
 }

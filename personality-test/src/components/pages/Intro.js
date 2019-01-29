@@ -20,19 +20,21 @@ class Intro extends React.Component{
     render(){
         return(
             <Transition visible={this.state.visible} animation='scale' duration={500}>
-                <section className="intro centered">
-                    <Container>
-                        <Segment textAlign='center' size='big'>           
-                            <Header as='h1'>Kişilik testi</Header>     
-                            <ul>
-                                <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
-                                <li>Test tek yönlüdür. Cevap verilen bir soruya tekrar geri dönemezsiniz.</li>
-                                <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
-                            </ul>
-                            <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
-                        </Segment>
-                    </Container>
-                </section>
+                <div className="flex-center">
+                    <section className="intro flex-center">
+                        <Container className="centered" text>
+                            <Segment textAlign='center' size='big' >           
+                                <Header as='h1'>Kişilik testi</Header>     
+                                <ul>
+                                    <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
+                                    <li>Test tek yönlüdür. Cevap verilen bir soruya tekrar geri dönemezsiniz.</li>
+                                    <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
+                                </ul>
+                                <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
+                            </Segment>
+                        </Container>
+                    </section>
+                </div>
             </Transition>
         )
     }

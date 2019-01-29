@@ -5,7 +5,7 @@ $secondary-font-color:#e96132;
 body {
     padding-left: 85px;
     width: calc(100%-85px);
-    font-family: 'Roboto', sans-serif;
+    // font-family: 'Roboto', sans-serif;
     font-weight: thin;
     font-size:12px;
 }
@@ -24,7 +24,7 @@ header {
 }
 
 h1,h2,h3,h4,h5,h6{
-    font-family: 'Montserrat', sans-serif;
+    // font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color:$secondary-font-color
 }
@@ -37,14 +37,10 @@ a{
     }
 }
 
-ul{
-    list-style: none;
-    margin:0;
-    padding: 0;
-
-    li{
-        padding-bottom:5px;
-    }
+hr{
+    border:1px dashed orange;
+    width:85%;
+    margin:2rem auto;
 }
 
 .ui.header{
@@ -62,12 +58,6 @@ ul{
 }
 
 main {
-    display: flex;
-    align-content: center;
-    vertical-align: middle;
-    align-items: center;
-    height: 100vh;
-
     &::after {
         content: "";
         background-size: contain;
@@ -84,17 +74,32 @@ main {
 
 .centered{
     margin:0 auto;
+    width:initial;
 }
 
-section.intro{
-    max-width: 600px;
+.flex-center{
+    display: flex;
+    align-content: center;
+    vertical-align: middle;
+    align-items: center;
+    height: 100vh;
+}
 
+
+section.intro{
     h1{
         margin-bottom:10px;
     }
 
     ul{
+        list-style: none;
+        margin:0;
+        padding: 0;
         margin-bottom:25px;
+
+        li{
+            padding-bottom:5px;
+        }
     }
 }
 
@@ -115,6 +120,57 @@ section.test{
         .answer{
             text-align: left;
             margin-bottom:0.5rem;
+        }
+    }
+}
+
+section.results{
+    margin-top:1rem;
+
+    .paragraph{
+        padding:2rem 6rem 5rem 6rem;
+    }
+
+    .ui.horizontal.segments.segment-group{
+        margin-bottom:4rem;
+    }
+
+    figure{
+        text-align: center;
+    }
+
+    blockquote{
+        font-size:2rem;
+        margin:6rem 0 1rem;
+        quotes: "\201C""\201D""\2018""\2019";
+        &::before{
+            content: open-quote;
+            text-align: left;
+        }
+        &::after{
+            content: close-quote;
+            text-align: right;
+        }
+        p{
+            display: inline;
+        }
+    }
+
+    figcaption{
+        font-size:1.7rem;
+        text-align: center;
+    }
+
+    ol.ui.list{
+        li:before{
+            color:$secondary-font-color;
+        }
+    }
+
+    .paragraph.sentences{
+        blockquote{
+            margin:0 0 1.5rem;
+            font-size:1.5rem;
         }
     }
 }
