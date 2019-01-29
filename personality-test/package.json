@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-pdf/renderer": "^1.2.2",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.5.3",
     "prop-types": "^15.6.2",

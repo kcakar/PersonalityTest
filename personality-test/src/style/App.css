@@ -4,8 +4,7 @@ body {
   padding-left: 85px;
   width: calc(100%-85px);
   font-weight: thin;
-  font-size: 12px;
-}
+  font-size: 12px; }
 
 header {
   position: fixed;
@@ -17,40 +16,32 @@ header {
   text-align: center;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
-  color: #e96132;
-}
+  color: #e96132; }
 
 a {
-  color: white;
-}
-a:hover {
-  color: white;
-}
+  color: white; }
+  a:hover {
+    color: white; }
 
 hr {
   border: 1px dashed orange;
   width: 85%;
-  margin: 2rem auto;
-}
+  margin: 2rem auto; }
 
 .ui.header {
-  color: #e96132;
-}
+  color: #e96132; }
 
 .ui.inverted.menu {
   background-size: contain;
-  background: url(./../assets/bg.png);
-}
+  background: url(./../assets/bg.png); }
 
 .ui.segment.pushable {
   border: 0;
-  border-radius: 0;
-}
+  border-radius: 0; }
 
 main::after {
   content: "";
@@ -62,90 +53,76 @@ main::after {
   bottom: 0;
   right: 0;
   position: absolute;
-  z-index: -1;
-}
+  z-index: -1; }
 
 .centered {
   margin: 0 auto;
-  width: initial;
-}
+  width: initial; }
 
 .flex-center {
   display: flex;
   align-content: center;
   vertical-align: middle;
   align-items: center;
-  height: 100vh;
-}
+  height: 100vh; }
 
 section.intro h1 {
-  margin-bottom: 10px;
-}
+  margin-bottom: 10px; }
+
 section.intro ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 25px;
-}
-section.intro ul li {
-  padding-bottom: 5px;
-}
+  margin-bottom: 25px; }
+  section.intro ul li {
+    padding-bottom: 5px; }
 
 section.test .question {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
+  align-items: center; }
+
 section.test .question-text {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
+  margin-bottom: 1rem; }
+
 section.test .answers {
-  margin-bottom: 1.5rem;
-}
-section.test .answers .answer {
-  text-align: left;
-  margin-bottom: 0.5rem;
-}
+  margin-bottom: 1.5rem; }
+  section.test .answers .answer {
+    text-align: left;
+    margin-bottom: 0.5rem; }
+
+.results-container .pdf-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 99; }
 
 section.results {
-  margin-top: 1rem;
-}
-section.results .paragraph {
-  padding: 2rem 6rem 5rem 6rem;
-}
-section.results .ui.horizontal.segments.segment-group {
-  margin-bottom: 4rem;
-}
-section.results figure {
-  text-align: center;
-}
-section.results blockquote {
-  font-size: 2rem;
-  margin: 6rem 0 1rem;
-  quotes: "“" "”" "‘" "’";
-}
-section.results blockquote::before {
-  content: open-quote;
-  text-align: left;
-}
-section.results blockquote::after {
-  content: close-quote;
-  text-align: right;
-}
-section.results blockquote p {
-  display: inline;
-}
-section.results figcaption {
-  font-size: 1.7rem;
-  text-align: center;
-}
-section.results ol.ui.list li:before {
-  color: #e96132;
-}
-section.results .paragraph.sentences blockquote {
-  margin: 0 0 1.5rem;
-  font-size: 1.5rem;
-}
-
-/*# sourceMappingURL=App.css.map */
+  margin-top: 1rem; }
+  section.results .paragraph {
+    padding: 2rem 6rem 5rem 6rem; }
+  section.results .ui.horizontal.segments.segment-group {
+    margin-bottom: 4rem; }
+  section.results figure {
+    text-align: center; }
+  section.results blockquote {
+    font-size: 2rem;
+    margin: 6rem 0 1rem;
+    quotes: "“" "”" "‘" "’"; }
+    section.results blockquote::before {
+      content: open-quote;
+      text-align: left; }
+    section.results blockquote::after {
+      content: close-quote;
+      text-align: right; }
+    section.results blockquote p {
+      display: inline; }
+  section.results figcaption {
+    font-size: 1.7rem;
+    text-align: center; }
+  section.results ol.ui.list li:before {
+    color: #e96132; }
+  section.results .paragraph.sentences blockquote {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem; }

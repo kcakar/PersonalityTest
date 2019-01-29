@@ -124,6 +124,15 @@ section.test{
     }
 }
 
+.results-container{
+    .pdf-btn{
+        position: fixed;
+        top:10px;
+        right:10px;
+        z-index: 99
+    }
+}
+
 section.results{
     margin-top:1rem;
 
