@@ -9,6 +9,8 @@ import Results from './components/pages/Results';
 import 'semantic-ui-css/semantic.min.css'
 import './style/App.css';
 
+import mockQuestions from '../src/components/mockdata/Questions'
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -20,43 +22,30 @@ class App extends Component {
       user:{
         id:"",
         name:""
-      }
+      },
+      results:{}
     }
 
     this.getQuestion=this.getQuestion.bind(this);
+    this.getResults=this.getResults.bind(this);
+    this.testFinished=this.testFinished.bind(this);
   }
 
   getQuestion(order){
     return mockQuestions[order-1];
   }
 
+  getQuestionCount(){
+    return mockQuestions.length;
+  }
+
   getResults(){
-      return {
-        analyst:{
-            architect:0,
-            logician:0,
-            commander:0,
-            debater:0
-        },
-        diplomat:{
-            advocate:0,
-            mediator:0,
-            protagonist:0,
-            campaigner:0
-        },
-        sentinels:{
-            logisticial:0,
-            defender:0,
-            executive:0,
-            consul:0
-        },
-        explorer:{
-            virtuoso:0,
-            adventurer:0,
-            entrepreneur:0,
-            entertainer:0
-        }
-    };
+      return this.state.results;
+  }
+
+  testFinished(personality){
+    const results=Object.assign({},personality);
+    this.setState({results});
   }
 
   render() {
@@ -71,7 +60,7 @@ class App extends Component {
                 <Intro testUrl={this.state.urls.test}/>
               )}/>
               <Route exact path={`/${this.state.urls.test}`} component={()=>(
-                <Test getQuestion={this.getQuestion}/>
+                <Test getQuestion={this.getQuestion} getQuestionCount={this.getQuestionCount} testFinished={this.testFinished}/>
               )}/>
               <Route exact path={`/${this.state.urls.results}`} component={()=>(
                 <Results getResults={this.getResults}/>
@@ -84,61 +73,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-
-const mockQuestions=[
-  {
-    text:"Which one is true",
-    order:1,
-    answers:[
-      {
-        text:"This is an answer",
-        value:0
-      },
-      {
-        text:"This is an answer2",
-        value:1
-      },
-      {
-        text:"This is an answer3",
-        value:2
-      },
-      {
-        text:"This is an answer4",
-        value:3
-      },
-      {
-        text:"This is an answer5",
-        value:4
-      },
-    ]
-  },
-    {
-    text:"Which one is true2",
-    order:2,
-    answers:[
-      {
-        text:"This is an answer",
-        value:0
-      },
-      {
-        text:"This is an answer2",
-        value:1
-      },
-      {
-        text:"This is an answer3",
-        value:2
-      },
-      {
-        text:"This is an answer4",
-        value:3
-      },
-      {
-        text:"This is an answer5",
-        value:4
-      },
-    ]
-  }
-]

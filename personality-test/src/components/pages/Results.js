@@ -6,32 +6,48 @@ import PrintButton from './../presentation/PrintButton';
 import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
 import ResultData from './../mockdata/Type6';
 
-const data = [
-    { subject: '1', A: 10, fullMark: 100 },
-    { subject: '2', A: 15,  fullMark: 100 },
-    { subject: '3', A: 12,  fullMark: 100 },
-    { subject: '4', A: 17,  fullMark: 100 },
-    { subject: '5', A: 70,  fullMark: 100 },
-    { subject: '6', A: 95,  fullMark: 100 },
-    { subject: '7', A: 70,  fullMark: 100 },
-    { subject: '8', A: 23,  fullMark: 100 },
-    { subject: '9', A: 25,  fullMark: 100 },
-];
-
-
 class Results extends React.Component{
     constructor(props){
         super(props);
 
         this.state={
             visible:false,
-            personality:null
+            personality:null,
+            graph:[
+                { subject: '1', A: 0, fullMark: 100 },
+                { subject: '2', A: 0,  fullMark: 100 },
+                { subject: '3', A: 0,  fullMark: 100 },
+                { subject: '4', A: 0,  fullMark: 100 },
+                { subject: '5', A: 0,  fullMark: 100 },
+                { subject: '6', A: 0,  fullMark: 100 },
+                { subject: '7', A: 0,  fullMark: 100 },
+                { subject: '8', A: 0,  fullMark: 100 },
+                { subject: '9', A: 0,  fullMark: 100 },
+            ]
         }
+
+        this.fillGraphData=this.fillGraphData.bind(this);
     }
 
     componentDidMount(){
         const personality=Object.assign({},this.props.getResults());
+        this.fillGraphData(personality);
         this.setState({personality,visible:true});
+    }
+
+    fillGraphData(personality){
+        let graph=[];
+        if(Object.keys(personality).length>0)
+        {
+            for(let i=1;i<=9;i++){
+                let value=personality["type"+i];
+                if(value<0){
+                    value=0;
+                }
+                graph.push({subject:i,A:value,fullMark:100});
+            }
+            this.setState({graph});
+        }
     }
 
     render(){
@@ -52,7 +68,7 @@ class Results extends React.Component{
                                     <Segment.Group horizontal className="segment-group">
                                         <Segment>
                                             <div className="chart">
-                                                <RadarChart className="centered" width={250} height={250} data={data}>
+                                                <RadarChart className="centered" width={250} height={250} data={this.state.graph}>
                                                     <PolarGrid />
                                                     <PolarAngleAxis dataKey="subject" />
                                                     <PolarRadiusAxis angle={78} />

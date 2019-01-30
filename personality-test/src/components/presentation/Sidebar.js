@@ -16,6 +16,12 @@ const WebSidebar = () => (
           Test
         </Menu.Item>
       </Link>
+      <Link to="/Results">
+        <Menu.Item as='span'>
+          <Icon name='gamepad' />
+          Sonuçlar
+        </Menu.Item>
+      </Link>
     </Sidebar>
   </Sidebar.Pushable>
 )
