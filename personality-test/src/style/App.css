@@ -1,10 +1,16 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Roboto");
+#root, .App {
+  height: 100%;
+}
+
 body {
   padding-left: 6rem;
-  width: calc(100%-$header-width);
+  width: 100%;
   font-weight: thin;
   font-size: 12px;
+  font-variant-ligatures: no-common-ligatures;
+  -webkit-font-variant-ligatures: no-common-ligatures;
 }
 
 header {
@@ -38,33 +44,6 @@ hr {
   margin: 2rem auto;
 }
 
-.ui.header {
-  color: #e96132;
-}
-
-.ui.inverted.menu {
-  background-size: contain;
-  background: url(./../assets/bg.png);
-}
-
-.ui.segment.pushable {
-  border: 0;
-  border-radius: 0;
-}
-
-main::after {
-  content: "";
-  background-size: contain;
-  background: url(./../assets/test-bg.png);
-  opacity: 0.7;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
-}
-
 .centered {
   margin: 0 auto;
   width: initial;
@@ -76,6 +55,40 @@ main::after {
   vertical-align: middle;
   align-items: center;
   height: 100vh;
+}
+
+.ui.header {
+  color: #e96132;
+}
+.ui.inverted.menu {
+  background-size: contain;
+  background: url(./../assets/bg.png);
+}
+.ui.segment.pushable {
+  border: 0;
+  border-radius: 0;
+}
+.ui.active.progress .bar {
+  min-width: 3em;
+}
+.ui.statistic > .label, .ui.statistics .statistic > .label {
+  text-transform: none;
+}
+
+main {
+  height: 100%;
+}
+main::after {
+  content: "";
+  background-size: contain;
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  background-color: #eceae5;
 }
 
 section.intro ul {
@@ -180,6 +193,42 @@ section.results ol.ui.list li:before {
 section.results .paragraph.sentences blockquote {
   margin: 0 0 1.5rem;
   font-size: 1.5rem;
+}
+
+section.customer-dashboard {
+  padding: 3rem 3rem 0 3rem;
+  background-color: #ffffff;
+  height: 100%;
+  min-height: 100vh;
+}
+section.customer-dashboard .ui.three.statistics {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+section.customer-dashboard .ui.centered.grid > .column:not(.aligned):not(.justified):not(.row), section.customer-dashboard .ui.centered.grid > .row > .column:not(.aligned):not(.justified), section.customer-dashboard .ui.grid .centered.row > .column:not(.aligned):not(.justified) {
+  text-align: center;
+}
+section.customer-dashboard .ui.statistic > .label, section.customer-dashboard .ui.statistics .statistic > .label {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+section.customer-dashboard .row {
+  margin-bottom: 2rem;
+}
+section.customer-dashboard .recharts-tooltip-wrapper {
+  font-size: 1.3rem;
+}
+section.customer-dashboard .ui.table tfoot th {
+  text-align: center;
+}
+section.customer-dashboard tr {
+  cursor: pointer;
+}
+section.customer-dashboard .bar-graph-container {
+  width: 100%;
+}
+section.customer-dashboard .recharts-responsive-container {
+  flex-grow: 1;
 }
 
 /*# sourceMappingURL=App.css.map */

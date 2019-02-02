@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
 
 import WebSidebar from './components/presentation/Sidebar';
-import Intro from './components/pages/Intro';
-import Test from './components/pages/Test';
-import Results from './components/pages/Results';
+import Intro from './components/pages/Test/Intro';
+import Test from './components/pages/Test/Test';
+import Results from './components/pages/Test/Results';
+import CustomerDashboard from './components/pages/Panel/CustomerDashboard';
 
 import 'semantic-ui-css/semantic.min.css'
 import './style/App.css';
@@ -16,8 +17,10 @@ class App extends Component {
     super(props);
     this.state={
       urls:{
-        test:"Test",
-        results:"Results"
+        intro:"Test",
+        test:"Test/Start",
+        results:"Test/Results",
+        customerPanel:"Management"
       },
       user:{
         id:"",
@@ -56,7 +59,7 @@ class App extends Component {
             <WebSidebar></WebSidebar>
           </header>
             <main>
-              <Route exact path='/' component={()=>(
+              <Route exact path='/Test/' component={()=>(
                 <Intro testUrl={this.state.urls.test}/>
               )}/>
               <Route exact path={`/${this.state.urls.test}`} component={()=>(
@@ -64,6 +67,9 @@ class App extends Component {
               )}/>
               <Route exact path={`/${this.state.urls.results}`} component={()=>(
                 <Results getResults={this.getResults}/>
+              )}/>
+              <Route exact path={`/${this.state.urls.customerPanel}`} component={()=>(
+                <CustomerDashboard/>
               )}/>
             </main>
         </div>

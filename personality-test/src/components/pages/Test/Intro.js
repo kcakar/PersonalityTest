@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container,Header,Transition,Segment,Image } from 'semantic-ui-react';
-import PulseButton from './../presentation/PulseButton';
-import logo from '../../assets/enneagram.svg';
+import PulseButton from '../../presentation/PulseButton';
+import logo from '../../../assets/enneagram.svg';
 
 
 class Intro extends React.Component{
@@ -31,7 +31,7 @@ class Intro extends React.Component{
                                     <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
                                     <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
                                 </ul>
-                                <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
+                                <PulseButton positive url={"/"+this.props.testUrl}>Teste başlayın</PulseButton>
                             </Segment>
                         </Container>
                     </section>

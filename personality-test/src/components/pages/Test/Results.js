@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container,Transition,Segment,List,Header,Icon,Grid,Divider } from 'semantic-ui-react';
-import Loading from './../presentation/Loading';
-import PrintButton from './../presentation/PrintButton';
+import Loading from '../../presentation/Loading';
+import PrintButton from '../../presentation/PrintButton';
 import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
-import ResultData from './../mockdata/Type6';
+import ResultData from '../../mockdata/Type6';
 
 class Results extends React.Component{
     constructor(props){

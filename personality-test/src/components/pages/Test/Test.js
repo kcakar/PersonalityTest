@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container,Transition,Segment,Radio,Progress,Icon } from 'semantic-ui-react';
-import PulseButton from './../presentation/PulseButton';
-import Loading from './../presentation/Loading';
+import PulseButton from '../../presentation/PulseButton';
+import Loading from '../../presentation/Loading';
 import { Redirect} from 'react-router-dom';
 
 class Test extends React.Component{
