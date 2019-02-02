@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup } from 'semantic-ui-react'
+import { Table,Pagination,Popup ,Button,Icon,Input} from 'semantic-ui-react'
 import moment from 'moment';
+import SendTest from './SendTest';
 
 class PersonnelTable extends React.Component{
     constructor(props){
@@ -14,16 +15,22 @@ class PersonnelTable extends React.Component{
             data:[],
             totalPages:0,
             pageSize:15,
-            currentPage:1
+            currentPage:1,
+            query:""
         }
         this.handlePageChange=this.handlePageChange.bind(this);
+        this.handleTableFilter=this.handleTableFilter.bind(this);
+        this.updatePage=this.updatePage.bind(this);
     }
 
     componentDidMount(){
+        const {personnelData}=this.props;
         this.setState({
                 visible:true,
-                data:this.getTablePage(this.props.personnelData),
-                totalPages: this.getTotalPageNumber()
+                data:this.getTablePage(personnelData),
+                totalPages: this.getTotalPageNumber(personnelData),
+                currentPage:1,
+                direction:'ascending'
             });
     }
 
@@ -47,15 +54,18 @@ class PersonnelTable extends React.Component{
         this.updatePage(this.props.personnelData,activePage)
     }
 
-    updatePage(data,activePage,direction=this.state.direction,column=this.state.column){
+    updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
         const {pageSize}=this.state;
+        let filteredData=data.filter(personnel=>personnel.name.toLowerCase().indexOf(query.toLowerCase())!==-1)
         const startIndex=(activePage-1)*pageSize;
         const endIndex=startIndex+pageSize;
         this.setState({
             column: column,
             currentPage:activePage,
-            data:data.slice(startIndex, endIndex),
+            data:filteredData.slice(startIndex, endIndex),
             direction: direction,
+            query,
+            totalPages:this.getTotalPageNumber(filteredData)
         })
     }
 
@@ -63,9 +73,9 @@ class PersonnelTable extends React.Component{
         return this.props.personnelData.slice(0, this.state.pageSize);
     }
 
-    getTotalPageNumber(){
+    getTotalPageNumber(data){
         const {pageSize}=this.state;
-        return Math.ceil(this.props.personnelData.length/pageSize);
+        return Math.ceil(data.length/pageSize);
     }
 
     sortByColumn(array,clickedColumn){
@@ -97,8 +107,13 @@ class PersonnelTable extends React.Component{
             case 9:
                 return "#26a69a";
             default:
-                return "#78909c75";
+                return "#fff";
         }
+    }
+
+    handleTableFilter(e,{value})
+    {
+        this.updatePage(this.props.personnelData,1,this.state.direction,this.state.column,value)
     }
 
     render(){
@@ -107,7 +122,18 @@ class PersonnelTable extends React.Component{
         return (
         <Table singleLine sortable celled fixed selectable color="orange">
             <Table.Header>
-            
+                <Table.Row>
+                    <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
+                        <Input placeholder="Arama..." onChange={this.handleTableFilter} />
+                        <SendTest/>
+                        <Button compact color="teal" animated='vertical'floated='right' >
+                            <Button.Content visible>Test Hakkı Talebi</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='shop' />
+                            </Button.Content>
+                        </Button>
+                    </Table.HeaderCell>
+                </Table.Row>
                 <Table.Row>
                     <Table.HeaderCell
                         sorted={column === 'name' ? direction : null}
@@ -145,18 +171,24 @@ class PersonnelTable extends React.Component{
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-            {data.map(({ id,name,title, characterType,wingType, dateCompleted, }) => (
-                <Table.Row key={id}>
-                    <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
-                    <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{title}</span>} content={title} /></Table.Cell>
-                    <Table.Cell>{moment(dateCompleted).format('DD/MM/YYYY, kk:mm')}</Table.Cell>
-                    <Table.Cell style={{backgroundColor:this.getCharacterColor(characterType)}}>Tip {characterType}</Table.Cell>
-                    <Table.Cell>Kanat {wingType}</Table.Cell>
-                    <Table.Cell data-id={id}>raporu gör</Table.Cell>
-                </Table.Row>
-            ))}
+            {data.map(({ id,name,title, characterType,wingType, dateCompleted, isTestDone}) => 
+                {
+                    let dateText= isTestDone?moment(dateCompleted).format('DD/MM/YYYY, kk:mm'):<span className="red">Test Beklemede</span>
+                    return <Table.Row key={id}>
+                        <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
+                        <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{title}</span>} content={title} /></Table.Cell>
+                        <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{dateText}</span>} content={dateText} /></Table.Cell>
+                        <Table.Cell style={{backgroundColor:this.getCharacterColor(characterType)}}>Tip {characterType}</Table.Cell>
+                        <Table.Cell>Kanat {wingType}</Table.Cell>
+                        <Table.Cell>
+                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
+                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='globe'/></Button>} content="Linki kopyala" />
+                        </Table.Cell>
+                    </Table.Row>
+                    }
+                )}
             </Table.Body>
-            <Table.Footer>
+            <Table.Footer fullWidth>
                 <Table.Row>
                     <Table.HeaderCell colSpan="6">
                         <Pagination prevItem={null} nextItem={null} onPageChange={this.handlePageChange} totalPages={this.state.totalPages} activePage={this.state.currentPage} />

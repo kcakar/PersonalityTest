@@ -12,18 +12,19 @@ class PersonnelByTypeGraph extends React.Component{
             graphData:[],
             dropDownOptions:[]
         }
+
+        this.handleDropDownSelect=this.handleDropDownSelect.bind(this);
     }
 
     componentDidMount(){
         this.setState({
             visible:true,
-            graphData:this.normalizeData(),
+            graphData:this.normalizeData(this.props.personnelData),
             dropDownOptions:this.getDropDownOptions()
         });
     }
 
-    normalizeData(){
-        const {personnelData}=this.props;
+    normalizeData(personnelData){
         let graphData=[
             {name:"Tip 1",wing2:0,wing9:0},
             {name:"Tip 2",wing3:0,wing1:0},
@@ -37,13 +38,43 @@ class PersonnelByTypeGraph extends React.Component{
         ]
 
         for(let i=0;i<personnelData.length;i++){
-            this.increaseType(graphData,personnelData[i].characterType,personnelData[i].wingType)
+            let {characterType,wingType}=personnelData[i];
+            if(characterType && wingType)
+            {
+                this.increaseType(graphData,characterType,wingType)
+            }
         }
         return graphData;
     }
 
+    filterDataByTitle(personnelData,titleArray){
+        return personnelData.filter(personnel=>titleArray.indexOf(personnel.title)>-1);
+    }
+
     getDropDownOptions(){
-        return this.props.personnelData.map((person)=>{return {text:person.title,value:person.title});
+        let {personnelData} =this.props;
+        let options= [...new Set(personnelData.map(p=>p.title))];
+        options=this.sortArray(options);
+        return options.map(o=>{return {text:o,value:o}});
+    }
+
+    sortArray(array){
+        return array.sort(function(a, b) {
+                if(a<b) { return -1; }
+                if(a > b) { return 1; }
+                return 0;
+        });
+    }
+
+    handleDropDownSelect(e,dropdown){
+        let filteredPersonnel=this.props.personnelData;
+        console.log(dropdown.value)
+        if(dropdown.value.length>0)
+        {
+            filteredPersonnel=this.filterDataByTitle(this.props.personnelData,dropdown.value);
+        }
+        let graphData= this.normalizeData(filteredPersonnel);
+        this.setState({graphData});
     }
 
     increaseType(graphData,typeNumber,wingNumber)
@@ -54,7 +85,7 @@ class PersonnelByTypeGraph extends React.Component{
     render(){
         return (
             <div className="bar-graph-container">
-                <div><Dropdown placeholder='State' fluid multiple search selection options={this.state.dropDownOptions} /></div>
+                <Dropdown options={this.state.dropDownOptions} onChange={this.handleDropDownSelect} icon='search' labeled placeholder='Ünvana göre filtreleme' fluid multiple search selection />
                 <ResponsiveContainer height={300}>
                     <BarChart  width={700} height={300} data={this.state.graphData} margin={{top: 20, right: 0, left: -30, bottom: 5}}>
                         <CartesianGrid strokeDasharray="3 3"/>

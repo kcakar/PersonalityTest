@@ -278,6 +278,19 @@ section.customer-dashboard{
     .recharts-responsive-container{
         flex-grow:1;
     }
+
+    .ui.sortable.table thead th.no-hover:hover{
+        background: #f9fafb;
+        cursor:initial;
+    }
+
+    td .ui.button:not(.icon)>.icon:not(.button):not(.dropdown){
+        margin:0;
+        font-size:1.3em;
+    }
+    td .ui.tiny.button, .ui.tiny.buttons .button, .ui.tiny.buttons .or{
+        padding:.58928571em 0.725em .58928571em;
+    }
 }
 
 // https://www.workshape.io/person/incomplete
