@@ -17,10 +17,10 @@ class App extends Component {
     super(props);
     this.state={
       urls:{
-        intro:"Test",
-        test:"Test/Start",
-        results:"Test/Results",
-        customerPanel:"Management"
+        intro:"/enneagram/Test",
+        test:"/enneagram/Test/Start",
+        results:"/enneagram/Test/Results",
+        customerPanel:"/enneagram/Management"
       },
       user:{
         id:"",
@@ -56,19 +56,19 @@ class App extends Component {
       <Router>
         <div className="App">
           <header>
-            <WebSidebar></WebSidebar>
+            <WebSidebar urls={this.state.urls}></WebSidebar>
           </header>
             <main>
-              <Route exact path='/Test/' component={()=>(
+              <Route exact path={this.state.urls.intro} component={()=>(
                 <Intro testUrl={this.state.urls.test}/>
               )}/>
-              <Route exact path={`/${this.state.urls.test}`} component={()=>(
+              <Route exact path={this.state.urls.test} component={()=>(
                 <Test getQuestion={this.getQuestion} getQuestionCount={this.getQuestionCount} testFinished={this.testFinished}/>
               )}/>
-              <Route exact path={`/${this.state.urls.results}`} component={()=>(
+              <Route exact path={this.state.urls.results} component={()=>(
                 <Results getResults={this.getResults}/>
               )}/>
-              <Route exact path={`/${this.state.urls.customerPanel}`} component={()=>(
+              <Route exact path={this.state.urls.customerPanel} component={()=>(
                 <CustomerDashboard/>
               )}/>
             </main>

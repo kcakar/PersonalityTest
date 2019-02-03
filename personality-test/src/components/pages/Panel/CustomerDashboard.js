@@ -17,6 +17,7 @@ class CustomerDasbhoard extends React.Component{
                 credit:15
             }
         }
+        this.getTitles=this.getTitles.bind(this);
     }
 
     generateTableData(count){
@@ -66,6 +67,10 @@ class CustomerDasbhoard extends React.Component{
         this.setState({visible:true,data,stats:{credit:15,done,waiting}});
     }
 
+    getTitles(){
+        return [...new Set(this.state.data.map(p=>p.title))];
+    }
+
     render(){
         return(
         <section className="customer-dashboard">
@@ -93,10 +98,10 @@ class CustomerDasbhoard extends React.Component{
                     </Grid.Row>
                     <Grid.Row>
                         <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
-                        <PersonnelByTypeGraph personnelData={this.state.data}/>
+                        <PersonnelByTypeGraph personnelData={this.state.data} />
                     </Grid.Row>
                     <Grid.Row className="customer-table">
-                        <PersonnelTable personnelData={this.state.data} />
+                        <PersonnelTable personnelData={this.state.data} personnelTitles={this.getTitles()}/>
                     </Grid.Row>
                 </Grid>
             </Transition>

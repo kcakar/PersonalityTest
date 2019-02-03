@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
 
 $secondary-font-color:#e96132;
 $header-width:6rem;
@@ -7,10 +7,15 @@ $header-width:6rem;
     height:100%;
 }
 
+body,h1,h2,h3,h4,h5,h6,ul,li,p,figcaption,.button.ui,.ui.header,.ui.input>input,.ui.steps .step .title,.ui.menu{
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    color: #333
+}
+
 body {
     padding-left: $header-width;
     width: 100%;
-    // font-family: 'Roboto', sans-serif;
     font-weight: thin;
     font-size:12px;
     font-variant-ligatures: no-common-ligatures;
@@ -246,6 +251,7 @@ section.customer-dashboard{
         max-width:1000px;
         margin: 0 auto;
     }
+
     .ui.centered.grid>.column:not(.aligned):not(.justified):not(.row), .ui.centered.grid>.row>.column:not(.aligned):not(.justified), .ui.grid .centered.row>.column:not(.aligned):not(.justified){
         text-align: center;
     }
@@ -288,8 +294,61 @@ section.customer-dashboard{
         margin:0;
         font-size:1.3em;
     }
+
     td .ui.tiny.button, .ui.tiny.buttons .button, .ui.tiny.buttons .or{
         padding:.58928571em 0.725em .58928571em;
+    }
+
+
+}
+
+.send-test {
+    width:100%;
+
+    div.segment{
+        width:100%;
+        margin:0 1rem ;
+    }
+
+    .ui.steps .step:first-child.active{
+        border-bottom: solid 2px #fbbd08;
+    }
+
+    .ui.steps .step:nth-child(2).active{
+        border-bottom: solid 2px #b5cc18;
+    }
+
+    .ui.steps .step:nth-child(3).active{
+        border-bottom: solid 2px #21ba45;
+    }
+
+    .step-1{
+        .ui.input>input{
+            margin-right: 10px;
+        }
+    }
+
+    .step-2{
+        .ui.button{
+            min-width:13rem;
+            margin: 0.3rem 0 0 0;
+        }
+        .ui.input{
+            margin:1.4rem 0 0 0;
+            width:100%
+        }
+    }
+    
+    .ui.steps{
+        width:100%;
+    }
+}
+
+.ask-credit {
+    width:100%;
+    .input{
+        width:100%;
+        margin:0.3rem 0;
     }
 }
 

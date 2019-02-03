@@ -1,7 +1,12 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=Montserrat|Roboto");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
 #root, .App {
   height: 100%; }
+
+body, h1, h2, h3, h4, h5, h6, ul, li, p, figcaption, .button.ui, .ui.header, .ui.input > input, .ui.steps .step .title, .ui.menu {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #333; }
 
 body {
   padding-left: 6rem;
@@ -198,3 +203,31 @@ section.customer-dashboard {
     font-size: 1.3em; }
   section.customer-dashboard td .ui.tiny.button, section.customer-dashboard .ui.tiny.buttons .button, section.customer-dashboard .ui.tiny.buttons .or {
     padding: .58928571em 0.725em .58928571em; }
+
+.send-test {
+  width: 100%; }
+  .send-test div.segment {
+    width: 100%;
+    margin: 0 1rem; }
+  .send-test .ui.steps .step:first-child.active {
+    border-bottom: solid 2px #fbbd08; }
+  .send-test .ui.steps .step:nth-child(2).active {
+    border-bottom: solid 2px #b5cc18; }
+  .send-test .ui.steps .step:nth-child(3).active {
+    border-bottom: solid 2px #21ba45; }
+  .send-test .step-1 .ui.input > input {
+    margin-right: 10px; }
+  .send-test .step-2 .ui.button {
+    min-width: 13rem;
+    margin: 0.3rem 0 0 0; }
+  .send-test .step-2 .ui.input {
+    margin: 1.4rem 0 0 0;
+    width: 100%; }
+  .send-test .ui.steps {
+    width: 100%; }
+
+.ask-credit {
+  width: 100%; }
+  .ask-credit .input {
+    width: 100%;
+    margin: 0.3rem 0; }

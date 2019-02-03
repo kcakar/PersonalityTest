@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Table,Pagination,Popup ,Button,Icon,Input} from 'semantic-ui-react'
 import moment from 'moment';
 import SendTest from './SendTest';
+import AskCredit from './AskCredit';
 
-class PersonnelTable extends React.Component{
+class PersonnelTable extends React.Component{ 
     constructor(props){
         super(props);
 
@@ -115,7 +116,7 @@ class PersonnelTable extends React.Component{
     {
         this.updatePage(this.props.personnelData,1,this.state.direction,this.state.column,value)
     }
-
+ 
     render(){
         const { column, direction,data } = this.state;
 
@@ -125,13 +126,8 @@ class PersonnelTable extends React.Component{
                 <Table.Row>
                     <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
                         <Input placeholder="Arama..." onChange={this.handleTableFilter} />
-                        <SendTest/>
-                        <Button compact color="teal" animated='vertical'floated='right' >
-                            <Button.Content visible>Test Hakkı Talebi</Button.Content>
-                            <Button.Content hidden>
-                                <Icon name='shop' />
-                            </Button.Content>
-                        </Button>
+                        <SendTest personnelTitles={this.props.personnelTitles}/>
+                        <AskCredit/>
                     </Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
@@ -182,7 +178,7 @@ class PersonnelTable extends React.Component{
                         <Table.Cell>Kanat {wingType}</Table.Cell>
                         <Table.Cell>
                             <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
-                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='globe'/></Button>} content="Linki kopyala" />
+                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='globe'/></Button>} content="Test linkini kopyala" />
                         </Table.Cell>
                     </Table.Row>
                     }
@@ -202,6 +198,7 @@ class PersonnelTable extends React.Component{
 
 PersonnelTable.propTypes = {
     personnelData:PropTypes.any.isRequired,
+    personnelTitles:PropTypes.any.isRequired,
 }
 
 export default PersonnelTable;
