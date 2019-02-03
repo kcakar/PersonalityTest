@@ -1,0 +1,355 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+
+$secondary-font-color:#e96132;
+$header-width:6rem;
+
+#root,.App{
+    height:100%;
+}
+
+body,h1,h2,h3,h4,h5,h6,ul,li,p,figcaption,.button.ui,.ui.header,.ui.input>input,.ui.steps .step .title,.ui.menu{
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    color: #333
+}
+
+body {
+    padding-left: $header-width;
+    width: 100%;
+    font-weight: thin;
+    font-size:12px;
+    font-variant-ligatures: no-common-ligatures;
+    -webkit-font-variant-ligatures: no-common-ligatures;
+}
+
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: $header-width;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+h1,h2,h3,h4,h5,h6{
+    // font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color:$secondary-font-color
+}
+
+a{
+    color:white;
+
+    &:hover{
+        color:white;
+    }
+}
+
+hr{
+    border:0.11rem dashed orange;
+    width:85%;
+    margin:2rem auto;
+}
+
+.centered{
+    margin:0 auto;
+    width:initial;
+}
+
+.flex-center{
+    display: flex;
+    align-content: center;
+    vertical-align: middle;
+    align-items: center;
+    height: 100vh;
+}
+
+//general semantic ui resets
+.ui {
+    &.header {
+        color: $secondary-font-color;
+    }
+
+    &.inverted.menu {
+        background-size: contain;
+        background: url(./../assets/bg.png);
+    }
+
+    &.segment.pushable {
+        border: 0;
+        border-radius: 0;
+    }
+
+    &.active.progress .bar{
+        min-width: 3em;
+    }
+
+    &.statistic>.label, &.statistics .statistic>.label{
+        text-transform: none;
+    }
+}
+
+
+
+main {
+    height: 100%;
+    &::after {
+        content: "";
+        background-size: contain;
+        // background: url(./../assets/test-bg.png);
+        opacity: 0.7;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        background-color:#eceae5;
+    }
+}
+
+section.intro{
+    ul{
+        list-style: none;
+        margin:0;
+        padding: 0;
+        margin-bottom:2rem;
+
+        li{
+            padding-bottom:0.3rem;
+        }
+    }
+
+    h1.ui.header{
+        margin-top:0;
+    }
+    img{
+        margin:0 auto;
+    }
+}
+
+.test-container{
+    max-width:55rem;
+}
+
+section.test{
+    .question{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .question-text{
+        font-size: 1.5rem;
+        line-height: 1.8rem;
+        margin-bottom:1rem;
+        max-width:50rem;
+        min-height: 4rem;
+    }
+
+    .answers-container{
+        display: flex;
+    }
+
+    .answers{
+        margin-bottom:1.5rem;
+        margin-left:0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align:center;
+        
+        .answer{
+            text-align: left;
+            margin-bottom:0.5rem;
+            position: relative;
+        }
+    }
+
+    .mood-container{
+        width:10rem;
+        i.icon{
+            font-size: 1.6em;
+            margin-top:0.4rem;
+            transition: color 0.2s linear;
+        }
+    }
+    
+}
+
+.results-container{
+    .pdf-btn{
+        position: fixed;
+        top:1rem;
+        right:1rem;
+        z-index: 99
+    }
+}
+
+section.results{
+    margin-top:1rem;
+
+    .paragraph{
+        padding:2rem 6rem 5rem 6rem;
+    }
+
+    .ui.horizontal.segments.segment-group{
+        margin-bottom:4rem;
+    }
+
+    figure{
+        text-align: center;
+    }
+
+    blockquote{
+        font-size:2rem;
+        margin:6rem 0 1rem;
+        quotes: "\201C""\201D""\2018""\2019";
+        &::before{
+            content: open-quote;
+            text-align: left;
+        }
+        &::after{
+            content: close-quote;
+            text-align: right;
+        }
+        p{
+            display: inline;
+        }
+    }
+
+    figcaption{
+        font-size:1.7rem;
+        text-align: center;
+    }
+
+    ol.ui.list{
+        li:before{
+            color:$secondary-font-color;
+        }
+    }
+
+    .paragraph.sentences{
+        blockquote{
+            margin:0 0 1.5rem;
+            font-size:1.5rem;
+        }
+    }
+}
+
+section.customer-dashboard{
+    padding: 3rem 3rem 0 3rem;
+    background-color:#ffffff;
+    height:100%;
+    min-height: 100vh;
+
+    .ui.three.statistics{
+        max-width:1000px;
+        margin: 0 auto;
+    }
+
+    .ui.centered.grid>.column:not(.aligned):not(.justified):not(.row), .ui.centered.grid>.row>.column:not(.aligned):not(.justified), .ui.grid .centered.row>.column:not(.aligned):not(.justified){
+        text-align: center;
+    }
+
+    .ui.statistic>.label, .ui.statistics .statistic>.label{
+        font-size:1.2rem;
+        margin-top:0.5rem;
+    }
+
+    .row{
+        margin-bottom:2rem;
+    }
+
+    .recharts-tooltip-wrapper{
+        font-size:1.3rem;
+    }
+
+    .ui.table tfoot th{
+        text-align: center;
+    }
+
+    tr{
+        cursor: pointer;
+    }
+
+    .bar-graph-container{
+        width:100%;
+    }
+
+    .recharts-responsive-container{
+        flex-grow:1;
+    }
+
+    .ui.sortable.table thead th.no-hover:hover{
+        background: #f9fafb;
+        cursor:initial;
+    }
+
+    td .ui.button:not(.icon)>.icon:not(.button):not(.dropdown){
+        margin:0;
+        font-size:1.3em;
+    }
+
+    td .ui.tiny.button, .ui.tiny.buttons .button, .ui.tiny.buttons .or{
+        padding:.58928571em 0.725em .58928571em;
+    }
+
+
+}
+
+.send-test {
+    width:100%;
+
+    div.segment{
+        width:100%;
+        margin:0 1rem ;
+    }
+
+    .ui.steps .step:first-child.active{
+        border-bottom: solid 2px #fbbd08;
+    }
+
+    .ui.steps .step:nth-child(2).active{
+        border-bottom: solid 2px #b5cc18;
+    }
+
+    .ui.steps .step:nth-child(3).active{
+        border-bottom: solid 2px #21ba45;
+    }
+
+    .step-1{
+        .ui.input>input{
+            margin-right: 10px;
+        }
+    }
+
+    .step-2{
+        .ui.button{
+            min-width:13rem;
+            margin: 0.3rem 0 0 0;
+        }
+        .ui.input{
+            margin:1.4rem 0 0 0;
+            width:100%
+        }
+    }
+    
+    .ui.steps{
+        width:100%;
+    }
+}
+
+.ask-credit {
+    width:100%;
+    .input{
+        width:100%;
+        margin:0.3rem 0;
+    }
+}
+
+// https://www.workshape.io/person/incomplete
