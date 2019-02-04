@@ -5,7 +5,8 @@ import WebSidebar from './components/presentation/Sidebar';
 import Intro from './components/pages/Test/Intro';
 import Test from './components/pages/Test/Test';
 import Results from './components/pages/Test/Results';
-import CustomerDashboard from './components/pages/Panel/CustomerDashboard';
+import CustomerDashboard from './components/pages/Customer/CustomerDashboard';
+import AdminDashboard from './components/pages/Admin/AdminDashboard';
 
 import 'semantic-ui-css/semantic.min.css'
 import './style/App.css';
@@ -20,7 +21,8 @@ class App extends Component {
         intro:"/enneagram/Test",
         test:"/enneagram/Test/Start",
         results:"/enneagram/Test/Results",
-        customerPanel:"/enneagram/Management"
+        customerPanel:"/enneagram/Management",
+        adminPanel:"/enneagram/Admin"
       },
       user:{
         id:"",
@@ -70,6 +72,9 @@ class App extends Component {
               )}/>
               <Route exact path={this.state.urls.customerPanel} component={()=>(
                 <CustomerDashboard/>
+              )}/>
+              <Route exact path={this.state.urls.adminPanel} component={()=>(
+                <AdminDashboard/>
               )}/>
             </main>
         </div>

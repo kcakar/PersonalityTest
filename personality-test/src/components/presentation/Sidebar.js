@@ -20,14 +20,20 @@ const WebSidebar = (props) => (
       </Link>
       <Link to={props.urls.results}>
         <Menu.Item as='span'>
-          <Icon name='gamepad' />
+          <Icon name='chart bar outline' />
           Sonuçlar
         </Menu.Item>
       </Link>
       <Link to={props.urls.customerPanel }>
         <Menu.Item as='span'>
-          <Icon name='gamepad' />
+          <Icon name='chess pawn' />
           Müşteri Paneli
+        </Menu.Item>
+      </Link>
+      <Link to={props.urls.adminPanel }>
+        <Menu.Item as='span'>
+          <Icon name='chess queen' />
+          Yönetici Paneli
         </Menu.Item>
       </Link>
     </Sidebar>
