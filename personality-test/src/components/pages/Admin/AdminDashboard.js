@@ -75,7 +75,7 @@ class AdminDashboard extends React.Component{
                 content=(<RequestTable visible={this.state.activeTab===tabs.requests} requestData={this.state.data.filter((company)=>company.requestedTest>0)}/>)
                 break;
             case tabs.questions:
-                content=(<QuestionManagement questionData={[]}/>)
+                content=(<QuestionManagement />)
                 break;
             default:
                 content=(<p></p>)

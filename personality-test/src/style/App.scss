@@ -351,6 +351,30 @@ section.admin-dashboard{
     .admin-menu{
         margin:2rem 0 3rem;
     }
+
+    .question-selector{
+        .ui.button{
+            width:30px;
+            height: 30px;
+            line-height: 32px;
+            padding:0;
+            margin:0 0.1rem 0.2rem 0.1rem;
+            border-radius:0.7rem;
+
+            &:hover,&:active{
+                color:rgb(209, 209, 209);
+            }
+
+            &:focus{
+                color:#fff;
+                background-color:mediumslateblue
+            }
+        }
+    }
+
+    .question-editor{
+
+    }
 }
 
 //admin modals
