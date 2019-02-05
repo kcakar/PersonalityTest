@@ -14,7 +14,7 @@ export default class SendTest extends Component {
 
   render() {
     const trigger=(
-    <Button onClick={this.handleOpen} compact primary animated='vertical'floated='right' >
+    <Button onClick={this.handleOpen} compact primary animated='vertical' floated='right' >
         <Button.Content visible>Test Yolla</Button.Content>
         <Button.Content hidden>
             <Icon name='chart pie' />

@@ -73,37 +73,39 @@ class CustomerDasbhoard extends React.Component{
 
     render(){
         return(
-        <section className="customer-dashboard">
+        <section className="customer-dashboard dashboard">
             <Transition visible={this.state.visible} animation='scale' duration={500}>
-                <Grid columns={3} divided className="statistics centered" centered>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Statistic color='violet' >
-                                <Statistic.Value>{this.state.stats.credit}</Statistic.Value>
-                                <Statistic.Label>TEST HAKKI</Statistic.Label>
-                            </Statistic>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Statistic color='orange'>
-                                <Statistic.Value>{this.state.stats.waiting}</Statistic.Value>
-                                <Statistic.Label>BEKLEYEN TEST SAYISI</Statistic.Label>
-                            </Statistic>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Statistic color='green'>
-                                <Statistic.Value>{this.state.stats.done}</Statistic.Value>
-                                <Statistic.Label>SONUÇLANAN TEST SAYISI</Statistic.Label>
-                            </Statistic>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
-                        <PersonnelByTypeGraph personnelData={this.state.data} />
-                    </Grid.Row>
-                    <Grid.Row className="customer-table">
-                        <PersonnelTable personnelData={this.state.data} personnelTitles={this.getTitles()}/>
-                    </Grid.Row>
-                </Grid>
+                <div className="dashboard-center">
+                    <Grid columns={3} divided className="statistics centered" centered>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Statistic color='violet' >
+                                    <Statistic.Value>{this.state.stats.credit}</Statistic.Value>
+                                    <Statistic.Label>TEST HAKKI</Statistic.Label>
+                                </Statistic>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Statistic color='orange'>
+                                    <Statistic.Value>{this.state.stats.waiting}</Statistic.Value>
+                                    <Statistic.Label>BEKLEYEN TEST SAYISI</Statistic.Label>
+                                </Statistic>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Statistic color='green'>
+                                    <Statistic.Value>{this.state.stats.done}</Statistic.Value>
+                                    <Statistic.Label>SONUÇLANAN TEST SAYISI</Statistic.Label>
+                                </Statistic>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
+                            <PersonnelByTypeGraph personnelData={this.state.data} />
+                        </Grid.Row>
+                        <Grid.Row className="customer-table">
+                            <PersonnelTable personnelData={this.state.data} personnelTitles={this.getTitles()}/>
+                        </Grid.Row>
+                    </Grid>
+                </div>
             </Transition>
         </section>
         )

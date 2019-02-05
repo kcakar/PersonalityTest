@@ -68,7 +68,6 @@ class PersonnelByTypeGraph extends React.Component{
 
     handleDropDownSelect(e,dropdown){
         let filteredPersonnel=this.props.personnelData;
-        console.log(dropdown.value)
         if(dropdown.value.length>0)
         {
             filteredPersonnel=this.filterDataByTitle(this.props.personnelData,dropdown.value);
@@ -84,7 +83,7 @@ class PersonnelByTypeGraph extends React.Component{
     }
     render(){
         return (
-            <div className="bar-graph-container">
+            <div className="personnel-graph">
                 <Dropdown options={this.state.dropDownOptions} onChange={this.handleDropDownSelect} icon='search' labeled placeholder='Ünvana göre filtreleme' fluid multiple search selection />
                 <ResponsiveContainer height={300}>
                     <BarChart  width={700} height={300} data={this.state.graphData} margin={{top: 20, right: 0, left: -30, bottom: 5}}>

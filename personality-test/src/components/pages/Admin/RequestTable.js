@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup ,Button,Icon,Input,Header, Segment} from 'semantic-ui-react'
+import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react'
+import CreditModal from './CreditModal';
 
 class RequestTable extends React.Component{ 
     constructor(props){
@@ -95,56 +96,72 @@ class RequestTable extends React.Component{
         const { column, direction,data } = this.state;
 
         return (
-        <div className="request-table">
-            <Header>Bekleyen Test Talepleri</Header>
-            <Table singleLine sortable celled fixed selectable color="orange">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell className="no-hover" colSpan='3' singleLine>
-                            <Input placeholder="Arama..." onChange={this.handleTableFilter} />
-                        </Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.HeaderCell
-                            sorted={column === 'name' ? direction : null}
-                            onClick={()=>this.handleSort('name')}
-                            >
-                            Şirket
-                        </Table.HeaderCell>
-                        <Table.HeaderCell
-                            sorted={column === 'requestedTest' ? direction : null}
-                            onClick={()=>this.handleSort('requestedTest')}
-                            >
-                            Talep edilen miktar
-                        </Table.HeaderCell>
-                        <Table.HeaderCell>
-                            İşlemler
-                        </Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                {data.map(({ id,name,requestedTest}) => 
-                    {
-                        return <Table.Row key={id}>
-                            <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
-                            <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{requestedTest}</span>} content={requestedTest} /></Table.Cell>
-                            <Table.Cell>
-                                <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon color="green" name='handshake outline' /></Button>} content="Onayla" />
-                                <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon color="red" name='trash alternate'/></Button>} content="Reddet" />
-                            </Table.Cell>
+        <Transition visible={this.state.visible} animation='fade' duration={500}>
+            <div className="request-table">
+                <Header>Bekleyen Test Talepleri</Header>
+                <Table singleLine sortable celled fixed selectable color="orange">
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell className="no-hover" colSpan='5' singleLine>
+                                <Input placeholder="Arama..." onChange={this.handleTableFilter} />
+                            </Table.HeaderCell>
                         </Table.Row>
-                        }
-                    )}
-                </Table.Body>
-                <Table.Footer fullWidth>
-                    <Table.Row>
-                        <Table.HeaderCell colSpan="3">
-                            <Pagination prevItem={null} nextItem={null} onPageChange={this.handlePageChange} totalPages={this.state.totalPages} activePage={this.state.currentPage} />
-                        </Table.HeaderCell>
-                    </Table.Row>
-                </Table.Footer>
-            </Table>
-        </div>
+                        <Table.Row>
+                            <Table.HeaderCell
+                                sorted={column === 'name' ? direction : null}
+                                onClick={()=>this.handleSort('name')}
+                                >
+                                Şirket
+                            </Table.HeaderCell>
+                            <Table.HeaderCell
+                                sorted={column === 'mail' ? direction : null}
+                                onClick={()=>this.handleSort('mail')}
+                                >
+                                E-mail
+                            </Table.HeaderCell>
+                            <Table.HeaderCell
+                                sorted={column === 'phone' ? direction : null}
+                                onClick={()=>this.handleSort('phone')}
+                                >
+                                Telefon
+                            </Table.HeaderCell>
+                            <Table.HeaderCell
+                                sorted={column === 'requestedTest' ? direction : null}
+                                onClick={()=>this.handleSort('requestedTest')}
+                                >
+                                Talep edilen miktar
+                            </Table.HeaderCell>
+                            <Table.HeaderCell>
+                                İşlemler
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                    {data.map(({ id,name,requestedTest,phone,mail}) => 
+                        {
+                            return <Table.Row key={id}>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{requestedTest}</span>} content={requestedTest} /></Table.Cell>
+                                <Table.Cell collapsing>
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="confirm" companyData={{name,requestedTest}} />} content="Onayla" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="reject" companyData={{name,requestedTest}} />} content="Reddet" />
+                                </Table.Cell>
+                            </Table.Row>
+                            }
+                        )}
+                    </Table.Body>
+                    <Table.Footer fullWidth>
+                        <Table.Row>
+                            <Table.HeaderCell colSpan="5">
+                                <Pagination prevItem={null} nextItem={null} onPageChange={this.handlePageChange} totalPages={this.state.totalPages} activePage={this.state.currentPage} />
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Footer>
+                </Table>
+            </div>
+        </Transition>
         )
     }
 }

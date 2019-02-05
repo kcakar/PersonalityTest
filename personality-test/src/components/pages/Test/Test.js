@@ -60,7 +60,6 @@ class Test extends React.Component{
     moveToNextQuestion(){
         let currentQuestion=Object.assign({},this.state.currentQuestion);
         currentQuestion.order++;
-        console.log(currentQuestion.order)
         if(currentQuestion.order>this.state.questionCount)
         {
             this.finishTest();
@@ -123,7 +122,6 @@ class Test extends React.Component{
     applyAnswer(){
         let personality=Object.assign({},this.state.personality);
         personality["type"+this.state.currentQuestion.personalityType]+=this.state.currentAnswer;
-        console.log(personality);
         this.setState({personality});
     }
 

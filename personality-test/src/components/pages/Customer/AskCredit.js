@@ -10,7 +10,7 @@ export default class AskCredit extends Component {
 
   render() {
     const trigger=(
-        <Button onClick={this.handleOpen}  compact color="teal" animated='vertical'floated='right' >
+        <Button onClick={this.handleOpen}  compact color="teal" animated='vertical' floated='right' >
             <Button.Content visible>Test Hakkı Talebi</Button.Content>
             <Button.Content hidden>
                 <Icon name='shop' />
