@@ -134,12 +134,12 @@ class Test extends React.Component{
 
 
         let content= !this.state.currentQuestion? <Loading/>:
-            <div className="flex-center">
-                <section className="test-container centered">
+            <section className="test flex-center">
+                <div className="test-container centered">
                     <div className="progress">
                         <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questionCount} progress='ratio'/>
                     </div>
-                    <Transition visible={this.state.questionVisible} animation='fade' duration={200}>
+                    <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                         <section className="test">
                             <Container>
                                 <Segment textAlign='center' size='big' className="question">        
@@ -208,8 +208,8 @@ class Test extends React.Component{
                             </Container>
                         </section>
                     </Transition>
-                </section>
-            </div>
+                </div>
+            </section>
             ;
         return content;
     }

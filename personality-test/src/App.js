@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
+import {ToastProvider } from 'react-toast-notifications';
 
 import WebSidebar from './components/presentation/Sidebar';
 import Intro from './components/pages/Test/Intro';
@@ -71,10 +72,14 @@ class App extends Component {
                 <Results getResults={this.getResults}/>
               )}/>
               <Route exact path={this.state.urls.customerPanel} component={()=>(
-                <CustomerDashboard/>
+                <ToastProvider>
+                  <CustomerDashboard/>
+                </ToastProvider>
               )}/>
               <Route exact path={this.state.urls.adminPanel} component={()=>(
-                <AdminDashboard/>
+                <ToastProvider>
+                  <AdminDashboard/>
+                </ToastProvider>
               )}/>
             </main>
         </div>

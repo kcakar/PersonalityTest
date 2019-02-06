@@ -57,7 +57,7 @@ class Results extends React.Component{
                 <Transition visible={this.state.visible} animation='scale' duration={500}>
                     <section className="results" id="print">
                         <Container>
-                            <Segment textAlign='left' size='large'>  
+                            <Segment className="page" textAlign='left' size='large'>  
                         
                                 <Header as='h2' icon textAlign='center'>
                                     <Icon name='users' circular />

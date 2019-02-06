@@ -1,8 +1,9 @@
 import React from 'react';
-import { Segment,Header,Transition,Button,Divider,Icon} from 'semantic-ui-react'
+import { Segment,Header,Transition,Button} from 'semantic-ui-react'
 import LanguageSelector from '../../presentation/LanguageSelector';
 import QuestionData from '../../mockdata/Questions';
 import QuestionEditor from './QuestionEditor';
+import {withToastManager } from 'react-toast-notifications';
 
 class QuestionManagement extends React.Component{ 
     constructor(props){
@@ -13,13 +14,15 @@ class QuestionManagement extends React.Component{
             data:[],
             allQuestions:[],
             language:"tr",
-            selectedQuestion:null
+            selectedQuestion:null,
+            selectedOrder:0,
         }
 
         this.handleLanguageChange=this.handleLanguageChange.bind(this);
         this.filterQuestionsByLanguage=this.filterQuestionsByLanguage.bind(this);
-        this.fillQuestions=this.fillQuestions.bind(this);
         this.selectQuestion=this.selectQuestion.bind(this);
+        this.handleQuestionChange=this.handleQuestionChange.bind(this);
+        this.saveQuestion=this.saveQuestion.bind(this);
     }
 
     componentDidMount(){
@@ -28,37 +31,46 @@ class QuestionManagement extends React.Component{
             visible:true,
             data,
             allQuestions:QuestionData,
-            selectQuestion:data[0]
+            selectedQuestion:data[0],
+            selectedOrder:1
         });
     }
 
     handleLanguageChange(e,{value}){
         const data=this.filterQuestionsByLanguage(this.state.allQuestions,value);
-        this.setState({language:value,data});
+        this.setState({language:value,data,selectedOrder:1,selectedQuestion:data[0]});
     }
 
     filterQuestionsByLanguage(allQuestions,language){
-        return allQuestions.filter(x=>x.language===language);
-    }
-
-    selectQuestion(order){
-        const selectedQuestion=this.state.data.find((q)=>q.order===order);
-        this.setState({selectedQuestion:selectedQuestion});
-    }
-
-    fillQuestions(){
-        let questions=[];
+        let data=[];
         for(let i=1;i<64;i++){
-            const color = this.state.data.find((question)=>question.order===i)?"green":"red";
-            questions.push(
-                <Button onClick={()=>this.selectQuestion(i)} key={i} color={color}>{i}</Button>
-            )
+            const question=allQuestions.find(x=>x.language===language &&x.order===i);
+            data.push(question||this.getNewQuestionModel(i,language))
         }
-        return questions;
+        return data;
+    }
+    
+    getNewQuestionModel(order,language){
+        return {text:"",order,personalityType:1,language};
+    }
+
+    selectQuestion(selectedOrder){
+        const selectedQuestion=this.state.data.find((q)=>q.order===selectedOrder);
+        this.setState({selectedQuestion,selectedOrder});
+    }
+
+    saveQuestion(){
+        //save here
+        const { toastManager } = this.props;
+        toastManager.add('Soru kaydedildi', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
+    }
+
+    handleQuestionChange(selectedQuestion){
+        this.setState({selectedQuestion});
     }
 
     render(){
-        const question=this.state.selectedQuestion;
+        const {data,selectedQuestion,selectedOrder}=this.state;
         return (
         <Transition visible={this.state.visible} animation='fade' duration={500}>
             <div className="request-table">
@@ -68,9 +80,15 @@ class QuestionManagement extends React.Component{
                     <p>Aşağıdaki ekranda seçili dil için çevirisi olan sorular yeşil, olmayan sorular ise kırmızı ile işaretlenmiştir. İlgili sayıya tıklayarak soruyu düzenleyebilirsiniz.</p>
                     <p>Bir dildeki tüm soruları çevirirseniz, dil sistemde otomatik olarak aktifleşecektir.</p>
                     <Segment className="question-selector">
-                        {this.fillQuestions()}
+                        {data.map((question,index)=>
+                            {
+                                const order=index+1;
+                                const color = question.text ?"green":"red";
+                                return <Button className={selectedOrder===order?"selected-question":""} onClick={()=>this.selectQuestion(order)} key={order} color={color}>{order}</Button>
+                            }
+                        )}
                     </Segment>
-                    {question?<QuestionEditor selectedQuestion={question} existing={true} />:<QuestionEditor selectedQuestion={question} existing={false} />}
+                    <QuestionEditor selectedQuestion={selectedQuestion} handleQuestionChange={this.handleQuestionChange} saveQuestion={this.saveQuestion}/>
                 </Segment>
             </div>
         </Transition>
@@ -78,4 +96,4 @@ class QuestionManagement extends React.Component{
     }
 }
 
-export default QuestionManagement;
+export default withToastManager(QuestionManagement);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { Segment,TextArea,Form,Header,Dropdown,Button} from 'semantic-ui-react';
 
 const personalityTypes=[
@@ -17,39 +17,47 @@ const personalityTypes=[
 class QuestionEditor extends Component {
     constructor(props){
         super(props);
-        console.log(props)
-        this.state={
-            selectedQuestion:props.selectedQuestion,
-            existing:props.existing
-        }
+        this.personalityChange=this.personalityChange.bind(this);
+        this.questionTextChange=this.questionTextChange.bind(this);
+    }
+
+    personalityChange(e,{value}){
+        let {selectedQuestion}=this.props;
+        selectedQuestion.personalityType=value;
+        this.props.handleQuestionChange({selectedQuestion});
+    }
+
+    questionTextChange(e,{value}){
+        let {selectedQuestion}=this.props;
+        selectedQuestion.text=value;
+        this.props.handleQuestionChange({selectedQuestion});
     }
 
 
     render() {
-        let {selectedQuestion,existing}=this.state;
-        console.log(existing)
-        if(!existing){
-            selectedQuestion={
-                text:"",
-                personalityType:1
-            }
-        }
-        return (  
-        <Segment className="question-editor">
-            <Form>
+        const {selectedQuestion}=this.props;
+
+        let content=(<p>Lütfen bir soru seçiniz</p>);
+        if(selectedQuestion){
+            content=<Form>
                 <Header as='h5'>Soru metni:</Header>
-                <TextArea autoHeight placeholder='Soru metni' value={selectedQuestion.questionText}/>
+                <TextArea autoHeight placeholder='Soru metni' value={selectedQuestion.text} onChange={this.questionTextChange}/>
                 <Header as='h5'>Puanlanacak kişilik tipi:</Header>
-                <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType}/>
-                <Button floated="right" primary>Kaydet</Button>
-            </Form>
-        </Segment>)
+                <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType} onChange={this.personalityChange}/>
+                <Button floated="right" primary onClick={this.props.saveQuestion}>Kaydet</Button>
+            </Form>;
+        }
+        return (
+        <div className="question-editor">
+            {content}
+        </div>)
     }
 }
- 
+
 QuestionEditor.propTypes = {
-    selectedQuestion:PropTypes.object.isRequired,
-    existing:PropTypes.bool.isRequired
-  }
+    handleQuestionChange:PropTypes.func.isRequired,
+    saveQuestion:PropTypes.func.isRequired,
+}
+
 
 export default QuestionEditor;

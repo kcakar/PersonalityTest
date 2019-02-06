@@ -2,6 +2,7 @@
 
 $secondary-font-color:#e96132;
 $header-width:6rem;
+$test-background-color:#eceae5;
 
 #root,.App{
     height:100%;
@@ -94,23 +95,12 @@ hr{
 }
 
 main {
-    height: 100%;
-    &::after {
-        content: "";
-        background-size: contain;
-        // background: url(./../assets/test-bg.png);
-        opacity: 0.7;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: absolute;
-        z-index: -1;
-        background-color:#eceae5;
-    }
+    min-height: 100%;
 }
 
 section.intro{
+    background-color: $test-background-color;
+
     ul{
         list-style: none;
         margin:0;
@@ -135,6 +125,8 @@ section.intro{
 }
 
 section.test{
+    background-color: $test-background-color;
+
     .question{
         display:flex;
         flex-direction: column;
@@ -180,6 +172,7 @@ section.test{
 }
 
 .results-container{
+    background-color: $test-background-color;
     .pdf-btn{
         position: fixed;
         top:1rem;
@@ -189,7 +182,11 @@ section.test{
 }
 
 section.results{
-    margin-top:1rem;
+    padding:5rem 0 15rem;
+
+    .page{
+        padding-top:3rem;
+    }
 
     .paragraph{
         padding:2rem 6rem 5rem 6rem;
@@ -241,7 +238,7 @@ section.results{
 
 .dashboard{
     padding: 3rem 3rem 0 3rem;
-    background-color:#ffffff;
+    background-color:rgba(236, 234, 229, 0.2);
     height:100%;
     min-height: 100vh;
 
@@ -361,19 +358,19 @@ section.admin-dashboard{
             margin:0 0.1rem 0.2rem 0.1rem;
             border-radius:0.7rem;
 
-            &:hover,&:active{
+            &:hover{
                 color:rgb(209, 209, 209);
             }
-
-            &:focus{
-                color:#fff;
-                background-color:mediumslateblue
+            &.selected-question{
+                background-color: #333
             }
         }
     }
 
     .question-editor{
-
+        textarea{
+            min-height: 80px;
+        }
     }
 }
 
