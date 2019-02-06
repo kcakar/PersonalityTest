@@ -20,9 +20,9 @@ class Intro extends React.Component{
 
     render(){
         return(
-            <Transition visible={this.state.visible} animation='scale' duration={500}>
-                <div className="flex-center">
-                    <section className="intro flex-center">
+            <div className="intro-container flex-center">
+                <section className="intro flex-center">
+                    <Transition visible={this.state.visible} animation='scale' duration={500}>
                         <Container className="centered" text>
                             <Segment textAlign='center' size='big' >
                                 <Image src={logo} size='medium' circular />  
@@ -34,9 +34,9 @@ class Intro extends React.Component{
                                 <PulseButton positive url={"/"+this.props.testUrl}>Teste başlayın</PulseButton>
                             </Segment>
                         </Container>
-                    </section>
-                </div>
-            </Transition>
+                    </Transition>
+                </section>
+            </div>
         )
     }
 }

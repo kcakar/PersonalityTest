@@ -74,7 +74,7 @@ class CustomerDasbhoard extends React.Component{
     render(){
         return(
         <section className="customer-dashboard dashboard">
-            <Transition visible={this.state.visible} animation='scale' duration={500}>
+            <Transition visible={this.state.visible} animation='fade' duration={500}>
                 <div className="dashboard-center">
                     <Grid columns={3} divided className="statistics centered" centered>
                         <Grid.Row>

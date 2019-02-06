@@ -74,6 +74,7 @@ main {
   min-height: 100%; }
 
 section.intro {
+  width: 100%;
   background-color: #eceae5; }
   section.intro ul {
     list-style: none;
