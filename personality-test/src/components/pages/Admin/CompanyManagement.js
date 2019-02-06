@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react'
-import CreditModal from './CreditModal';
+import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react'
+
 
 class CompanyManagement extends React.Component{ 
     constructor(props){
@@ -23,22 +23,20 @@ class CompanyManagement extends React.Component{
     }
 
     componentDidMount(){
-        let {requestData}=this.props;
+        let {companyData}=this.props;
         this.setState({
                 visible:true,
-                data:this.getTablePage(requestData),
-                totalPages: this.getTotalPageNumber(requestData),
+                data:this.getTablePage(companyData),
+                totalPages: this.getTotalPageNumber(companyData),
                 currentPage:1,
                 direction:'ascending'
             });
     }
 
-
-
     handleSort(clickedColumn){
         const { column, direction } = this.state;
 
-        let sortedData=this.sortByColumn(this.props.requestData,clickedColumn);
+        let sortedData=this.sortByColumn(this.props.companyData,clickedColumn);
 
         if (column !== clickedColumn) {
             this.updatePage(sortedData,this.state.currentPage,'ascending',clickedColumn);
@@ -46,13 +44,13 @@ class CompanyManagement extends React.Component{
         }
 
         if(direction==="ascending"){
-            sortedData=sortedData.reverse();
+            sortedData.reverse();
         }
         this.updatePage(sortedData,this.state.currentPage,direction === 'ascending' ? 'descending': 'ascending',clickedColumn);
     }
 
     handlePageChange(e, { activePage }){
-        this.updatePage(this.props.requestData,activePage)
+        this.updatePage(this.props.companyData,activePage)
     }
 
     updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
@@ -70,8 +68,8 @@ class CompanyManagement extends React.Component{
         })
     }
 
-    getTablePage(requestData){
-        return this.props.requestData.slice(0, this.state.pageSize);
+    getTablePage(companyData){
+        return this.props.companyData.slice(0, this.state.pageSize);
     }
 
     getTotalPageNumber(data){
@@ -89,7 +87,7 @@ class CompanyManagement extends React.Component{
 
     handleTableFilter(e,{value})
     {
-        this.updatePage(this.props.requestData,1,this.state.direction,this.state.column,value)
+        this.updatePage(this.props.companyData,1,this.state.direction,this.state.column,value)
     }
  
     render(){
@@ -98,11 +96,11 @@ class CompanyManagement extends React.Component{
         return (
         <Transition visible={this.state.visible} animation='fade' duration={500}>
             <div className="request-table">
-                <Header>Bekleyen Test Talepleri</Header>
+                <Header>Sistemdeki şirketler</Header>
                 <Table singleLine sortable celled fixed selectable color="orange">
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell className="no-hover" colSpan='5' singleLine>
+                            <Table.HeaderCell className="no-hover" colSpan='6   ' singleLine>
                                 <Input placeholder="Arama..." onChange={this.handleTableFilter} />
                             </Table.HeaderCell>
                         </Table.Row>
@@ -112,6 +110,12 @@ class CompanyManagement extends React.Component{
                                 onClick={()=>this.handleSort('name')}
                                 >
                                 Şirket
+                            </Table.HeaderCell>
+                            <Table.HeaderCell
+                                sorted={column === 'login' ? direction : null}
+                                onClick={()=>this.handleSort('login')}
+                                >
+                                Kullanıcı Adı
                             </Table.HeaderCell>
                             <Table.HeaderCell
                                 sorted={column === 'mail' ? direction : null}
@@ -126,10 +130,10 @@ class CompanyManagement extends React.Component{
                                 Telefon
                             </Table.HeaderCell>
                             <Table.HeaderCell
-                                sorted={column === 'requestedTest' ? direction : null}
-                                onClick={()=>this.handleSort('requestedTest')}
+                                sorted={column === 'currentCredit' ? direction : null}
+                                onClick={()=>this.handleSort('currentCredit')}
                                 >
-                                Talep edilen miktar
+                                Test hakkı
                             </Table.HeaderCell>
                             <Table.HeaderCell>
                                 İşlemler
@@ -137,16 +141,18 @@ class CompanyManagement extends React.Component{
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {data.map(({ id,name,requestedTest,phone,mail}) => 
+                    {data.map(({ id,name,requestedTest,phone,mail,login}) => 
                         {
                             return <Table.Row key={id}>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{login}</span>} content={login} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{requestedTest}</span>} content={requestedTest} /></Table.Cell>
                                 <Table.Cell collapsing>
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="confirm" companyData={{name,requestedTest}} />} content="Onayla" />
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="reject" companyData={{name,requestedTest}} />} content="Reddet" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='globe' /> </Button>} content="Şirket panel linkini kopyala" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='edit' /> </Button>} content="Düzenle" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='remove circle' /> </Button>} content="Sil" />
                                 </Table.Cell>
                             </Table.Row>
                             }

@@ -156,7 +156,7 @@ class Test extends React.Component{
                                         <div className="answers">
                                             <div className="answer">
                                                 <Radio
-                                                    label="Hiç katılmıyorum"
+                                                    label="Kesinlikle katılmıyorum"
                                                     name='radioGroup'
                                                     value={-2}
                                                     checked={this.state.currentAnswer === -2}
@@ -192,7 +192,7 @@ class Test extends React.Component{
                                             </div>
                                             <div className="answer">
                                                 <Radio
-                                                    label="Çok katılıyorum"
+                                                    label="Kesinlikle katılıyorum"
                                                     name='radioGroup'
                                                     value={-1}
                                                     checked={this.state.currentAnswer === 2}

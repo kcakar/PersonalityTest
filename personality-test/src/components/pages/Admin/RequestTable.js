@@ -46,7 +46,7 @@ class RequestTable extends React.Component{
         }
 
         if(direction==="ascending"){
-            sortedData=sortedData.reverse();
+            sortedData.reverse();
         }
         this.updatePage(sortedData,this.state.currentPage,direction === 'ascending' ? 'descending': 'ascending',clickedColumn);
     }

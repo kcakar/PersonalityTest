@@ -24,15 +24,14 @@ class QuestionEditor extends Component {
     personalityChange(e,{value}){
         let {selectedQuestion}=this.props;
         selectedQuestion.personalityType=value;
-        this.props.handleQuestionChange({selectedQuestion});
+        this.props.handleQuestionChange(selectedQuestion);
     }
 
     questionTextChange(e,{value}){
         let {selectedQuestion}=this.props;
         selectedQuestion.text=value;
-        this.props.handleQuestionChange({selectedQuestion});
+        this.props.handleQuestionChange(selectedQuestion);
     }
-
 
     render() {
         const {selectedQuestion}=this.props;
