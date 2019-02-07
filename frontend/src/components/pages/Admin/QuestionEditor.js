@@ -38,12 +38,19 @@ class QuestionEditor extends Component {
 
         let content=(<p>Lütfen bir soru seçiniz</p>);
         if(selectedQuestion){
-            content=<Form>
-                <Header as='h5'>Soru metni:</Header>
-                <TextArea autoHeight placeholder='Soru metni' value={selectedQuestion.text} onChange={this.questionTextChange}/>
-                <Header as='h5'>Puanlanacak kişilik tipi:</Header>
-                <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType} onChange={this.personalityChange}/>
-                <Button floated="right" primary onClick={this.props.saveQuestion}>Kaydet</Button>
+            content=
+            <Form>
+                <Form.Field>
+                    <Header as='h5'>Soru metni:</Header>
+                    <TextArea autoHeight placeholder='Soru metni' value={selectedQuestion.text} onChange={this.questionTextChange}/>
+                </Form.Field>
+                <Form.Field>
+                    <Header as='h5'>Puanlanacak kişilik tipi:</Header>
+                    <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType} onChange={this.personalityChange}/>
+                </Form.Field>
+                <Form.Field>
+                    <Button primary onClick={this.props.saveQuestion}>Kaydet</Button>
+                </Form.Field>
             </Form>;
         }
         return (

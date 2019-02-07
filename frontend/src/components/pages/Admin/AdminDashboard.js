@@ -66,6 +66,7 @@ class AdminDashboard extends React.Component{
         const done=requestData.reduce((total,company)=>total+company.usedTest,0);
         const sold=requestData.reduce((total,company)=>total+company.boughtTest,0);
         const request=requestData.reduce((total,company)=>total+company.requestedTest,0);
+
         return {companyData,requestData,companies:names.length,sold,done,request};
     }
 
@@ -86,7 +87,7 @@ class AdminDashboard extends React.Component{
 
     render(){
         let content=(<p></p>);
-
+        console.log(this.state.stats)
         switch (this.state.activeTab) {
             case tabs.requests:
                 content=(<RequestTable requestData={this.state.requestData.filter((company)=>company.requestedTest>0)}/>)

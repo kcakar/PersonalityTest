@@ -1,0 +1,22 @@
+{
+  "name": "PersonalityTest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd frontend && npm start",
+    "server": "cd backend && npm start",
+    "start": "concurrently --kill-others 'npm run server' 'npm run client'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kcakar/PersonalityTest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kcakar/PersonalityTest/issues"
+  },
+  "homepage": "https://github.com/kcakar/PersonalityTest#readme"
+}

@@ -1,0 +1,314 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+#root, .App {
+  height: 100%;
+}
+
+body, h1, h2, h3, h4, h5, h6, ul, li, p, figcaption, .button.ui, .ui.header, .ui.input > input, .ui.steps .step .title, .ui.menu, .ui.statistic > .label, .ui.statistics .statistic > .label {
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+}
+
+body {
+  padding-left: 6rem;
+  width: 100%;
+  font-weight: thin;
+  font-size: 12px;
+  font-variant-ligatures: no-common-ligatures;
+  -webkit-font-variant-ligatures: no-common-ligatures;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 6rem;
+  height: 100%;
+  padding: 0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #e96132;
+}
+
+a {
+  color: white;
+}
+a:hover {
+  color: white;
+}
+
+hr {
+  border: 0.11rem dashed orange;
+  width: 85%;
+  margin: 2rem auto;
+}
+
+.centered {
+  margin: 0 auto;
+  width: initial;
+}
+
+.flex-center {
+  display: flex;
+  align-content: center;
+  vertical-align: middle;
+  align-items: center;
+  height: 100vh;
+}
+
+.ui.header {
+  color: #e96132;
+}
+.ui.inverted.menu {
+  background-size: contain;
+  background: url(./../assets/bg.png);
+}
+.ui.segment.pushable {
+  border: 0;
+  border-radius: 0;
+}
+.ui.active.progress .bar {
+  min-width: 3em;
+}
+.ui.statistic > .label, .ui.statistics .statistic > .label {
+  text-transform: none;
+}
+
+main {
+  min-height: 100%;
+}
+
+section.intro {
+  width: 100%;
+  background-color: #eceae5;
+}
+section.intro ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+section.intro ul li {
+  padding-bottom: 0.3rem;
+}
+section.intro h1.ui.header {
+  margin-top: 0;
+}
+section.intro img {
+  margin: 0 auto;
+}
+
+.test-container {
+  max-width: 55rem;
+}
+
+section.test {
+  background-color: #eceae5;
+}
+section.test .question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.test .question-text {
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  margin-bottom: 1rem;
+  max-width: 50rem;
+  min-height: 4rem;
+}
+section.test .answers-container {
+  display: flex;
+}
+section.test .answers {
+  margin-bottom: 1.5rem;
+  margin-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  vertical-align: center;
+}
+section.test .answers .answer {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+section.test .mood-container {
+  width: 10rem;
+}
+section.test .mood-container i.icon {
+  font-size: 1.6em;
+  margin-top: 0.4rem;
+  transition: color 0.2s linear;
+}
+
+.results-container {
+  background-color: #eceae5;
+}
+.results-container .pdf-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 99;
+}
+
+section.results {
+  padding: 5rem 0 15rem;
+}
+section.results .page {
+  padding-top: 3rem;
+}
+section.results .paragraph {
+  padding: 2rem 6rem 5rem 6rem;
+}
+section.results .ui.horizontal.segments.segment-group {
+  margin-bottom: 4rem;
+}
+section.results figure {
+  text-align: center;
+}
+section.results blockquote {
+  font-size: 2rem;
+  margin: 6rem 0 1rem;
+  quotes: "“" "”" "‘" "’";
+}
+section.results blockquote::before {
+  content: open-quote;
+  text-align: left;
+}
+section.results blockquote::after {
+  content: close-quote;
+  text-align: right;
+}
+section.results blockquote p {
+  display: inline;
+}
+section.results figcaption {
+  font-size: 1.7rem;
+  text-align: center;
+}
+section.results ol.ui.list li:before {
+  color: #e96132;
+}
+section.results .paragraph.sentences blockquote {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.dashboard {
+  padding: 3rem 3rem 0 3rem;
+  background-color: rgba(236, 234, 229, 0.2);
+  height: 100%;
+  min-height: 100vh;
+}
+.dashboard .dashboard-center {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.dashboard .ui.centered.grid > .column:not(.aligned):not(.justified):not(.row), .dashboard .ui.centered.grid > .row > .column:not(.aligned):not(.justified), .dashboard .ui.grid .centered.row > .column:not(.aligned):not(.justified) {
+  text-align: center;
+}
+.dashboard .ui.statistic > .label, .dashboard .ui.statistics .statistic > .label {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+.dashboard .row {
+  margin-bottom: 2rem;
+}
+.dashboard .recharts-tooltip-wrapper {
+  font-size: 1.3rem;
+}
+.dashboard .ui.table tfoot th {
+  text-align: center;
+}
+.dashboard tr {
+  cursor: pointer;
+}
+.dashboard .ui.sortable.table thead th.no-hover:hover {
+  background: #f9fafb;
+  cursor: initial;
+}
+.dashboard td .ui.button:not(.icon) > .icon:not(.button):not(.dropdown) {
+  margin: 0;
+  font-size: 1.3em;
+}
+.dashboard td .ui.tiny.button, .dashboard .ui.tiny.buttons .button, .dashboard .ui.tiny.buttons .or {
+  padding: 0.58928571em 0.725em 0.58928571em;
+}
+
+section.customer-dashboard .personnel-graph {
+  width: 100%;
+}
+
+.send-test {
+  width: 100%;
+}
+.send-test div.segment {
+  width: 100%;
+  margin: 0 1rem;
+}
+.send-test .ui.steps .step:first-child.active {
+  border-bottom: solid 2px #fbbd08;
+}
+.send-test .ui.steps .step:nth-child(2).active {
+  border-bottom: solid 2px #b5cc18;
+}
+.send-test .ui.steps .step:nth-child(3).active {
+  border-bottom: solid 2px #21ba45;
+}
+.send-test .step-1 .ui.input > input {
+  margin-right: 10px;
+}
+.send-test .step-2 .ui.button {
+  min-width: 13rem;
+  margin: 0.3rem 0 0 0;
+}
+.send-test .step-2 .ui.input {
+  margin: 1.4rem 0 0 0;
+  width: 100%;
+}
+.send-test .ui.steps {
+  width: 100%;
+}
+
+.ask-credit {
+  width: 100%;
+}
+.ask-credit .input {
+  width: 100%;
+  margin: 0.3rem 0;
+}
+
+section.admin-dashboard .admin-menu {
+  margin: 2rem 0 3rem;
+}
+section.admin-dashboard .question-selector .ui.button {
+  width: 30px;
+  height: 30px;
+  line-height: 32px;
+  padding: 0;
+  margin: 0 0.1rem 0.2rem 0.1rem;
+  border-radius: 0.7rem;
+}
+section.admin-dashboard .question-selector .ui.button:hover {
+  color: #d1d1d1;
+}
+section.admin-dashboard .question-selector .ui.button.selected-question {
+  background-color: #333;
+}
+section.admin-dashboard .question-editor textarea {
+  min-height: 80px;
+}
+
+.request-modal p {
+  color: #fff;
+}
+
+/*# sourceMappingURL=App.css.map */

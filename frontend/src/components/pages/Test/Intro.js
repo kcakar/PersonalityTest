@@ -31,7 +31,7 @@ class Intro extends React.Component{
                                     <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
                                     <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
                                 </ul>
-                                <PulseButton positive url={"/"+this.props.testUrl}>Teste başlayın</PulseButton>
+                                <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
                             </Segment>
                         </Container>
                     </Transition>
