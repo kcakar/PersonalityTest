@@ -9,7 +9,7 @@ module.exports = (sequelize,dataTypes)=>{
     }); 
     
     TestSession.associate = function (models) {
-      models.TestSession.belongsTo(models.User, {
+      models.testSession.belongsTo(models.user, {
           onDelete: "CASCADE",
           foreignKey: {
             allowNull: false

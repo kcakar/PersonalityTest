@@ -37,8 +37,8 @@ module.exports = (sequelize,dataTypes)=>{
     }); 
     
     User.associate = function(models) {
-        User.hasOne(models.TestSession);
-        User.belongsTo(models.Company, {
+        models.user.hasOne(models.testSession);
+        models.user.belongsTo(models.company, {
             onDelete: "CASCADE",
             foreignKey: {
                 allowNull: false
