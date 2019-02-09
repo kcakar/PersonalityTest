@@ -31,7 +31,7 @@ module.exports = (sequelize,dataTypes)=>{
             allowNull: false
           }
         });
-        models.testSession.hasOne(models.question);//check
+        models.testSession.belongsTo(models.question);//check
     };
 
     return TestSession;
