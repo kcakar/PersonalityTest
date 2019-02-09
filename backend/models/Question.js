@@ -29,6 +29,11 @@ module.exports = (sequelize,dataTypes)=>{
         is: ["^[a-z]+$",'i']
       }
     },
+    stage:{
+        type: dataTypes.ENUM,
+        values: ["1","2","3"],
+        defaultValue: "1"
+    }
   });
 
   return Question;

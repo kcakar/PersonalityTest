@@ -45,6 +45,8 @@ module.exports = (sequelize,dataTypes)=>{
     
     Company.associate = function(models) {
         models.company.hasMany(models.user);
+        models.company.hasMany(models.creditRequest);
+        models.company.hasMany(models.saleHistory);
     };
 
     return Company;

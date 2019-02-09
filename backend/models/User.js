@@ -23,7 +23,7 @@ module.exports = (sequelize,dataTypes)=>{
                 len: [0,50]
             }
         },
-        testDate:{
+        testEndDate:{
             type:dataTypes.DATE
         },
         personalityType:{

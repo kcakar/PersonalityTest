@@ -5,6 +5,22 @@ module.exports = (sequelize,dataTypes)=>{
           validate:{
             isDate:true
           }
+        },
+        currentQuestion:{
+          type:dataTypes.INTEGER,
+          validate:{
+            notEmpty: true,
+          }
+        },
+        stage:{
+            type: dataTypes.ENUM,
+            values: ["1","2","3"],
+            defaultValue: "1"
+        },
+        stagePersonalityType:{
+            type: dataTypes.ENUM,
+            values: ["-1","1","2","3","4","5","6","7","8","9"],
+            defaultValue: "-1"
         }
     }); 
     
@@ -15,6 +31,7 @@ module.exports = (sequelize,dataTypes)=>{
             allowNull: false
           }
         });
+        models.testSession.hasOne(models.question);//check
     };
 
     return TestSession;
