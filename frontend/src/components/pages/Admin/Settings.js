@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment,Header,Transition,Button,Form,Input} from 'semantic-ui-react'
-import LanguageSelector from '../../presentation/LanguageSelector';
+import LanguageSelector from '../../common/LanguageSelector';
 
 const OptionData=[
     {

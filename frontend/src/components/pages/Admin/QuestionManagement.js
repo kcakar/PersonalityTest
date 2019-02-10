@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment,Header,Transition,Button} from 'semantic-ui-react'
-import LanguageSelector from '../../presentation/LanguageSelector';
+import LanguageSelector from '../../common/LanguageSelector';
 import QuestionData from '../../mockdata/Questions';
 import QuestionEditor from './QuestionEditor';
 import {withToastManager } from 'react-toast-notifications';

@@ -1,5 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+const models=require('../models');
+const auth=require('./auth');
 
 const TestSessionController=require('../controllers/TestSessionController');
 const UserController=require('../controllers/UserController');
@@ -17,15 +20,39 @@ router.route('/test/:testId')
     .put(TestSessionController.updateTest);
 
 
-router.route('/user')
-    .get(UserController.getAllUsers)
+router.get('/user',auth.required,UserController.getAllUsers)
+
+
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            return res.status(400).json({
+                message: info,
+                user   : user
+            });
+        }
+       req.login(user, {session: false}, (err) => {
+           if (err) {
+               res.send(err);
+           }
+           const token=models.user.generateJWT(user);
+           return res.json({token});
+        });
+    })(req, res);
+});
+
+router.route('/user/')
+    .all((req,res,next)=>{
+        next();
+    })
     .post(UserController.createuser);
 
 router.route('/user/:usertId')
+    .all((req,res,next)=>{
+        next();
+    })
     .get(UserController.getOneUser)
     .put(UserController.updateUser)
     .delete(UserController.deleteUser);
-
-module.exports = router;
 
 module.exports = router;

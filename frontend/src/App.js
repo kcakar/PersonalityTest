@@ -2,32 +2,44 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
 import {ToastProvider } from 'react-toast-notifications';
 
-import WebSidebar from './components/presentation/Sidebar';
+//pages
 import Intro from './components/pages/Test/Intro';
 import Test from './components/pages/Test/Test';
 import Results from './components/pages/Test/Results';
 import CustomerDashboard from './components/pages/Customer/CustomerDashboard';
 import AdminDashboard from './components/pages/Admin/AdminDashboard';
+import Login from './components/pages/Authorization/Login';
 
+//common stuff
+import WebSidebar from './components/common/Sidebar';
+import PrivateRoute from './components/common/PrivateRoute';
+
+//css
 import 'semantic-ui-css/semantic.min.css'
 import './style/App.css';
 
-import mockQuestions from '../src/components/mockdata/Questions'
+//data
+import mockQuestions from '../src/components/mockdata/Questions';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state={
       urls:{
+        homepage:"/enneagram",
         intro:"/enneagram/Test",
         test:"/enneagram/Test/Start",
         results:"/enneagram/Test/Results",
         customerPanel:"/enneagram/Management",
-        adminPanel:"/enneagram/Admin"
+        adminPanel:"/enneagram/Admin",
+        login:"/enneagram/login"
       },
       user:{
         id:"",
         name:""
+      },
+      jwt:{
+
       },
       results:{}
     }
@@ -54,6 +66,10 @@ class App extends Component {
     this.setState({results});
   }
 
+  isAuthenticated(){
+    return false;
+  }
+
   render() {
     return (
       <Router>
@@ -62,6 +78,9 @@ class App extends Component {
             <WebSidebar urls={this.state.urls}></WebSidebar>
           </header>
             <main>
+              <Route exact path={this.state.urls.login} component={()=>(
+                  <Login/>
+              )}/>
               <Route exact path={this.state.urls.intro} component={()=>(
                 <Intro testUrl={this.state.urls.test}/>
               )}/>
@@ -76,11 +95,16 @@ class App extends Component {
                   <CustomerDashboard/>
                 </ToastProvider>
               )}/>
-              <Route exact path={this.state.urls.adminPanel} component={()=>(
-                <ToastProvider>
-                  <AdminDashboard/>
-                </ToastProvider>
-              )}/>
+              <PrivateRoute 
+                path={this.state.urls.adminPanel}
+                isAuthenticated={this.isAuthenticated}
+                loginUrl={this.state.urls.login}
+                component={()=>(
+                  <ToastProvider>
+                    <AdminDashboard/>
+                  </ToastProvider>
+                )}>
+              </PrivateRoute>
             </main>
         </div>
       </Router>

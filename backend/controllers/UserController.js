@@ -2,24 +2,34 @@ const models=require('../models');
 
 const UserController={};
 
+UserController.signIn=(req,res)=>{
+}
+
 UserController.getAllUsers=function(req,res){
     res.send("NOT IMPLEMENTEDGET");
 }
 
 UserController.createuser=function(req,res){
-    models.user.build({
-        username:"kcakar",
-        password:"12345",
+    let user=models.user.build({
+        email:"kcakar",
+        name:"Keremcan Çakar",
+        password:"kerempass",
         title:"Web Developer",
         testDate:null,
         personalityType:"-1",
         wingType:"-1",
         role:"admin"
-    }).save().then(test=>{
-        console.log(test);
+    });
+
+    models.user.getHashPassword(user.password)
+    .then(hashedPassword=>{
+        user.password=hashedPassword;
+        return user;
+    })
+    .then(user=>user.save())
+    .then(test=>{
         res.send(test);
     }).catch(error=>{
-        console.log(error);
         res.send(error);
     });
 }

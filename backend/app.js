@@ -1,12 +1,16 @@
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport=require('passport');
+const bodyParser = require("body-parser");
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+
 
 const app = express();
 
@@ -19,7 +23,12 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport');
 
 app.use('/', indexRouter);
 app.use('/api/v1/', apiRouter);

@@ -1,20 +1,34 @@
+const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
+const keys=require('../config/keys');
+
+const saltRounds = 8;
+
 module.exports = (sequelize,dataTypes)=>{
     let User=sequelize.define('user', {
-        username:{
-            type:dataTypes.STRING(50),
+        email:{
+            type:dataTypes.STRING(100),
             allowNull: false, 
             unique: true,
             validate:{
                 notEmpty: true,
-                len: [3,50]
+                len: [3,100]
             }
         },
         password:{
-            type:dataTypes.STRING(50),
+            type:dataTypes.STRING(200),
             allowNull: false, 
             validate:{
                 notEmpty: true,
-                len: [3,50]
+                len: [3,200]
+            }
+        },
+        name:{
+            type:dataTypes.STRING(200),
+            allowNull: false, 
+            validate:{
+                notEmpty: true,
+                len: [3,200]
             }
         },
         title:{
@@ -50,5 +64,36 @@ module.exports = (sequelize,dataTypes)=>{
         });
     };
 
+    User.getHashPassword=(password)=>{
+        return bcrypt.hash(password,saltRounds);
+    }
+
+    User.comparePassword=(password,hash)=>{
+        console.log(password);
+        console.log(hash);
+        return bcrypt.compare(password,hash);
+    }
+
+    User.generateJWT = (userModel)=>{
+        const today = new Date();
+        const expirationDate = new Date(today);
+        expirationDate.setDate(today.getDate() + 60);
+      
+        return jwt.sign({
+          email: userModel.email,
+          id: userModel.id,
+          role:userModel.role,
+          exp: parseInt(expirationDate.getTime() / 1000, 10),
+        }, keys.privateKey);
+    }
+
+    User.toAuthJSON=(userModel)=>{
+        return{
+            id:userModel.id,
+            email:userModel.email,
+            token:this.generateJWT(userModel)
+        };
+    }
+
     return User;
-  }
+}

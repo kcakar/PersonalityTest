@@ -1,7 +1,7 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import PulseButton from '../presentation/PulseButton';
+import PulseButton from '../common/PulseButton';
 
 const print=(id)=>{
   const input = document.getElementById(id);

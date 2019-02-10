@@ -19,10 +19,6 @@
     "url": "https://github.com/kcakar/PersonalityTest/issues"
   },
   "homepage": "https://github.com/kcakar/PersonalityTest#readme",
-  "devDependencies": {
-    "eslint-plugin-security": "^1.4.0"
-  },
-  "dependencies": {
-    "helmet": "^3.15.0"
-  }
+  "devDependencies": {},
+  "dependencies": {}
 }

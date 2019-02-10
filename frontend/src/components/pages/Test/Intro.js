@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container,Header,Transition,Segment,Image } from 'semantic-ui-react';
-import PulseButton from '../../presentation/PulseButton';
+import PulseButton from '../../common/PulseButton';
 import logo from '../../../assets/enneagram.svg';
 
 
