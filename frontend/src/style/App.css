@@ -311,4 +311,8 @@ section.admin-dashboard .question-editor textarea {
   color: #fff;
 }
 
+section.login {
+  height: 100vh;
+}
+
 /*# sourceMappingURL=App.css.map */

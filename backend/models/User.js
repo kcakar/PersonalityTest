@@ -69,8 +69,6 @@ module.exports = (sequelize,dataTypes)=>{
     }
 
     User.comparePassword=(password,hash)=>{
-        console.log(password);
-        console.log(hash);
         return bcrypt.compare(password,hash);
     }
 

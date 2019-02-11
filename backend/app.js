@@ -1,16 +1,17 @@
 const createError = require('http-errors');
 const express = require('express');
-const session = require('express-session');
 const path = require('path');
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport=require('passport');
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
+const keys=require('./config/keys');
 
 const app = express();
 
@@ -25,9 +26,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+
+const corsOptions = {
+  origin: 'http://localhost:3000/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors());
+
 app.use(passport.initialize());
-app.use(passport.session());
 require('./config/passport');
 
 app.use('/', indexRouter);

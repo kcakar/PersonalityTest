@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { Segment,TextArea,Form,Header,Dropdown,Button} from 'semantic-ui-react';
+import { TextArea,Form,Header,Dropdown,Button} from 'semantic-ui-react';
 
 const personalityTypes=[
     {key:1,value:1,text:"1"},

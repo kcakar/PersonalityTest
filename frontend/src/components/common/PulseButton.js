@@ -33,7 +33,7 @@ class PulseButton extends React.Component{
     render(){
         return (
             <Transition animation={this.state.animation} duration={this.state.duration} visible={this.state.visible}>
-                <Button positive onClick={this.handleClick} url={this.props.url}>{this.props.children}</Button>
+                <Button onClick={this.handleClick} url={this.props.url} color='orange'>{this.props.children}</Button>
             </Transition>
         )
     }

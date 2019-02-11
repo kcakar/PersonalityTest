@@ -22,9 +22,27 @@ router.route('/test/:testId')
 
 router.get('/user',auth.required,UserController.getAllUsers)
 
+router.route('/user/')
+    .all((req,res,next)=>{
+        next();
+    })
+    .post(UserController.createuser);
 
-router.post('/login', function (req, res, next) {
+router.route('/user/:userId')
+    .all((req,res,next)=>{
+        next();
+    })
+    .get(UserController.getOneUser)
+    .put(UserController.updateUser)
+    .delete(UserController.deleteUser);
+
+router.post('/auth/verify',passport.authenticate('jwt', {session: false}),(req, res)=>{
+    return res.json({success:true});
+});
+
+router.post('/auth/login', function (req, res, next) {
     passport.authenticate('local', {session: false}, (err, user, info) => {
+        console.log(info)
         if (err || !user) {
             return res.status(400).json({
                 message: info,
@@ -41,18 +59,5 @@ router.post('/login', function (req, res, next) {
     })(req, res);
 });
 
-router.route('/user/')
-    .all((req,res,next)=>{
-        next();
-    })
-    .post(UserController.createuser);
-
-router.route('/user/:usertId')
-    .all((req,res,next)=>{
-        next();
-    })
-    .get(UserController.getOneUser)
-    .put(UserController.updateUser)
-    .delete(UserController.deleteUser);
 
 module.exports = router;

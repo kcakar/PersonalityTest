@@ -1,7 +1,9 @@
 import React from 'react';
-import { Grid,Header,Button,Form,Message,Segment } from 'semantic-ui-react';
-import PulseButton from '../../common/PulseButton';
-import {Redirect,withRouter } from 'react-router-dom';
+import { Grid,Header,Button,Form,Segment,Transition } from 'semantic-ui-react';
+import {withRouter } from 'react-router-dom';
+import Authorization from '../../../helpers/Authorization';
+import {withToastManager } from 'react-toast-notifications';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component{
     constructor(props){
@@ -9,62 +11,79 @@ class Login extends React.Component{
 
         this.state={
             visible:false,
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            from:"/",
+            user:{
+                email:"",
+                password:""
+            }
         }
+
+        this.handleTextChange=this.handleTextChange.bind(this);
+        this.login=this.login.bind(this);
+        this.redirect=this.redirect.bind(this);
     }
 
     componentDidMount(){
-        this.setState({visible:true});
+        if(this.props.location.state&&this.props.location.state.from){
+            this.setState({visible:true,from:this.props.location.state.from.pathname});
+        }
+        else{
+            this.setState({visible:true,from:"/"});
+        }
+    }
+    
+    login(){
+        const { toastManager } = this.props;
+
+        Authorization.login(this.state.user.email,this.state.user.password).then(result=>{
+            if(!result.ok){
+                toastManager.add('Hatalı kullanıcı adı veya şifre', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+            }
+            else{
+                result.json().then(data=>{
+                    this.props.setJWT(data,this.redirect);
+                    this.redirect();
+                })
+            }
+        })
+        .catch(err=>{
+            toastManager.add('Giriş yapılamadı', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+        })
+    }
+
+    redirect(){
+        this.props.history.push(this.state.from);
+    }
+
+    handleTextChange(e,{name,value}){
+        let {user}=this.state;
+        user[name]=value;
+        this.setState(user);
     }
 
     render(){
-        const { from } = this.props.location.state || { from: { pathname: "/" } };
-        const { redirectToReferrer } = this.state;
-
-        if (redirectToReferrer) {
-            return <Redirect to={from} />;
-        }
-        
         return(
-            // <div className="login-container flex-center">
-            //     <section className="login flex-center">
-            //         <Transition visible={this.state.visible} animation='scale' duration={500}>
-            //             <Container className="centered" text>
-            //                 <Segment textAlign='center' size='big' >
-            //                     <Header as='h1'>Giriş yapın</Header>     
-            //                     <PulseButton positive url={"/"}>Giriş yapın</PulseButton>
-            //                 </Segment>
-            //             </Container>
-            //         </Transition>
-            //     </section>
-            // </div>
-
             <div className="login-container login-form">
-                <section className="login">
-                    <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
-                    <Grid.Column style={{ maxWidth: 450 }}>
-                        <Header as='h2' color='orange' textAlign='center'>
-                        Giriş yapın
-                        </Header>
-                        <Form size='large'>
-                        <Segment stacked>
-                            <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
-                            <Form.Input
-                            fluid
-                            icon='lock'
-                            iconPosition='left'
-                            placeholder='Password'
-                            type='password'
-                            />
+                <Transition visible={this.state.visible} animation='scale' duration={500}>
+                    <section className="login">
+                        <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+                            <Grid.Column style={{ maxWidth: 450 }}>
+                                <Header as='h1' color='orange' textAlign='center'>
+                                ENNEAGRAM
+                                </Header>
+                                <Form size='large'>
+                                    <Segment>
+                                        <Form.Input name="email" fluid icon='user' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='E-mail' />
+                                        <Form.Input name="password" fluid icon='lock' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='Şifre' type='password' />
 
-                            <Button color='orange' fluid size='large'>
-                            Login
-                            </Button>
-                        </Segment>
-                        </Form>
-                    </Grid.Column>
-                    </Grid>
-                </section>
+                                        <Button color='orange' fluid size='large' onClick={this.login}>Giriş yapın</Button>
+                                    </Segment>
+                                    </Form>
+                            </Grid.Column>
+                        </Grid>
+                    </section>
+                </Transition>
             </div>
 
         )
@@ -72,4 +91,7 @@ class Login extends React.Component{
 }
 
 
-export default withRouter(Login);
+Login.propTypes = {
+    setJWT:PropTypes.any.isRequired,
+}
+export default withToastManager(withRouter(Login));

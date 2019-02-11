@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+//https://www.workshape.io/person/incomplete
 
+//variables
 $secondary-font-color:#e96132;
 $header-width:6rem;
 $test-background-color:#eceae5;
@@ -56,6 +58,7 @@ hr{
     margin:2rem auto;
 }
 
+//common
 .centered{
     margin:0 auto;
     width:initial;
@@ -94,10 +97,12 @@ hr{
     }
 }
 
+
 main {
     min-height: 100%;
 }
 
+//intro before the test
 section.intro{
     width:100%;
     background-color: $test-background-color;
@@ -121,6 +126,7 @@ section.intro{
     }
 }
 
+//test screen
 .test-container{
     max-width:55rem;
 }
@@ -172,6 +178,7 @@ section.test{
     
 }
 
+//results screen after the test
 .results-container{
     background-color: $test-background-color;
     .pdf-btn{
@@ -237,6 +244,7 @@ section.results{
     }
 }
 
+//common for admin and customer dashboard
 .dashboard{
     padding: 3rem 3rem 0 3rem;
     background-color:rgba(236, 234, 229, 0.2);
@@ -288,6 +296,7 @@ section.results{
     }
 }
 
+//customer panel
 section.customer-dashboard{
     .personnel-graph{
         width:100%;
@@ -345,6 +354,7 @@ section.customer-dashboard{
     }
 }
 
+//admin panel
 section.admin-dashboard{
     .admin-menu{
         margin:2rem 0 3rem;
@@ -382,4 +392,7 @@ section.admin-dashboard{
     }
 }
 
-// https://www.workshape.io/person/incomplete
+//login screen
+section.login{
+    height: 100vh;
+}
