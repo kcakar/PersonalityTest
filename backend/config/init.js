@@ -35,4 +35,5 @@ models.user.getHashPassword(user.password)
     user.password=hashedPassword;
     return user;
 })
-.then(user=>user.save());
+.then(user=>user.save())
+.catch(err=>{console.log("couldntsavefirstuser")});

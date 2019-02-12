@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react';
 import AddCompanyModal from './AddCompanyModal';
-
+import ApiHelper from '../../../helpers/ApiHelper';
 
 class CompanyManagement extends React.Component{ 
     constructor(props){
@@ -16,7 +16,8 @@ class CompanyManagement extends React.Component{
             totalPages:0,
             pageSize:10,
             currentPage:1,
-            query:""
+            query:"",
+            companyData:[]
         }
         this.handlePageChange=this.handlePageChange.bind(this);
         this.handleTableFilter=this.handleTableFilter.bind(this);
@@ -24,20 +25,30 @@ class CompanyManagement extends React.Component{
     }
 
     componentDidMount(){
-        let {companyData}=this.props;
-        this.setState({
+        ApiHelper.companies.get(this.props.user.jwt)
+        .then(result=>result.json())
+        .then(companyData=>{
+            console.log(companyData);
+            this.setState({
+                companyData,
                 visible:true,
                 data:this.getTablePage(companyData),
                 totalPages: this.getTotalPageNumber(companyData),
                 currentPage:1,
                 direction:'ascending'
             });
+        })
+        .catch(err=>{
+            this.setState({
+                visible:true,
+            });
+        });
     }
 
     handleSort(clickedColumn){
         const { column, direction } = this.state;
 
-        let sortedData=this.sortByColumn(this.props.companyData,clickedColumn);
+        let sortedData=this.sortByColumn(this.state.companyData,clickedColumn);
 
         if (column !== clickedColumn) {
             this.updatePage(sortedData,this.state.currentPage,'ascending',clickedColumn);
@@ -51,7 +62,7 @@ class CompanyManagement extends React.Component{
     }
 
     handlePageChange(e, { activePage }){
-        this.updatePage(this.props.companyData,activePage)
+        this.updatePage(this.state.companyData,activePage)
     }
 
     updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
@@ -69,8 +80,8 @@ class CompanyManagement extends React.Component{
         })
     }
 
-    getTablePage(){
-        return this.props.companyData.slice(0, this.state.pageSize);
+    getTablePage(companyData){
+        return companyData.slice(0, this.state.pageSize);
     }
 
     getTotalPageNumber(data){
@@ -88,7 +99,7 @@ class CompanyManagement extends React.Component{
 
     handleTableFilter(e,{value})
     {
-        this.updatePage(this.props.companyData,1,this.state.direction,this.state.column,value)
+        this.updatePage(this.state.companyData,1,this.state.direction,this.state.column,value)
     }
  
     render(){
@@ -143,14 +154,14 @@ class CompanyManagement extends React.Component{
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {data.map(({ id,name,requestedTest,phone,mail,login}) => 
+                    {data.map(({ id,name,credit,phone,mail}) => 
                         {
                             return <Table.Row key={id}>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{login}</span>} content={login} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{requestedTest}</span>} content={requestedTest} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
                                 <Table.Cell collapsing>
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='globe' /> </Button>} content="Şirket panel linkini kopyala" />
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='edit' /> </Button>} content="Düzenle" />
@@ -162,7 +173,7 @@ class CompanyManagement extends React.Component{
                     </Table.Body>
                     <Table.Footer fullWidth>
                         <Table.Row>
-                            <Table.HeaderCell colSpan="5">
+                            <Table.HeaderCell colSpan="6">
                                 <Pagination prevItem={null} nextItem={null} onPageChange={this.handlePageChange} totalPages={this.state.totalPages} activePage={this.state.currentPage} />
                             </Table.HeaderCell>
                         </Table.Row>

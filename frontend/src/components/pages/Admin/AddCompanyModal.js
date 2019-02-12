@@ -36,7 +36,17 @@ class AddCompanyModal extends Component {
   addCompany=()=>{
     const {company}=this.state;
     if(this.validate()){
-        ApiHelper.company.create(company,this.props.user.jwt);
+        ApiHelper.company.create(company,this.props.user.jwt)
+        .then(response=>response.json())
+        .then(data=>{
+            console.log(data);
+            if(data.errors){
+                this.setState({errors:data.errors.map(error=>error.message)});
+            }
+            else{
+                this.handleClose();
+            }
+        })
     }
   }
 
@@ -69,7 +79,7 @@ class AddCompanyModal extends Component {
     <Button onClick={this.handleOpen} compact primary animated='vertical' floated='right' >
         <Button.Content visible>Yeni şirket ekle</Button.Content>
         <Button.Content hidden>
-            <Icon name='chart pie' />
+            <Icon name='building outline' />
         </Button.Content>
     </Button>);
 

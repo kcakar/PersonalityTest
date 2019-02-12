@@ -43,7 +43,6 @@ router.post('/auth/verify',passport.authenticate('jwt', {session: false}),(req, 
 
 router.post('/auth/login', function (req, res, next) {
     passport.authenticate('local', {session: false}, (err, user, info) => {
-        console.log(info)
         if (err || !user) {
             return res.status(400).json({
                 message: info,
@@ -70,6 +69,10 @@ router.post('/auth/login', function (req, res, next) {
 
 
 router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
+router.get('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.getOneCompany);
+router.delete('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.deleteCompany);
+
+router.get('/companies/',passport.authenticate('jwt', {session: false}),CompanyController.getAllCompanies);
 
 
 module.exports = router;

@@ -10,6 +10,11 @@ const getTokenFromHeaders = (req) => {
   return null;
 };
 
+const onlyAdmins=(err, user, next)=>{
+  console.log(err)
+  next();
+}
+
 const auth = {
   required: jwt({
     secret: keys.privateKey,
@@ -22,6 +27,10 @@ const auth = {
     getToken: getTokenFromHeaders,
     credentialsRequired: false,
   }),
+  onlyAdmins:onlyAdmins
 };
+
+
+
 
 module.exports = auth;

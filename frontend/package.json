@@ -19,7 +19,7 @@
     "semantic-ui-react": "^0.84.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others 'react-scripts start' 'npx sass --watch ./src/style/App.scss ./src/style/App.css'",
+    "start": "concurrently --kill-others 'react-scripts start' 'node-sass --watch ./src/style/App.scss ./src/style/App.css'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

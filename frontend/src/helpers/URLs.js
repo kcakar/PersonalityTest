@@ -15,6 +15,9 @@ const urls={
         },
         company:{
             create:server+"/company/"
+        },
+        companies:{
+            get:server+"/companies/"
         }
     },
 

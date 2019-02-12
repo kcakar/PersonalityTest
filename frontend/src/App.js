@@ -88,7 +88,7 @@ class App extends Component {
   }
 
   render() {
-    const {isLoggedIn}=this.state.user;
+    const {isLoggedIn,role}=this.state.user;
     const {visible}=this.state;
 
     return (
@@ -106,27 +106,27 @@ class App extends Component {
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
                 <PrivateRoute 
                   path={urls.intro}
-                  isAuthenticated={isLoggedIn}
+                  isAuthenticated={isLoggedIn&&role==="employee"}
                   component={() => <Intro testUrl={urls.test}/>}
                 />
                 <PrivateRoute 
                   path={urls.test}
-                  isAuthenticated={isLoggedIn}
+                  isAuthenticated={isLoggedIn&&role==="employee"}
                   component={() => <Test getQuestion={this.getQuestion} getQuestionCount={this.getQuestionCount} testFinished={this.testFinished}/>}
                 />
                 <PrivateRoute 
                   path={urls.results}
-                  isAuthenticated={isLoggedIn}
+                  isAuthenticated={isLoggedIn&&role==="employee"}
                   component={() => <Results getResults={this.getResults}/>}
                 />
                 <PrivateRoute 
                   path={urls.customerPanel}
-                  isAuthenticated={isLoggedIn}
+                  isAuthenticated={isLoggedIn&&(role==="company"||role==="admin")}
                   component={() => <CustomerDashboard/>}
                 />
                 <PrivateRoute 
                   path={urls.adminPanel}
-                  isAuthenticated={isLoggedIn}
+                  isAuthenticated={isLoggedIn&&role==="admin"}
                   component={() => <AdminDashboard user={this.state.user}/>}
                 />
               </main>

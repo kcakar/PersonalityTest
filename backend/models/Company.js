@@ -1,39 +1,25 @@
 module.exports = (sequelize,dataTypes)=>{
     let Company=sequelize.define('company', {
-        username:{
-            type:dataTypes.STRING(50),
-            allowNull: false, 
-            unique: true,
-            validate:{
-                notEmpty: true,
-                len: [3,50]
-            }
-        },
-        password:{
-            type:dataTypes.STRING(50),
-            allowNull: false, 
-            validate:{
-                notEmpty: true,
-                len: [3,50]
-            }
+        status:{
+            type:dataTypes.ENUM,
+            values: ["active","passive","deleted"],
         },
         name:{
             type:dataTypes.STRING(50),
+            unique: true,
             validate:{
                 len: [0,50]
             }
         },
         mail:{
             type:dataTypes.STRING(100),
+            unique: true,
             validate:{
                 isEmail: true,
             }
         },
         phone:{
             type:dataTypes.STRING(100),
-            validate:{
-                isNumeric: true,
-            }
         },
         credit:{
             type:dataTypes.INTEGER,
@@ -48,6 +34,7 @@ module.exports = (sequelize,dataTypes)=>{
         models.company.hasMany(models.creditRequest);
         models.company.hasMany(models.saleHistory);
     };
+
 
     return Company;
   }
