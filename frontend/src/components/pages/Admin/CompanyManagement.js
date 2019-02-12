@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react'
+import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react';
+import AddCompanyModal from './AddCompanyModal';
 
 
 class CompanyManagement extends React.Component{ 
@@ -68,7 +69,7 @@ class CompanyManagement extends React.Component{
         })
     }
 
-    getTablePage(companyData){
+    getTablePage(){
         return this.props.companyData.slice(0, this.state.pageSize);
     }
 
@@ -100,8 +101,9 @@ class CompanyManagement extends React.Component{
                 <Table singleLine sortable celled fixed selectable color="orange">
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell className="no-hover" colSpan='6   ' singleLine>
+                            <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
                                 <Input placeholder="Arama..." onChange={this.handleTableFilter} />
+                                <AddCompanyModal user={this.props.user}></AddCompanyModal>
                             </Table.HeaderCell>
                         </Table.Row>
                         <Table.Row>
@@ -173,7 +175,8 @@ class CompanyManagement extends React.Component{
 }
 
 CompanyManagement.propTypes = {
-    companyData:PropTypes.any.isRequired
+    companyData:PropTypes.any.isRequired,
+    user:PropTypes.any.isRequired
 }
 
 export default CompanyManagement;

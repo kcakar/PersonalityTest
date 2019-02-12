@@ -89,7 +89,7 @@ export default class SendTest extends Component {
         onClose={this.handleClose}
         className="send-test"
       >
-        <Header icon='browser' content='Test Yollama' />
+        <Header icon='browser' content='Test Yollayın' />
         <Modal.Content>
           <Modal.Description>
             <Grid>

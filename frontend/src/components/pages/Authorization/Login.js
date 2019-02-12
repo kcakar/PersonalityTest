@@ -1,9 +1,14 @@
 import React from 'react';
-import { Grid,Header,Button,Form,Segment,Transition } from 'semantic-ui-react';
+import { Grid,Header,Button,Form,Segment,Transition,Loader } from 'semantic-ui-react';
 import {withRouter } from 'react-router-dom';
 import Authorization from '../../../helpers/Authorization';
 import {withToastManager } from 'react-toast-notifications';
 import PropTypes from 'prop-types';
+import urls from '../../../helpers/URLs';
+
+const errorTypes={
+    ServerUnreachable:"Failed to fetch"
+}
 
 class Login extends React.Component{
     constructor(props){
@@ -12,11 +17,12 @@ class Login extends React.Component{
         this.state={
             visible:false,
             redirectToReferrer: false,
-            from:"/",
+            from:null,
             user:{
                 email:"",
                 password:""
-            }
+            },
+            isLoading:false
         }
 
         this.handleTextChange=this.handleTextChange.bind(this);
@@ -29,31 +35,62 @@ class Login extends React.Component{
             this.setState({visible:true,from:this.props.location.state.from.pathname});
         }
         else{
-            this.setState({visible:true,from:"/"});
+            this.setState({visible:true});
         }
     }
     
     login(){
         const { toastManager } = this.props;
 
+        this.setState({isLoading:true});
         Authorization.login(this.state.user.email,this.state.user.password).then(result=>{
             if(!result.ok){
                 toastManager.add('Hatalı kullanıcı adı veya şifre', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+                this.setState({isLoading:false});
             }
             else{
-                result.json().then(data=>{
-                    this.props.setJWT(data,this.redirect);
-                    this.redirect();
-                })
+                result.json().then(answer=>{
+                    this.props.saveUserToLocalStore(answer.user,this.redirect);
+                }).catch((err)=>{
+                    this.setState({isLoading:false});
+                });
             }
         })
         .catch(err=>{
-            toastManager.add('Giriş yapılamadı', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
-        })
+            if(err.message===errorTypes.ServerUnreachable){
+                toastManager.add('Giriş yapılamadı. Sisteme ulaşılamıyor.', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+            }
+            else{
+                toastManager.add('Giriş yapılamadı.', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+            }
+            this.setState({isLoading:false});
+        });
     }
 
-    redirect(){
-        this.props.history.push(this.state.from);
+    redirect(userRole){
+        console.log(userRole);
+        console.log(this.state.from);
+        if(this.state.from)
+        {
+            this.props.history.push(this.state.from);
+        }
+        else{
+            switch (userRole) {
+                case "admin":
+                    this.props.history.push(urls.adminPanel);
+                    break;
+                case "company":
+                    this.props.history.push(urls.customerPanel);
+                break;
+                case "employee":
+                    this.props.history.push(urls.intro);
+                break;
+                default:
+                    this.props.history.push(urls.homepage);
+                    break;
+            }
+        }
+
     }
 
     handleTextChange(e,{name,value}){
@@ -76,8 +113,18 @@ class Login extends React.Component{
                                     <Segment>
                                         <Form.Input name="email" fluid icon='user' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='E-mail' />
                                         <Form.Input name="password" fluid icon='lock' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='Şifre' type='password' />
-
-                                        <Button color='orange' fluid size='large' onClick={this.login}>Giriş yapın</Button>
+                                            {this.state.isLoading?
+                                            (
+                                                <Button color='orange' fluid size='large' onClick={this.login} disabled>
+                                                    <Loader active inline inverted size='small'/>
+                                                </Button>
+                                            )
+                                            :(
+                                                <Button color='orange' fluid size='large' onClick={this.login}>
+                                                    <span>Giriş yapın</span>
+                                                </Button>
+                                            )
+                                            }
                                     </Segment>
                                     </Form>
                             </Grid.Column>
@@ -92,6 +139,6 @@ class Login extends React.Component{
 
 
 Login.propTypes = {
-    setJWT:PropTypes.any.isRequired,
+    saveUserToLocalStore:PropTypes.any.isRequired,
 }
 export default withToastManager(withRouter(Login));

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import RequestTable from './RequestTable';
 import Statistics from './Statistics';
 import AdminNavigation from './AdminNavigation';
@@ -87,7 +89,6 @@ class AdminDashboard extends React.Component{
 
     render(){
         let content=(<p></p>);
-        console.log(this.state.stats)
         switch (this.state.activeTab) {
             case tabs.requests:
                 content=(<RequestTable requestData={this.state.requestData.filter((company)=>company.requestedTest>0)}/>)
@@ -96,7 +97,7 @@ class AdminDashboard extends React.Component{
                 content=(<QuestionManagement />)
                 break;
             case tabs.companies:
-                content=(<CompanyManagement companyData={this.state.companyData}/>)
+                content=(<CompanyManagement companyData={this.state.companyData} user={this.props.user}/>)
                 break;
             case tabs.settings:
                 content=(<Settings/>)
@@ -117,6 +118,10 @@ class AdminDashboard extends React.Component{
         </section>
         )
     }
+}
+
+AdminDashboard.propTypes = {
+    user:PropTypes.any.isRequired,
 }
 
 export default AdminDashboard;

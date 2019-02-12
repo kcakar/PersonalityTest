@@ -126,6 +126,7 @@ section.test .question-text {
 }
 section.test .answers-container {
   display: flex;
+  justify-content: center;
 }
 section.test .answers {
   margin-bottom: 1.5rem;
@@ -286,6 +287,11 @@ section.customer-dashboard .personnel-graph {
   margin: 0.3rem 0;
 }
 
+section.admin-dashboard .statistics {
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+}
 section.admin-dashboard .admin-menu {
   margin: 2rem 0 3rem;
 }
@@ -311,8 +317,22 @@ section.admin-dashboard .question-editor textarea {
   color: #fff;
 }
 
+.add-company .ui.input {
+  width: 100%;
+  margin: 0.3rem 0 0.3rem;
+}
+.add-company .ui.inverted.green.button {
+  margin-top: 1rem;
+}
+.add-company .required input {
+  border-color: orange;
+}
+
 section.login {
   height: 100vh;
+}
+section.login button.ui {
+  line-height: 25px;
 }
 
 /*# sourceMappingURL=App.css.map */

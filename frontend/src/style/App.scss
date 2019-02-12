@@ -150,6 +150,7 @@ section.test{
 
     .answers-container{
         display: flex;
+        justify-content: center;
     }
 
     .answers{
@@ -356,6 +357,12 @@ section.customer-dashboard{
 
 //admin panel
 section.admin-dashboard{
+
+    .statistics{
+        min-height:10rem;
+        display: flex;
+        align-items: center;
+    }
     .admin-menu{
         margin:2rem 0 3rem;
     }
@@ -392,7 +399,24 @@ section.admin-dashboard{
     }
 }
 
+.add-company{
+    .ui.input{
+        width:100%;
+        margin:.3rem 0 .3rem;
+    }
+    .ui.inverted.green.button{
+        margin-top:1rem;
+    }
+
+    .required input{
+        border-color:orange;
+    }
+}
+
 //login screen
 section.login{
     height: 100vh;
+    button.ui{
+        line-height: 25px;
+    }
 }

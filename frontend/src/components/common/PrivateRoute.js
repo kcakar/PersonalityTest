@@ -1,15 +1,15 @@
 import React from 'react'
 import {Route,Redirect } from 'react-router-dom';
+import urls from '../../helpers/URLs';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={
+    <Route exact {...rest} render={
         props =>{
-            console.log(props)
             return rest.isAuthenticated ? (
                 <Component {...props} />
               ) : (
                     <Redirect   to={{
-                                    pathname: rest.loginUrl,
+                                    pathname: urls.login,
                                     state: { from: props.location }}
                                 }
                     />

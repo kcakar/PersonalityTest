@@ -1,8 +1,8 @@
-import api from './Api';
+import urls from './URLs';
 
 const Authorization={
     login:(email,password)=>{
-        return fetch(api.auth.login,
+        return fetch(urls.api.auth.login,
         {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
@@ -18,7 +18,7 @@ const Authorization={
         })
     },
     verifyToken:(token)=>{
-        return fetch(api.auth.verifyToken,
+        return fetch(urls.api.auth.verifyToken,
         {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin

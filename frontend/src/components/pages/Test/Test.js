@@ -5,6 +5,8 @@ import PulseButton from '../../common/PulseButton';
 import Loading from '../../common/Loading';
 import { Redirect} from 'react-router-dom';
 
+import mockQuestions from '../../mockdata/Questions';
+
 class Test extends React.Component{
     constructor(props){
         super(props);
@@ -38,16 +40,24 @@ class Test extends React.Component{
 
         if(!this.state.currentQuestion)//test just started,get the first question
         {
-            currentQuestion=Object.assign({},this.props.getQuestion(1));
+            currentQuestion=Object.assign({},this.getQuestion(1));
         }
 
-        const questionCount=this.props.getQuestionCount();
+        const questionCount=this.getQuestionCount();
         this.setState({questionCount,currentQuestion});
     }
 
     componentWillUnmount(){
         this.finishTest();
     }
+
+     getQuestion(order) {
+         return mockQuestions[order - 1];
+     }
+
+     getQuestionCount() {
+         return mockQuestions.length;
+     }
 
     animateQuestionText(currentQuestion){
         this.setState({questionVisible:false});
@@ -65,7 +75,7 @@ class Test extends React.Component{
             this.finishTest();
         }
         else{
-            currentQuestion=this.props.getQuestion(currentQuestion.order);
+            currentQuestion=this.getQuestion(currentQuestion.order);
             this.animateQuestionText(currentQuestion);
         }
     }
@@ -139,75 +149,75 @@ class Test extends React.Component{
                     <div className="progress">
                         <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questionCount} progress='ratio'/>
                     </div>
-                    <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                         <section className="test">
                             <Container>
-                                <Segment textAlign='center' size='big' className="question">        
-                                    <div className="question-text">
-                                        <span>{this.state.currentQuestion.text}</span>
-                                    </div>
-                                    <div className="answers-container">
-                                        <div className="mood-container">
-                                            <Icon.Group size='huge'>
-                                                <Icon  color={mood.color} name={mood.name} />
-                                            </Icon.Group>
+                                <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
+                                    <Segment textAlign='center' size='big' className="question">        
+                                        <div className="question-text">
+                                            <span>{this.state.currentQuestion.text}</span>
                                         </div>
-                                    
-                                        <div className="answers">
-                                            <div className="answer">
-                                                <Radio
-                                                    label="Kesinlikle katılmıyorum"
-                                                    name='radioGroup'
-                                                    value={-2}
-                                                    checked={this.state.currentAnswer === -2}
-                                                    onChange={()=>this.selectAnwser(-2)}
-                                                />
+                                        <div className="answers-container">
+                                            <div className="mood-container">
+                                                <Icon.Group size='huge'>
+                                                    <Icon  color={mood.color} name={mood.name} />
+                                                </Icon.Group>
                                             </div>
-                                            <div className="answer">
-                                                <Radio
-                                                    label="Katılmıyorum"
-                                                    name='radioGroup'
-                                                    value={-1}
-                                                    checked={this.state.currentAnswer === -1}
-                                                    onChange={()=>this.selectAnwser(-1)}
-                                                />
-                                            </div>
-                                            <div className="answer">
-                                                <Radio
-                                                    label="Kararsızım"
-                                                    name='radioGroup'
-                                                    value={-1}
-                                                    checked={this.state.currentAnswer === 0}
-                                                    onChange={()=>this.selectAnwser(0)}
-                                                />
-                                            </div>
-                                            <div className="answer">
-                                                <Radio
-                                                    label="Katılıyorum"
-                                                    name='radioGroup'
-                                                    value={-1}
-                                                    checked={this.state.currentAnswer === 1}
-                                                    onChange={()=>this.selectAnwser(1)}
-                                                />
-                                            </div>
-                                            <div className="answer">
-                                                <Radio
-                                                    label="Kesinlikle katılıyorum"
-                                                    name='radioGroup'
-                                                    value={-1}
-                                                    checked={this.state.currentAnswer === 2}
-                                                    onChange={()=>this.selectAnwser(2)}
-                                                />
+                                        
+                                            <div className="answers">
+                                                <div className="answer">
+                                                    <Radio
+                                                        label="Kesinlikle katılmıyorum"
+                                                        name='radioGroup'
+                                                        value={-2}
+                                                        checked={this.state.currentAnswer === -2}
+                                                        onChange={()=>this.selectAnwser(-2)}
+                                                    />
+                                                </div>
+                                                <div className="answer">
+                                                    <Radio
+                                                        label="Katılmıyorum"
+                                                        name='radioGroup'
+                                                        value={-1}
+                                                        checked={this.state.currentAnswer === -1}
+                                                        onChange={()=>this.selectAnwser(-1)}
+                                                    />
+                                                </div>
+                                                <div className="answer">
+                                                    <Radio
+                                                        label="Kararsızım"
+                                                        name='radioGroup'
+                                                        value={-1}
+                                                        checked={this.state.currentAnswer === 0}
+                                                        onChange={()=>this.selectAnwser(0)}
+                                                    />
+                                                </div>
+                                                <div className="answer">
+                                                    <Radio
+                                                        label="Katılıyorum"
+                                                        name='radioGroup'
+                                                        value={-1}
+                                                        checked={this.state.currentAnswer === 1}
+                                                        onChange={()=>this.selectAnwser(1)}
+                                                    />
+                                                </div>
+                                                <div className="answer">
+                                                    <Radio
+                                                        label="Kesinlikle katılıyorum"
+                                                        name='radioGroup'
+                                                        value={-1}
+                                                        checked={this.state.currentAnswer === 2}
+                                                        onChange={()=>this.selectAnwser(2)}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="submit">
-                                        <PulseButton onClick={this.handleAnswer}>Cevapla</PulseButton>
-                                    </div>
-                                </Segment>
+                                        <div className="submit">
+                                            <PulseButton onClick={this.handleAnswer}>Cevapla</PulseButton>
+                                        </div>
+                                    </Segment>
+                                </Transition>
                             </Container>
                         </section>
-                    </Transition>
                 </div>
             </section>
             ;
@@ -216,8 +226,6 @@ class Test extends React.Component{
 }
 
 Test.propTypes = {
-    getQuestion:PropTypes.func.isRequired,
-    getQuestionCount:PropTypes.func.isRequired,
     testFinished:PropTypes.func.isRequired,
 }
 

@@ -6,6 +6,7 @@ const auth=require('./auth');
 
 const TestSessionController=require('../controllers/TestSessionController');
 const UserController=require('../controllers/UserController');
+const CompanyController=require('../controllers/CompanyController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -54,10 +55,21 @@ router.post('/auth/login', function (req, res, next) {
                res.send(err);
            }
            const token=models.user.generateJWT(user);
-           return res.json({token});
+           const clientUser={
+               name:user.name,
+               email:user.email,
+               id:user.id,
+               role:user.role,
+               title:user.title,
+               jwt:token
+           }
+           return res.json({user:clientUser});
         });
     })(req, res);
 });
+
+
+router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
 
 
 module.exports = router;
