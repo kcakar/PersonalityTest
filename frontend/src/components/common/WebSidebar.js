@@ -25,7 +25,7 @@ const WebSidebar = () => (
           Sonuçlar
         </Menu.Item>
       </Link>
-      <Link to={urls.customerPanel }>
+      <Link to={urls.customerPanel() }>
         <Menu.Item as='span'>
           <Icon name='chess pawn' />
           Müşteri Paneli

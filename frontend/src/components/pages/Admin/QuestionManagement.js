@@ -1,7 +1,6 @@
 import React from 'react';
 import { Segment,Header,Transition,Button} from 'semantic-ui-react'
 import LanguageSelector from '../../common/LanguageSelector';
-import QuestionData from '../../mockdata/Questions';
 import QuestionEditor from './QuestionEditor';
 import {withToastManager } from 'react-toast-notifications';
 
@@ -26,6 +25,7 @@ class QuestionManagement extends React.Component{
     }
 
     componentDidMount(){
+        const QuestionData=[];
         const data=this.filterQuestionsByLanguage(QuestionData,this.state.language);
         this.setState({
             visible:true,

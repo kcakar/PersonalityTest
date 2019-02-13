@@ -21,6 +21,7 @@ import './style/App.css';
 
 //data
 import Authorization from './helpers/Authorization';
+import ApiHelper from './helpers/ApiHelper';
 
 //application variables
 import urls from './helpers/URLs';
@@ -56,7 +57,9 @@ class App extends Component {
           }
           else{
               localUser.isLoggedIn=true;
-              this.setState({user:localUser})
+              this.setState({user:localUser});
+              ApiHelper.token=localUser.jwt;
+              console.log(ApiHelper)
           }
         }
         ).catch(err=>{
@@ -83,6 +86,7 @@ class App extends Component {
 
   saveUserToLocalStore(user,redirectFunc){
     user.isLoggedIn=true;
+    ApiHelper.token=user.jwt;
     this.setState({user},()=>redirectFunc(user.role));
     localStorage.setItem(localStorageUser, JSON.stringify(user));
   }
@@ -120,14 +124,14 @@ class App extends Component {
                   component={() => <Results getResults={this.getResults}/>}
                 />
                 <PrivateRoute 
-                  path={urls.customerPanel}
+                  path={urls.customerPanel()}
                   isAuthenticated={isLoggedIn&&(role==="company"||role==="admin")}
                   component={() => <CustomerDashboard/>}
                 />
                 <PrivateRoute 
                   path={urls.adminPanel}
                   isAuthenticated={isLoggedIn&&role==="admin"}
-                  component={() => <AdminDashboard user={this.state.user}/>}
+                  component={() => <AdminDashboard/>}
                 />
               </main>
           </div>

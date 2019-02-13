@@ -32,7 +32,8 @@ const Authorization={
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
         })
-    }
+    },
+    token:""
 }
 
 export default Authorization;

@@ -5,7 +5,7 @@ const urls={
     intro:"/enneagram/Test",
     test:"/enneagram/Test/Start",
     results:"/enneagram/Test/Results",
-    customerPanel:"/enneagram/Management",
+    customerPanel:(id="")=>`/enneagram/Management/${id}`,
     adminPanel:"/enneagram/Admin",
     login:"/enneagram/login",
     api:{
@@ -14,7 +14,8 @@ const urls={
             verifyToken:server+"/auth/verify"
         },
         company:{
-            create:server+"/company/"
+            create:server+"/company/",
+            changeStatus:(id)=>`${server}/company/${id}/status`
         },
         companies:{
             get:server+"/companies/"

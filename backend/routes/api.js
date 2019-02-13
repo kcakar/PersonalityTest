@@ -13,30 +13,20 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Docs' });
 });
 
-router.route('/test')
-    .post(TestSessionController.createTest);
-
-router.route('/test/:testId')
-    .get(TestSessionController.getOneTest)
-    .put(TestSessionController.updateTest);
 
 
-router.get('/user',auth.required,UserController.getAllUsers)
+//company
+router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
+router.get('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.getOneCompany);
+router.delete('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.deleteCompany);
 
-router.route('/user/')
-    .all((req,res,next)=>{
-        next();
-    })
-    .post(UserController.createuser);
+router.post('/company/:id/status/',passport.authenticate('jwt', {session: false}),CompanyController.setStatus);
 
-router.route('/user/:userId')
-    .all((req,res,next)=>{
-        next();
-    })
-    .get(UserController.getOneUser)
-    .put(UserController.updateUser)
-    .delete(UserController.deleteUser);
+router.get('/companies/',passport.authenticate('jwt', {session: false}),CompanyController.getAllCompanies);
 
+
+
+//auth
 router.post('/auth/verify',passport.authenticate('jwt', {session: false}),(req, res)=>{
     return res.json({success:true});
 });
@@ -66,13 +56,5 @@ router.post('/auth/login', function (req, res, next) {
         });
     })(req, res);
 });
-
-
-router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
-router.get('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.getOneCompany);
-router.delete('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.deleteCompany);
-
-router.get('/companies/',passport.authenticate('jwt', {session: false}),CompanyController.getAllCompanies);
-
 
 module.exports = router;

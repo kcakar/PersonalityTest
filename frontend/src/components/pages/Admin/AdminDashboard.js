@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import RequestTable from './RequestTable';
 import Statistics from './Statistics';
@@ -97,7 +96,7 @@ class AdminDashboard extends React.Component{
                 content=(<QuestionManagement />)
                 break;
             case tabs.companies:
-                content=(<CompanyManagement companyData={this.state.companyData} user={this.props.user}/>)
+                content=(<CompanyManagement companyData={this.state.companyData}/>)
                 break;
             case tabs.settings:
                 content=(<Settings/>)
@@ -118,10 +117,6 @@ class AdminDashboard extends React.Component{
         </section>
         )
     }
-}
-
-AdminDashboard.propTypes = {
-    user:PropTypes.any.isRequired,
 }
 
 export default AdminDashboard;

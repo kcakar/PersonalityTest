@@ -1,4 +1,7 @@
 const models=require('../models');
+const Sequelize = require('sequelize');
+
+const Op = Sequelize.Op;
 
 const CompanyController={};
 
@@ -118,12 +121,39 @@ CompanyController.deleteCompany=function(req,res){
             }
         })
         .catch(err=>{
-            res.status(400);
-            return;
+            res.sendStatus(400);
         });
     }
     catch(err){
         res.sendStatus(400);
     }
 }
+
+CompanyController.setStatus=(req,res)=>{
+    const {id}=req.params;
+    const {status}=req.body;
+    if(!status)
+    {
+        res.sendStatus(400);   
+    }
+    models.company.update({
+        status,
+        }, {
+        where: {
+            id: {[Op.eq]: id}
+        }
+    }).then(result=>{
+        console.log(result);
+        if(result>0){
+            res.sendStatus(200);
+        }
+        else{
+            res.sendStatus(400);
+        }
+    })
+    .catch(err=>{
+        res.sendStatus(400);
+    });
+}
+
 module.exports = CompanyController;

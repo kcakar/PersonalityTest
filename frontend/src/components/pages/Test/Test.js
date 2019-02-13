@@ -5,7 +5,8 @@ import PulseButton from '../../common/PulseButton';
 import Loading from '../../common/Loading';
 import { Redirect} from 'react-router-dom';
 
-import mockQuestions from '../../mockdata/Questions';
+        
+const  mockQuestions=[];
 
 class Test extends React.Component{
     constructor(props){

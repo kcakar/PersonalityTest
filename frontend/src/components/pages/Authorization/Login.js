@@ -80,7 +80,7 @@ class Login extends React.Component{
                     this.props.history.push(urls.adminPanel);
                     break;
                 case "company":
-                    this.props.history.push(urls.customerPanel);
+                    this.props.history.push(urls.customerPanel());
                 break;
                 case "employee":
                     this.props.history.push(urls.intro);

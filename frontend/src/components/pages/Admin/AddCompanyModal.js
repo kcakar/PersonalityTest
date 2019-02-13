@@ -36,7 +36,7 @@ class AddCompanyModal extends Component {
   addCompany=()=>{
     const {company}=this.state;
     if(this.validate()){
-        ApiHelper.company.create(company,this.props.user.jwt)
+        ApiHelper.functions.company.create(company)
         .then(response=>response.json())
         .then(data=>{
             console.log(data);
@@ -45,6 +45,7 @@ class AddCompanyModal extends Component {
             }
             else{
                 this.handleClose();
+                this.props.refreshCompanyTable();
             }
         })
     }
@@ -126,7 +127,7 @@ class AddCompanyModal extends Component {
 }
 
 AddCompanyModal.propTypes = {
-    user:PropTypes.any.isRequired,
+    refreshCompanyTable:PropTypes.func.isRequired
 }
 
 export default AddCompanyModal

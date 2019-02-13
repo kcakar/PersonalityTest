@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react';
+import {withToastManager } from 'react-toast-notifications';
+import {Link } from 'react-router-dom';
+
 import AddCompanyModal from './AddCompanyModal';
 import ApiHelper from '../../../helpers/ApiHelper';
+import urls from '../../../helpers/URLs';
 
 class CompanyManagement extends React.Component{ 
     constructor(props){
@@ -22,13 +26,18 @@ class CompanyManagement extends React.Component{
         this.handlePageChange=this.handlePageChange.bind(this);
         this.handleTableFilter=this.handleTableFilter.bind(this);
         this.updatePage=this.updatePage.bind(this);
+        this.getTableData=this.getTableData.bind(this);
+        this.refreshCompanyTable=this.refreshCompanyTable.bind(this);
     }
 
     componentDidMount(){
-        ApiHelper.companies.get(this.props.user.jwt)
+        this.getTableData();
+    }
+
+    getTableData(){
+        ApiHelper.functions.companies.get()
         .then(result=>result.json())
         .then(companyData=>{
-            console.log(companyData);
             this.setState({
                 companyData,
                 visible:true,
@@ -101,6 +110,27 @@ class CompanyManagement extends React.Component{
     {
         this.updatePage(this.state.companyData,1,this.state.direction,this.state.column,value)
     }
+
+    refreshCompanyTable(){
+        this.getTableData();
+    }
+
+    companyStatusChange(id,currentStatus){
+        currentStatus=currentStatus==="active"?"passive":"active";
+        ApiHelper.functions.company.changeStatus(id,currentStatus)
+        .then(response=>{
+            if(response.ok){
+                this.getTableData();
+                return {message:"Şirket durumu değiştirildi",isErr:false};
+            }
+            else{
+                return {message:"Şirket durumu değiştirilemedi.",isErr:true};
+            }
+        }).then(data=>{
+            const { toastManager } = this.props;
+            toastManager.add(data.message, { appearance: data.isErr?"error":"success",autoDismiss: true,autoDismissTimeout:3000});
+        });
+    }
  
     render(){
         const { column, direction,data } = this.state;
@@ -114,7 +144,7 @@ class CompanyManagement extends React.Component{
                         <Table.Row>
                             <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
                                 <Input placeholder="Arama..." onChange={this.handleTableFilter} />
-                                <AddCompanyModal user={this.props.user}></AddCompanyModal>
+                                <AddCompanyModal refreshCompanyTable={this.refreshCompanyTable}></AddCompanyModal>
                             </Table.HeaderCell>
                         </Table.Row>
                         <Table.Row>
@@ -154,8 +184,9 @@ class CompanyManagement extends React.Component{
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {data.map(({ id,name,credit,phone,mail}) => 
+                    {data.map(({ id,name,credit,phone,mail,status}) => 
                         {
+                            console.log(id)
                             return <Table.Row key={id}>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
@@ -163,9 +194,14 @@ class CompanyManagement extends React.Component{
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
                                 <Table.Cell collapsing>
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='globe' /> </Button>} content="Şirket panel linkini kopyala" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Link to={urls.customerPanel(id)}><Button icon> <Icon name='globe' /> </Button></Link>} content="Şirket paneline git" />
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='edit' /> </Button>} content="Düzenle" />
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='remove circle' /> </Button>} content="Sil" />
+                                    {status==="active"?
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon onClick={()=>this.companyStatusChange(id,status)}> <Icon name='check circle outline' color="green" /> </Button>} content="Şirketi pasif duruma getir" />
+                                    :
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon onClick={()=>this.companyStatusChange(id,status)}> <Icon name='remove circle' color="red" /> </Button>} content="Şirketi aktif duruma getir" />
+                                    }
+                                    
                                 </Table.Cell>
                             </Table.Row>
                             }
@@ -187,7 +223,6 @@ class CompanyManagement extends React.Component{
 
 CompanyManagement.propTypes = {
     companyData:PropTypes.any.isRequired,
-    user:PropTypes.any.isRequired
 }
 
-export default CompanyManagement;
+export default withToastManager(CompanyManagement);
