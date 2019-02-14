@@ -57,6 +57,11 @@ CompanyController.createCompany=function(req,res){
                 .then(test=>{
                     res.send(test);
                 }).catch(error=>{
+                    models.company.destroy({
+                        where:{
+                            id:savedCompany.id
+                        }
+                    });
                     res.send(error);
                 });
             })

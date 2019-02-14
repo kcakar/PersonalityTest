@@ -37,16 +37,20 @@ class AddCompanyModal extends Component {
     const {company}=this.state;
     if(this.validate()){
         ApiHelper.functions.company.create(company)
-        .then(response=>response.json())
         .then(data=>{
-            console.log(data);
-            if(data.errors){
-                this.setState({errors:data.errors.map(error=>error.message)});
+            if(data.errors)
+            {
+                console.log(data);
+                let errors=data.errors.map(e=>e.message);
+                this.setState({errors});
             }
             else{
                 this.handleClose();
                 this.props.refreshCompanyTable();
             }
+        })
+        .catch(err=>{
+            this.setState({errors:[err.message]});
         })
     }
   }

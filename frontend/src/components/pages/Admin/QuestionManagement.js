@@ -1,8 +1,10 @@
 import React from 'react';
-import { Segment,Header,Transition,Button} from 'semantic-ui-react'
-import LanguageSelector from '../../common/LanguageSelector';
+import {Segment,Header,Transition,Button} from 'semantic-ui-react'
+import {withToastManager} from 'react-toast-notifications';
+
 import QuestionEditor from './QuestionEditor';
-import {withToastManager } from 'react-toast-notifications';
+import LanguageSelector from '../../common/LanguageSelector';
+import ApiHelper from '../../../helpers/ApiHelper';
 
 class QuestionManagement extends React.Component{ 
     constructor(props){
@@ -11,40 +13,50 @@ class QuestionManagement extends React.Component{
         this.state={
             visible:false,
             data:[],
-            allQuestions:[],
             language:"tr",
+            turkishQuestions:[],
             selectedQuestion:null,
+            referenceQuestion:null,
             selectedOrder:0,
         }
 
+        this.fillEmptyQuestions=this.fillEmptyQuestions.bind(this);
         this.handleLanguageChange=this.handleLanguageChange.bind(this);
-        this.filterQuestionsByLanguage=this.filterQuestionsByLanguage.bind(this);
-        this.selectQuestion=this.selectQuestion.bind(this);
         this.handleQuestionChange=this.handleQuestionChange.bind(this);
         this.saveQuestion=this.saveQuestion.bind(this);
+        this.selectQuestion=this.selectQuestion.bind(this);
     }
 
     componentDidMount(){
-        const QuestionData=[];
-        const data=this.filterQuestionsByLanguage(QuestionData,this.state.language);
-        this.setState({
-            visible:true,
-            data,
-            allQuestions:QuestionData,
-            selectedQuestion:data[0],
-            selectedOrder:1
-        });
+        this.getQuestionsByLanguage(this.state.language);
     }
 
     handleLanguageChange(e,{value}){
-        const data=this.filterQuestionsByLanguage(this.state.allQuestions,value);
-        this.setState({language:value,data,selectedOrder:1,selectedQuestion:data[0]});
+        this.getQuestionsByLanguage(value);
     }
 
-    filterQuestionsByLanguage(allQuestions,language){
+    getQuestionsByLanguage(language){
+        const { toastManager } = this.props;
+        return ApiHelper.functions.question.getAllByLanguage(language)
+            .then(data=>{
+                data=this.fillEmptyQuestions(data,language);
+                if(language==="tr"){
+                 this.setState({visible:true,language,data,turkishQuestions:data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:data[0]})
+                }
+                else{
+                 const referenceQuestion=this.state.turkishQuestions.find(q=>q.language==="tr"&&q.order===1);
+                 this.setState({visible:true,language,data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:referenceQuestion })
+                }
+            })
+            .catch(err=>{
+                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            })
+    }
+
+    fillEmptyQuestions(questions,language){
         let data=[];
         for(let i=1;i<64;i++){
-            const question=allQuestions.find(x=>x.language===language &&x.order===i);
+            const question=questions.find(x=>x.order===i);
             data.push(question||this.getNewQuestionModel(i,language))
         }
         return data;
@@ -56,13 +68,19 @@ class QuestionManagement extends React.Component{
 
     selectQuestion(selectedOrder){
         const selectedQuestion=this.state.data.find((q)=>q.order===selectedOrder);
-        this.setState({selectedQuestion,selectedOrder});
+        const referenceQuestion=this.state.turkishQuestions.find((q)=>q.order===selectedOrder&&q.language==="tr");
+        this.setState({selectedQuestion,selectedOrder,referenceQuestion});
     }
 
     saveQuestion(){
-        //save here
         const { toastManager } = this.props;
-        toastManager.add('Soru kaydedildi', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
+        ApiHelper.functions.question.createOrUpdate(this.state.selectedQuestion)
+        .then(()=>{
+            toastManager.add('Soru kaydedildi', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
+        })
+        .catch(err=>{
+            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+        })
     }
 
     handleQuestionChange(selectedQuestion){
@@ -70,7 +88,7 @@ class QuestionManagement extends React.Component{
     }
 
     render(){
-        const {data,selectedQuestion,selectedOrder}=this.state;
+        const {data,selectedQuestion,selectedOrder,referenceQuestion}=this.state;
         return (
         <Transition visible={this.state.visible} animation='fade' duration={500}>
             <div className="request-table">
@@ -88,7 +106,7 @@ class QuestionManagement extends React.Component{
                             }
                         )}
                     </Segment>
-                    <QuestionEditor selectedQuestion={selectedQuestion} handleQuestionChange={this.handleQuestionChange} saveQuestion={this.saveQuestion}/>
+                    <QuestionEditor selectedQuestion={selectedQuestion} referenceQuestion={referenceQuestion} handleQuestionChange={this.handleQuestionChange} saveQuestion={this.saveQuestion}/>
                 </Segment>
             </div>
         </Transition>

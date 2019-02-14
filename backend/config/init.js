@@ -336,13 +336,22 @@ const shuffled = [{
     "language":"tr"
 }];
 
-models.question.bulkCreate(shuffled)
-.then(r=>{
-    console.log("questions created");
-})
-.catch(err=>{
-    console.log("question creation failure")
-})
+models.question.count().then(c=>{
+    if(c<=0)
+    {
+        models.question.bulkCreate(shuffled)
+        .then(r=>{
+            console.log("questions created");
+        })
+        .catch(err=>{
+            console.log("question creation failure")
+        })
+    }
+    else{
+        console.log("question already there")
+    }
+});
+
 
 let user=models.user.build({
     email:"kcakar",

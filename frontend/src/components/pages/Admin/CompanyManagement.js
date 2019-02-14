@@ -36,7 +36,6 @@ class CompanyManagement extends React.Component{
 
     getTableData(){
         ApiHelper.functions.companies.get()
-        .then(result=>result.json())
         .then(companyData=>{
             this.setState({
                 companyData,
@@ -116,19 +115,14 @@ class CompanyManagement extends React.Component{
     }
 
     companyStatusChange(id,currentStatus){
+        const { toastManager } = this.props;
         currentStatus=currentStatus==="active"?"passive":"active";
         ApiHelper.functions.company.changeStatus(id,currentStatus)
-        .then(response=>{
-            if(response.ok){
-                this.getTableData();
-                return {message:"Şirket durumu değiştirildi",isErr:false};
-            }
-            else{
-                return {message:"Şirket durumu değiştirilemedi.",isErr:true};
-            }
-        }).then(data=>{
-            const { toastManager } = this.props;
-            toastManager.add(data.message, { appearance: data.isErr?"error":"success",autoDismiss: true,autoDismissTimeout:3000});
+        .then(()=>{
+            this.getTableData();
+            toastManager.add("Şirket durumu değiştirildi", { appearance: "success",autoDismiss: true,autoDismissTimeout:3000});
+        }).catch(err=>{
+            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
         });
     }
  

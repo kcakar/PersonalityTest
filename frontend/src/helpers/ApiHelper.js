@@ -8,6 +8,11 @@ const createCompany = (company) => {
         body: JSON.stringify({
             company
         }),
+    }).then(response=>{
+        return response.json();
+    })
+    .catch(err=>{
+        throw Object.assign(new Error("Şirket eklenemedi"),{ code: 402 });
     })
 }
 
@@ -15,6 +20,14 @@ const getAllCompanies = () => {
     return fetch(urls.api.companies.get, {
         method: "GET",
         ...ApiHelper.ajaxSettings(),
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Şirketlere ulaşılamadı"),{ code: 402 });
+        }
     })
 }
 
@@ -25,9 +38,76 @@ const changeCompanyStatus = (id, status) => {
         body: JSON.stringify({
             status
         }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            throw Object.assign(new Error("Şirket durumu değiştirilemedi"),{ code: 402 });
+        }
     })
 }
 
+const getQuestion = (id) =>{
+    return fetch(urls.api.question.get(id), {
+        ...ApiHelper.ajaxSettings(),
+        method: "GET",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Soruya ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
+
+const getAllByLanguageQuestion = (lang) =>{
+    return fetch(urls.api.questions.getByLanguage(lang), {
+        ...ApiHelper.ajaxSettings(),
+        method: "GET",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Sorulara ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
+
+const getByLanguageAndOrderQuestion = (lang,order) =>{
+    return fetch(urls.api.questions.getByLanguageAndOrder(lang,order), {
+        ...ApiHelper.ajaxSettings(),
+        method: "GET",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Soruya ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
+
+const createOrUpdateQuestion = (question) =>{
+    return fetch(urls.api.question.create(question), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+         question   
+        }),
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Soru düzenlenemedi"),{ code: 402 });
+        }
+    })
+}
 
 //helper
 let ApiHelper = {}
@@ -41,7 +121,13 @@ ApiHelper.functions = {
     },
     companies: {
         get: getAllCompanies
-    }
+    },
+    question:{
+        get:getQuestion,
+        getAllByLanguage:getAllByLanguageQuestion,
+        getByLanguageAndOrder:getByLanguageAndOrderQuestion,
+        createOrUpdate:createOrUpdateQuestion,
+    },
 }
 
 ApiHelper.ajaxSettings = () => ({

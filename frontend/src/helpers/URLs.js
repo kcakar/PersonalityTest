@@ -19,6 +19,15 @@ const urls={
         },
         companies:{
             get:server+"/companies/"
+        },
+        question:{
+            get:(id)=>`${server}/question/${id}`,
+            create:()=>`${server}/question`,
+            update:(id)=>`${server}/question/${id}`,
+        },
+        questions:{
+            getByLanguage:(lang)=>`${server}/questions/${lang}`,
+            getByLanguageAndOrder:(lang,order)=>`${server}/${lang}/${order}`,
         }
     },
 

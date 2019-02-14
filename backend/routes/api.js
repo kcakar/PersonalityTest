@@ -7,6 +7,7 @@ const auth=require('./auth');
 const TestSessionController=require('../controllers/TestSessionController');
 const UserController=require('../controllers/UserController');
 const CompanyController=require('../controllers/CompanyController');
+const QuestionController=require('../controllers/QuestionController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,6 +15,12 @@ router.get('/', function(req, res, next) {
 });
 
 
+//question
+router.post('/question/',passport.authenticate('jwt', {session: false}),QuestionController.createOrUpdate);
+router.get('/question/:id',passport.authenticate('jwt', {session: false}),QuestionController.getOne);
+
+router.get('/questions/:lang/',passport.authenticate('jwt', {session: false}),QuestionController.getAll);
+router.get('/questions/:lang/:order/',passport.authenticate('jwt', {session: false}),QuestionController.getByOrder);
 
 //company
 router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
