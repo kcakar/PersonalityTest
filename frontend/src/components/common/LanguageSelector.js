@@ -11,6 +11,7 @@ const countries = [
   { text: 'Felemenkçe', value: 'nl' ,flag:'nl' },
   { text: 'Fransızca', value: 'fr' ,flag:'fr' },
   { text: 'Hintçe', value: 'in' ,flag:'in' },
+  { text: 'İngilizce', value: 'en' ,flag:'gb' },
   { text: 'İspanyolca', value: 'es' ,flag:'es' },
   { text: 'İtalyanca', value: 'it' ,flag:'it' },
   { text: 'Japonca', value: 'jp' ,flag:'jp' },

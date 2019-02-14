@@ -12,7 +12,6 @@ QuestionController.getAll=function(req,res){
         return;
     }
     try{
-        console.log(req.params.lang)
         models.question.findAll(
             {
                 attributes:["id","text","order","personalityType","stage"],
@@ -77,7 +76,7 @@ QuestionController.getByOrder=function(req,res){
 }
 
 QuestionController.createOrUpdate=function(req,res){
-        try{
+    try{
         if(req.user.role!=="admin"){
             res.sendStatus(401);
             return;
@@ -89,17 +88,29 @@ QuestionController.createOrUpdate=function(req,res){
         else{
             models.question.findByPk(question.id)
             .then(dbQuestion=>{
-                console.log(dbQuestion);
                 if(dbQuestion)
                 {
-                    console.log("update")
-                    return dbQuestion.update({...question})
+                    //soru dili türkçe ise ve kişilik tipi değiştiyse tüm dillerde değişmeli
+                    if(dbQuestion.language==="tr" && dbQuestion.personalityType!==question.personalityType){
+                        return models.question.update({personalityType:question.personalityType},{
+                            where:{
+                                order:dbQuestion.order
+                            }
+                        }).then(count=>{
+                            return dbQuestion.update({...question})
+                        })
+                    }//sadece soruyu update et
+                    else{
+                        return dbQuestion.update({...question})
+                    }
                 }
-                else{
+                else{//bu dilde bu soru yok, baştan yarat
                     return models.question.create({...question})
                 }
             })
             .then(question=>{
+                console.log("6")
+
                 res.json(question);
             })
             .catch(err=>{

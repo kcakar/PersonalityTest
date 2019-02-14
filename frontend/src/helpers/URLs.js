@@ -28,6 +28,10 @@ const urls={
         questions:{
             getByLanguage:(lang)=>`${server}/questions/${lang}`,
             getByLanguageAndOrder:(lang,order)=>`${server}/${lang}/${order}`,
+        },
+        creditRequest:{
+            create:()=>`${server}/credit-request/`,
+            getAll:()=>`${server}/credit-request/`
         }
     },
 

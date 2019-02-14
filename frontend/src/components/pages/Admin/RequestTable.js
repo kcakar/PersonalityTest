@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react'
+import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react';
+import {withToastManager} from 'react-toast-notifications';
+
 import CreditModal from './CreditModal';
+import ApiHelper from '../../../helpers/ApiHelper';
 
 class RequestTable extends React.Component{ 
     constructor(props){
@@ -23,22 +26,30 @@ class RequestTable extends React.Component{
     }
 
     componentDidMount(){
-        let {requestData}=this.props;
-        this.setState({
+        const {toastManager}=this.props;
+
+        ApiHelper.functions.creditRequest.get()
+        .then(requestData=>{
+            console.log(requestData);
+            this.setState({
                 visible:true,
                 data:this.getTablePage(requestData),
                 totalPages: this.getTotalPageNumber(requestData),
+                AllData:requestData,
                 currentPage:1,
                 direction:'ascending'
             });
+        })
+        .catch(err=>{
+            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+        })
+
     }
-
-
 
     handleSort(clickedColumn){
         const { column, direction } = this.state;
 
-        let sortedData=this.sortByColumn(this.props.requestData,clickedColumn);
+        let sortedData=this.sortByColumn(this.state.AllData,clickedColumn);
 
         if (column !== clickedColumn) {
             this.updatePage(sortedData,this.state.currentPage,'ascending',clickedColumn);
@@ -52,7 +63,7 @@ class RequestTable extends React.Component{
     }
 
     handlePageChange(e, { activePage }){
-        this.updatePage(this.props.requestData,activePage)
+        this.updatePage(this.state.AllData,activePage)
     }
 
     updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
@@ -71,7 +82,7 @@ class RequestTable extends React.Component{
     }
 
     getTablePage(requestData){
-        return this.props.requestData.slice(0, this.state.pageSize);
+        return requestData.slice(0, this.state.pageSize);
     }
 
     getTotalPageNumber(data){
@@ -89,7 +100,7 @@ class RequestTable extends React.Component{
 
     handleTableFilter(e,{value})
     {
-        this.updatePage(this.props.requestData,1,this.state.direction,this.state.column,value)
+        this.updatePage(this.state.AllData,1,this.state.direction,this.state.column,value)
     }
  
     render(){
@@ -170,4 +181,4 @@ RequestTable.propTypes = {
     requestData:PropTypes.any.isRequired
 }
 
-export default RequestTable;
+export default withToastManager(RequestTable);

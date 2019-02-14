@@ -33,7 +33,6 @@ class App extends Component {
     super(props);
     this.state={
       user:{
-        jwt:"",
         isLoggedIn:false
       },
       results:{},
@@ -59,6 +58,7 @@ class App extends Component {
               localUser.isLoggedIn=true;
               this.setState({user:localUser});
               ApiHelper.token=localUser.jwt;
+              ApiHelper.user=localUser;
               console.log(ApiHelper)
           }
         }
@@ -87,6 +87,7 @@ class App extends Component {
   saveUserToLocalStore(user,redirectFunc){
     user.isLoggedIn=true;
     ApiHelper.token=user.jwt;
+    ApiHelper.user=user;
     this.setState({user},()=>redirectFunc(user.role));
     localStorage.setItem(localStorageUser, JSON.stringify(user));
   }

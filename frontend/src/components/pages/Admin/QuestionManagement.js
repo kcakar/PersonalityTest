@@ -44,7 +44,7 @@ class QuestionManagement extends React.Component{
                  this.setState({visible:true,language,data,turkishQuestions:data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:data[0]})
                 }
                 else{
-                 const referenceQuestion=this.state.turkishQuestions.find(q=>q.language==="tr"&&q.order===1);
+                 const referenceQuestion=this.state.turkishQuestions.find(q=>q.order===1);
                  this.setState({visible:true,language,data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:referenceQuestion })
                 }
             })
@@ -68,12 +68,17 @@ class QuestionManagement extends React.Component{
 
     selectQuestion(selectedOrder){
         const selectedQuestion=this.state.data.find((q)=>q.order===selectedOrder);
-        const referenceQuestion=this.state.turkishQuestions.find((q)=>q.order===selectedOrder&&q.language==="tr");
+        const referenceQuestion=this.state.turkishQuestions.find((q)=>q.order===selectedOrder);
         this.setState({selectedQuestion,selectedOrder,referenceQuestion});
     }
 
     saveQuestion(){
         const { toastManager } = this.props;
+        let {selectedQuestion,referenceQuestion}=this.state;
+        //eğer soru türkçe değilse, kişilik tipini türkçe referans sorudan alır.
+        if(selectedQuestion.language!=="tr"){
+            selectedQuestion.personalityType=referenceQuestion.personalityType;
+        }
         ApiHelper.functions.question.createOrUpdate(this.state.selectedQuestion)
         .then(()=>{
             toastManager.add('Soru kaydedildi', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
@@ -97,6 +102,7 @@ class QuestionManagement extends React.Component{
                 <Segment>
                     <p>Aşağıdaki ekranda seçili dil için çevirisi olan sorular yeşil, olmayan sorular ise kırmızı ile işaretlenmiştir. İlgili sayıya tıklayarak soruyu düzenleyebilirsiniz.</p>
                     <p>Bir dildeki tüm soruları çevirirseniz, dil sistemde otomatik olarak aktifleşecektir.</p>
+                    <p>Bir sorunun puanlanacak kişilik tipini sadece Türkçe'den değiştirebilirsiniz. Değişiklik tüm dilleri etkiler.</p>
                     <Segment className="question-selector">
                         {data.map((question,index)=>
                             {
@@ -106,7 +112,13 @@ class QuestionManagement extends React.Component{
                             }
                         )}
                     </Segment>
-                    <QuestionEditor selectedQuestion={selectedQuestion} referenceQuestion={referenceQuestion} handleQuestionChange={this.handleQuestionChange} saveQuestion={this.saveQuestion}/>
+                    <QuestionEditor 
+                        selectedQuestion={selectedQuestion} 
+                        referenceQuestion={referenceQuestion} 
+                        handleQuestionChange={this.handleQuestionChange} 
+                        saveQuestion={this.saveQuestion}
+                        language={this.state.language}
+                    />
                 </Segment>
             </div>
         </Transition>

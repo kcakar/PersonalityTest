@@ -8,12 +8,16 @@ const TestSessionController=require('../controllers/TestSessionController');
 const UserController=require('../controllers/UserController');
 const CompanyController=require('../controllers/CompanyController');
 const QuestionController=require('../controllers/QuestionController');
+const CreditController=require('../controllers/CreditController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Docs' });
 });
 
+//credit-request
+router.post('/credit-request/',passport.authenticate('jwt', {session: false}),CreditController.create);
+router.get('/credit-request/',passport.authenticate('jwt', {session: false}),CreditController.getAll);
 
 //question
 router.post('/question/',passport.authenticate('jwt', {session: false}),QuestionController.createOrUpdate);

@@ -34,20 +34,39 @@ class QuestionEditor extends Component {
     }
 
     render() {
-        const {selectedQuestion}=this.props;
-
+        const {selectedQuestion,referenceQuestion,language}=this.props;
         let content=(<p>Lütfen bir soru seçiniz</p>);
         if(selectedQuestion){
             content=
             <Form>
+                {
+                    language!=="tr" && (
+                        <Form.Field>
+                        <Header as='h5'>Referans metin:</Header>
+                        <p>{referenceQuestion.text}</p>
+                    </Form.Field>
+                    )
+                }
+
                 <Form.Field>
                     <Header as='h5'>Soru metni:</Header>
                     <TextArea autoHeight placeholder='Soru metni' value={selectedQuestion.text} onChange={this.questionTextChange}/>
                 </Form.Field>
-                <Form.Field>
-                    <Header as='h5'>Puanlanacak kişilik tipi:</Header>
-                    <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType} onChange={this.personalityChange}/>
-                </Form.Field>
+                {
+                    language!=="tr" ? (
+                        <Form.Field>
+                            <Header as='h5'>Puanlanacak kişilik tipi:</Header>
+                            <Dropdown placeholder='Tip seçiniz' disabled search selection options={personalityTypes} value={referenceQuestion.personalityType} onChange={this.personalityChange}/>
+                        </Form.Field>
+                    ):
+                    (
+                        <Form.Field>
+                            <Header as='h5'>Puanlanacak kişilik tipi:</Header>
+                            <Dropdown placeholder='Tip seçiniz' search selection options={personalityTypes} value={selectedQuestion.personalityType} onChange={this.personalityChange}/>
+                        </Form.Field>
+                    )
+                }
+
                 <Form.Field>
                     <Button primary onClick={this.props.saveQuestion}>Kaydet</Button>
                 </Form.Field>
@@ -63,6 +82,7 @@ class QuestionEditor extends Component {
 QuestionEditor.propTypes = {
     handleQuestionChange:PropTypes.func.isRequired,
     saveQuestion:PropTypes.func.isRequired,
+    language:PropTypes.any.isRequired
 }
 
 

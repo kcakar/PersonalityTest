@@ -109,10 +109,45 @@ const createOrUpdateQuestion = (question) =>{
     })
 }
 
+const createCreditRequest=(creditRequest)=>{
+    return fetch(urls.api.creditRequest.create(), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            creditRequest:creditRequest   
+        }),
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Test hakkı isteği başarısız oldu."),{ code: 402 });
+        }
+    })
+}
+
+const getAllCreditRequests=()=>{
+    return fetch(urls.api.creditRequest.getAll(), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Test isteklerine ulaşılamadı."),{ code: 402 });
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
 ApiHelper.token = "";
+
+ApiHelper.user={};
 
 ApiHelper.functions = {
     company: {
@@ -128,6 +163,10 @@ ApiHelper.functions = {
         getByLanguageAndOrder:getByLanguageAndOrderQuestion,
         createOrUpdate:createOrUpdateQuestion,
     },
+    creditRequest:{
+        create:createCreditRequest,
+        get:getAllCreditRequests
+    }
 }
 
 ApiHelper.ajaxSettings = () => ({
