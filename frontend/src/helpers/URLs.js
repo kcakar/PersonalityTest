@@ -31,7 +31,8 @@ const urls={
         },
         creditRequest:{
             create:()=>`${server}/credit-request/`,
-            getAll:()=>`${server}/credit-request/`
+            getAll:()=>`${server}/credit-request/`,
+            approveReject:(id)=>`${server}/credit-request/${id}/`
         }
     },
 

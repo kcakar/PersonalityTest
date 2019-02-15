@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react';
 import {withToastManager} from 'react-toast-notifications';
 
@@ -23,14 +22,17 @@ class RequestTable extends React.Component{
         this.handlePageChange=this.handlePageChange.bind(this);
         this.handleTableFilter=this.handleTableFilter.bind(this);
         this.updatePage=this.updatePage.bind(this);
+        this.getTableData=this.getTableData.bind(this);
     }
 
     componentDidMount(){
-        const {toastManager}=this.props;
+        this.getTableData();
+    }
 
+    getTableData(){
+        const {toastManager}=this.props;
         ApiHelper.functions.creditRequest.get()
         .then(requestData=>{
-            console.log(requestData);
             this.setState({
                 visible:true,
                 data:this.getTablePage(requestData),
@@ -43,7 +45,6 @@ class RequestTable extends React.Component{
         .catch(err=>{
             toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
         })
-
     }
 
     handleSort(clickedColumn){
@@ -68,7 +69,7 @@ class RequestTable extends React.Component{
 
     updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
         const {pageSize}=this.state;
-        let filteredData=data.filter(company=>company.name.toLowerCase().indexOf(query.toLowerCase())!==-1)
+        let filteredData=data.filter(company=>company.companyName.toLowerCase().indexOf(query.toLowerCase())!==-1)
         const startIndex=(activePage-1)*pageSize;
         const endIndex=startIndex+pageSize;
         this.setState({
@@ -119,8 +120,8 @@ class RequestTable extends React.Component{
                         </Table.Row>
                         <Table.Row>
                             <Table.HeaderCell
-                                sorted={column === 'name' ? direction : null}
-                                onClick={()=>this.handleSort('name')}
+                                sorted={column === 'companyName' ? direction : null}
+                                onClick={()=>this.handleSort('companyName')}
                                 >
                                 Şirket
                             </Table.HeaderCell>
@@ -137,8 +138,8 @@ class RequestTable extends React.Component{
                                 Telefon
                             </Table.HeaderCell>
                             <Table.HeaderCell
-                                sorted={column === 'requestedTest' ? direction : null}
-                                onClick={()=>this.handleSort('requestedTest')}
+                                sorted={column === 'amount' ? direction : null}
+                                onClick={()=>this.handleSort('amount')}
                                 >
                                 Talep edilen miktar
                             </Table.HeaderCell>
@@ -148,16 +149,16 @@ class RequestTable extends React.Component{
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {data.map(({ id,name,requestedTest,phone,mail}) => 
+                    {data.map(({ id,companyName,amount,phone,mail},index) => 
                         {
                             return <Table.Row key={id}>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{companyName}</span>} content={companyName} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{requestedTest}</span>} content={requestedTest} /></Table.Cell>
+                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{amount}</span>} content={amount} /></Table.Cell>
                                 <Table.Cell collapsing>
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="confirm" companyData={{name,requestedTest}} />} content="Onayla" />
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="reject" companyData={{name,requestedTest}} />} content="Reddet" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="confirm" requestData={data[index]} getTableData={this.getTableData}/>} content="Onayla" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<CreditModal type="reject"  requestData={data[index]} getTableData={this.getTableData}/>} content="Reddet" />
                                 </Table.Cell>
                             </Table.Row>
                             }
@@ -175,10 +176,6 @@ class RequestTable extends React.Component{
         </Transition>
         )
     }
-}
-
-RequestTable.propTypes = {
-    requestData:PropTypes.any.isRequired
 }
 
 export default withToastManager(RequestTable);

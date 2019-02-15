@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
 //credit-request
 router.post('/credit-request/',passport.authenticate('jwt', {session: false}),CreditController.create);
 router.get('/credit-request/',passport.authenticate('jwt', {session: false}),CreditController.getAll);
+router.post('/credit-request/:id/',passport.authenticate('jwt', {session: false}),CreditController.acceptReject);
 
 //question
 router.post('/question/',passport.authenticate('jwt', {session: false}),QuestionController.createOrUpdate);
@@ -61,6 +62,7 @@ router.post('/auth/login', function (req, res, next) {
                id:user.id,
                role:user.role,
                title:user.title,
+               companyId:user.companyId,
                jwt:token
            }
            return res.json({user:clientUser});

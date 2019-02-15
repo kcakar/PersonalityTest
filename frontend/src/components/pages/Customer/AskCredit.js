@@ -23,7 +23,7 @@ class AskCredit extends Component {
   sendCreditRequest(){
     const {toastManager} =this.props;
     let creditRequest={
-      amount:0,
+      amount:this.state.amount,
       companyId:ApiHelper.user.companyId
     }
     ApiHelper.functions.creditRequest.create(creditRequest)

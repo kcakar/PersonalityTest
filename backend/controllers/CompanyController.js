@@ -148,7 +148,6 @@ CompanyController.setStatus=(req,res)=>{
             id: {[Op.eq]: id}
         }
     }).then(result=>{
-        console.log(result);
         if(result>0){
             res.sendStatus(200);
         }

@@ -142,6 +142,25 @@ const getAllCreditRequests=()=>{
     })
 }
 
+const approveRejectCreditRequest=(requestData,decision)=>{
+        return fetch(urls.api.creditRequest.approveReject(requestData.id), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            requestData,
+            decision
+        }),
+    }).then(response=>{
+        if(response.ok)
+        {
+            
+        }
+        else{
+            throw Object.assign(new Error("Test isteği ile ilgili bir hata oluştu."),{ code: 402 });
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -165,7 +184,8 @@ ApiHelper.functions = {
     },
     creditRequest:{
         create:createCreditRequest,
-        get:getAllCreditRequests
+        get:getAllCreditRequests,
+        approveReject:approveRejectCreditRequest,
     }
 }
 

@@ -178,7 +178,6 @@ class PersonnelTable extends React.Component{
                         <Table.Cell>Kanat {wingType}</Table.Cell>
                         <Table.Cell>
                             <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
-                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='globe'/></Button>} content="Test linkini kopyala" />
                         </Table.Cell>
                     </Table.Row>
                     }
