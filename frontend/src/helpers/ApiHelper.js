@@ -168,11 +168,8 @@ const approveRejectCreditRequest=(requestData,decision)=>{
             decision
         }),
     }).then(response=>{
-        if(response.ok)
+        if(!response.ok)
         {
-            
-        }
-        else{
             throw Object.assign(new Error("Test isteği ile ilgili bir hata oluştu."),{ code: 402 });
         }
     })
@@ -194,7 +191,18 @@ const getAdminStatistics=()=>{
 }
 
 const getCustomerStatistics=(companyId)=>{
-    throw("NOT IMPLEMENTED")
+    return fetch(urls.api.statistics.getCustomer(companyId), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("İstatistiklere ulaşılamadı."),{ code: 402 });
+        }
+    })
 }
 
 const getTestOptions=(language)=>{
@@ -220,15 +228,43 @@ const updateCreateTestOptions=(options)=>{
             options
         }),
     }).then(response=>{
-        if(response.ok)
+        if(!response.ok)
         {
-            
-        }
-        else{
             throw Object.assign(new Error("Şıklar güncellenemedi."),{ code: 402 });
         }
     })
 }
+
+const getCompanyEmployees=()=>{
+    return fetch(urls.api.employee.getEmployees(ApiHelper.user.id), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Çalışanlara ulaşılamadı."),{ code: 402 });
+        }
+    })
+}
+
+const sendTest=(companyId,testSession)=>{
+    return fetch(urls.api.test.create(companyId), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            testSession
+        }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            throw Object.assign(new Error("Test isteği ile ilgili bir hata oluştu."),{ code: 402 });
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -240,7 +276,8 @@ ApiHelper.functions = {
     company: {
         create: createCompany,
         changeStatus: changeCompanyStatus,
-        update:updateCompany
+        update:updateCompany,
+        employees:getCompanyEmployees
     },
     companies: {
         get: getAllCompanies
@@ -263,6 +300,9 @@ ApiHelper.functions = {
     settings:{
         getTestOptions:getTestOptions,
         updateCreateTestOptions:updateCreateTestOptions
+    },
+    test:{
+        send:sendTest
     }
 }
 

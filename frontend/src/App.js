@@ -123,7 +123,7 @@ class App extends Component {
                 />
                 <PrivateRoute 
                   path={urls.customerPanel()}
-                  isAuthenticated={isLoggedIn&&((role==="company" &&status==="active")||role==="admin")}
+                  isAuthenticated={isLoggedIn&&((role==="company" && status==="active")||role==="admin")}
                   component={() => <CustomerDashboard/>}
                 />
                 <PrivateRoute 

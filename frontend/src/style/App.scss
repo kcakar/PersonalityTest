@@ -95,8 +95,12 @@ hr{
     &.statistic>.label, &.statistics .statistic>.label{
         text-transform: none;
     }
-}
 
+
+}
+.ui.dimmer{
+    background-color: rgba(0,0,0,.35)
+}
 
 main {
     min-height: 100%;
@@ -326,8 +330,12 @@ section.customer-dashboard{
     }
 
     .step-1{
-        .ui.input>input{
-            margin-right: 10px;
+        .inputs{
+            display: flex;
+            flex-direction: column;
+            div{
+                margin:0.3rem 0;
+            }
         }
     }
 
@@ -345,6 +353,7 @@ section.customer-dashboard{
     .ui.steps{
         width:100%;
     }
+
 }
 
 .ask-credit {

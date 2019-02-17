@@ -70,6 +70,9 @@ hr {
 .ui.statistic > .label, .ui.statistics .statistic > .label {
   text-transform: none; }
 
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.35); }
+
 main {
   min-height: 100%; }
 
@@ -207,8 +210,11 @@ section.customer-dashboard .personnel-graph {
     border-bottom: solid 2px #b5cc18; }
   .send-test .ui.steps .step:nth-child(3).active {
     border-bottom: solid 2px #21ba45; }
-  .send-test .step-1 .ui.input > input {
-    margin-right: 10px; }
+  .send-test .step-1 .inputs {
+    display: flex;
+    flex-direction: column; }
+    .send-test .step-1 .inputs div {
+      margin: 0.3rem 0; }
   .send-test .step-2 .ui.button {
     min-width: 13rem;
     margin: 0.3rem 0 0 0; }

@@ -42,6 +42,12 @@ const urls={
         settings:{
             getTestOptionsByLanguage:(language)=>`${server}/settings/test-options/${language}`,
             updateCreateOptions:()=>`${server}/settings/test-options/`
+        },
+        employee:{
+            getEmployees:(companyId)=>`${server}/company/${companyId}/employees/`
+        },
+        test:{
+            create:(companyId)=>`${server}/company/${companyId}/test/`
         }
     },
 

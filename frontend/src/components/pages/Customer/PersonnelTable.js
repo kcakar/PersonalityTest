@@ -6,22 +6,15 @@ import SendTest from './SendTest';
 import AskCredit from './AskCredit';
 
 class PersonnelTable extends React.Component{ 
-    constructor(props){
-        super(props);
-
-        this.state={
-            visible:false,
-            column: null,
-            direction: null,
-            data:[],
-            totalPages:0,
-            pageSize:15,
-            currentPage:1,
-            query:""
-        }
-        this.handlePageChange=this.handlePageChange.bind(this);
-        this.handleTableFilter=this.handleTableFilter.bind(this);
-        this.updatePage=this.updatePage.bind(this);
+    state={
+        visible:false,
+        column: null,
+        direction: null,
+        data:[],
+        totalPages:0,
+        pageSize:15,
+        currentPage:1,
+        query:""
     }
 
     componentDidMount(){
@@ -35,7 +28,7 @@ class PersonnelTable extends React.Component{
             });
     }
 
-    handleSort(clickedColumn){
+    handleSort=(clickedColumn)=>{
         const { column, direction } = this.state;
 
         let sortedData=this.sortByColumn(this.props.personnelData,clickedColumn);
@@ -46,16 +39,16 @@ class PersonnelTable extends React.Component{
         }
 
         if(direction==="ascending"){
-            sortedData=sortedData.reverse();
+            sortedData.reverse();
         }
         this.updatePage(sortedData,this.state.currentPage,direction === 'ascending' ? 'descending': 'ascending',clickedColumn);
     }
 
-    handlePageChange(e, { activePage }){
+    handlePageChange=(e, { activePage })=>{
         this.updatePage(this.props.personnelData,activePage)
     }
 
-    updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
+    updatePage=(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query)=>{
         const {pageSize}=this.state;
         let filteredData=data.filter(personnel=>personnel.name.toLowerCase().indexOf(query.toLowerCase())!==-1)
         const startIndex=(activePage-1)*pageSize;
@@ -70,16 +63,16 @@ class PersonnelTable extends React.Component{
         })
     }
 
-    getTablePage(){
+    getTablePage=()=>{
         return this.props.personnelData.slice(0, this.state.pageSize);
     }
 
-    getTotalPageNumber(data){
+    getTotalPageNumber=(data)=>{
         const {pageSize}=this.state;
         return Math.ceil(data.length/pageSize);
     }
 
-    sortByColumn(array,clickedColumn){
+    sortByColumn=(array,clickedColumn)=>{
         return array.sort(function(a, b) {
                 if(a[clickedColumn] < b[clickedColumn]) { return -1; }
                 if(a[clickedColumn] > b[clickedColumn]) { return 1; }
@@ -87,7 +80,7 @@ class PersonnelTable extends React.Component{
         });
     }
 
-    getCharacterColor(type){
+    getCharacterColor=(type)=>{
         switch (type) {
             case 1:
                 return "#78909c75";
@@ -112,8 +105,7 @@ class PersonnelTable extends React.Component{
         }
     }
 
-    handleTableFilter(e,{value})
-    {
+    handleTableFilter=(e,{value})=>{
         this.updatePage(this.props.personnelData,1,this.state.direction,this.state.column,value)
     }
  

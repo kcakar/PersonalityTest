@@ -55,4 +55,65 @@ StatisticController.getAdminStats=function(req,res){
     }
 }
 
+StatisticController.getCustomerStats=function(req,res){
+    console.log(parseInt(req.params.companyId))
+    console.log(req.user.id)
+    if(req.user.role==="admin" || (req.user.role==="company"&& (parseInt(req.params.companyId)===req.user.id) && req.user.status==="active")){
+        try{
+            let waiting,done=0;
+            models.testSession.count(
+                {
+                    include:[
+                        {
+                            model: models.user,
+                            where: {
+                                companyId:{
+                                    [Op.eq]:req.user.id
+                                }}
+                        }
+                    ],
+                    where:{
+                        stage:{
+                            [Op.eq]:"finished"
+                        }
+                }
+            })
+            .then(dbCompleted=>{
+                done=dbCompleted || 0;
+                return models.testSession.count(
+                    {
+                        include:[
+                            {
+                                model: models.user,
+                                where: {
+                                    companyId:{
+                                        [Op.eq]:req.user.id
+                                    }}
+                            }
+                        ],
+                        where:{
+                            stage:{
+                                [Op.ne]:"finished"
+                            }
+                    }
+                })
+            })
+            .then(dbWaiting=>{
+                waiting=dbWaiting || 0;
+                res.json({done,waiting});
+            })
+            .catch(err=>{
+                res.status(400).json({error:err});
+            });
+        }
+        catch(err){
+            res.sendStatus(400);
+        }
+    }
+    else{
+        res.sendStatus(401);
+        return;
+    }
+}
+
 module.exports = StatisticController;

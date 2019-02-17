@@ -9,32 +9,23 @@ import urls from '../../../helpers/URLs';
 import EditCompanyModal from './EditCompanyModal';
 
 class CompanyManagement extends React.Component{ 
-    constructor(props){
-        super(props);
-
-        this.state={
-            visible:false,
-            column: null,
-            direction: null,
-            data:[],
-            totalPages:0,
-            pageSize:10,
-            currentPage:1,
-            query:"",
-            companyData:[]
-        }
-        this.handlePageChange=this.handlePageChange.bind(this);
-        this.handleTableFilter=this.handleTableFilter.bind(this);
-        this.updatePage=this.updatePage.bind(this);
-        this.getTableData=this.getTableData.bind(this);
-        this.refreshCompanyTable=this.refreshCompanyTable.bind(this);
+    state={
+        visible:false,
+        column: null,
+        direction: null,
+        data:[],
+        totalPages:0,
+        pageSize:10,
+        currentPage:1,
+        query:"",
+        companyData:[]
     }
 
-    componentDidMount(){
+    componentDidMount=()=>{
         this.getTableData();
     }
 
-    getTableData(){
+    getTableData=()=>{
         ApiHelper.functions.companies.get()
         .then(companyData=>{
             this.setState({
@@ -53,7 +44,7 @@ class CompanyManagement extends React.Component{
         });
     }
 
-    handleSort(clickedColumn){
+    handleSort=(clickedColumn)=>{
         const { column, direction } = this.state;
 
         let sortedData=this.sortByColumn(this.state.companyData,clickedColumn);
@@ -69,11 +60,11 @@ class CompanyManagement extends React.Component{
         this.updatePage(sortedData,this.state.currentPage,direction === 'ascending' ? 'descending': 'ascending',clickedColumn);
     }
 
-    handlePageChange(e, { activePage }){
+    handlePageChange=(e, { activePage })=>{
         this.updatePage(this.state.companyData,activePage)
     }
 
-    updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
+    updatePage=(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query)=>{
         const {pageSize}=this.state;
         let filteredData=data.filter(company=>company.name.toLowerCase().indexOf(query.toLowerCase())!==-1)
         const startIndex=(activePage-1)*pageSize;
@@ -88,16 +79,16 @@ class CompanyManagement extends React.Component{
         })
     }
 
-    getTablePage(companyData){
+    getTablePage=(companyData)=>{
         return companyData.slice(0, this.state.pageSize);
     }
 
-    getTotalPageNumber(data){
+    getTotalPageNumber=(data)=>{
         const {pageSize}=this.state;
         return Math.ceil(data.length/pageSize);
     }
 
-    sortByColumn(array,clickedColumn){
+    sortByColumn=(array,clickedColumn)=>{
         return array.sort(function(a, b) {
                 if(a[clickedColumn] < b[clickedColumn]) { return -1; }
                 if(a[clickedColumn] > b[clickedColumn]) { return 1; }
@@ -105,16 +96,15 @@ class CompanyManagement extends React.Component{
         });
     }
 
-    handleTableFilter(e,{value})
-    {
+    handleTableFilter=(e,{value})=>{
         this.updatePage(this.state.companyData,1,this.state.direction,this.state.column,value)
     }
 
-    refreshCompanyTable(){
+    refreshCompanyTable=()=>{
         this.getTableData();
     }
 
-    companyStatusChange(id,currentStatus){
+    companyStatusChange=(id,currentStatus)=>{
         const { toastManager } = this.props;
         currentStatus=currentStatus==="active"?"passive":"active";
         ApiHelper.functions.company.changeStatus(id,currentStatus)

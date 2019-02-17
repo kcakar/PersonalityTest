@@ -204,7 +204,7 @@ CompanyController.setStatus=(req,res)=>{
 }
 
 CompanyController.getEmployees=function(req,res){
-    if(req.user.role==="admin" || req.user.role==="customer"){
+    if(req.user.role==="admin" || (req.user.role==="company" && req.user.id===parseInt(req.params.id) && req.user.status==="active")){
         try{
             models.user.findAll({where:{role:"employee",companyId:req.user.id}}).then(result=>{
                 res.json(result);
