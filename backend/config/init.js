@@ -336,6 +336,31 @@ const shuffled = [{
     "language":"tr"
 }];
 
+
+
+models.testOption.count().then(c=>{
+    if(c<=0)
+    {
+        models.testOption.create({
+            language:"tr",
+            option1:"Kesinlikle katılmıyorum",
+            option2:"Katılmıyorum",
+            option3:"Kararsızım",
+            option4:"Katılıyorum",
+            option5:"Kesinlikle katılıyorum",
+        })
+        .then(r=>{
+            console.log("options created");
+        })
+        .catch(err=>{
+            console.log("options creation failure")
+        })
+    }
+    else{
+        console.log("options already there")
+    }
+});
+
 models.question.count().then(c=>{
     if(c<=0)
     {
@@ -354,7 +379,7 @@ models.question.count().then(c=>{
 
 
 let user=models.user.build({
-    email:"kcakar",
+    mail:"kcakar",
     name:"Keremcan Çakar",
     password:"kerempass",
     title:"Web Developer",

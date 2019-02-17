@@ -1,7 +1,7 @@
 import urls from './URLs';
 
 const Authorization={
-    login:(email,password)=>{
+    login:(mail,password)=>{
         return fetch(urls.api.auth.login,
         {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -14,7 +14,7 @@ const Authorization={
             },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
-            body: JSON.stringify({email,password}), // body data type must match "Content-Type" header
+            body: JSON.stringify({mail,password}), // body data type must match "Content-Type" header
         })
     },
     verifyToken:(token)=>{

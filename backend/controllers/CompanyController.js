@@ -12,7 +12,7 @@ CompanyController.getAllCompanies=function(req,res){
         return;
     }
     try{
-        models.company.findAll().then(result=>{
+        models.user.findAll({where:{role:"company"}}).then(result=>{
             res.json(result);
         })
         .catch(err=>{
@@ -24,7 +24,6 @@ CompanyController.getAllCompanies=function(req,res){
     }
 }
 
-//create a company and a user for the company
 CompanyController.createCompany=function(req,res){
     try{
         if(req.user.role!=="admin"){
@@ -36,34 +35,25 @@ CompanyController.createCompany=function(req,res){
             res.sendStatus(400);
         }
         else{
-            company.status="active";
-            let companyUser=models.user.build({
-                email:company.mail,
-                password:company.password,
-                name:company.name,
-                role:"company",
-                companyId:null
-            })
-
-            models.company.create({...company}).then((savedCompany)=>{
-                companyUser.companyId=savedCompany.id;
-
-                models.user.getHashPassword(companyUser.password)
+            models.sequelize.transaction(t=>{
+                return models.user.getHashPassword(company.password)
                 .then(hashedPassword=>{
-                    companyUser.password=hashedPassword;
-                    return companyUser;
+                    return models.user.build({
+                                status:"active",
+                                mail:company.mail,
+                                phone:company.phone,
+                                password:hashedPassword,
+                                name:company.name,
+                                role:"company",
+                                credit:company.credit
+                            }).save({transaction:t});
                 })
-                .then(companyUser=>companyUser.save())
-                .then(test=>{
-                    res.send(test);
-                }).catch(error=>{
-                    models.company.destroy({
-                        where:{
-                            id:savedCompany.id
-                        }
-                    });
-                    res.send(error);
-                });
+                .then(companyUser=>{
+                    return companyUser.update({companyId:companyUser.id},{transaction:t})
+                })
+                .then((companyUser)=>{
+                    res.json(companyUser);
+                })
             })
             .catch(err=>{
                 let errors=[];
@@ -84,13 +74,70 @@ CompanyController.createCompany=function(req,res){
     }
 }
 
+CompanyController.updateCompany=function(req,res){
+    try{
+        if(req.user.role!=="admin"){
+            res.sendStatus(401);
+            return;
+        }
+        let {company,isNewPass,newPass}=req.body;
+        if(!company){
+            res.sendStatus(400);
+        }
+        else{
+            models.sequelize.transaction(t=>{
+                return models.user.findByPk(company.id,{transaction:t})
+                        .then(dbCompany=>{
+                            if(isNewPass){
+                                return models.user.getHashPassword(newPass)
+                                        .then(hashedPass=>{
+                                            dbCompany.password=hashedPass;
+                                            return dbCompany;
+                                        })
+                            }
+                            else{
+                                return dbCompany;
+                            }
+                        })
+                        .then(dbCompany=>{
+                            return dbCompany.update({name:company.name,mail:company.mail,phone:company.phone,credit:company.credit,password:dbCompany.password},{transaction:t})
+                        })
+                        .then(affectedRows=>{
+                            if(affectedRows===0)
+                            {
+                                throw new Error();
+                            }
+                        })
+            })
+            .then(()=>{
+                res.sendStatus(200);
+            })
+            .catch(err=>{
+                let errors=[];
+                if(err.errors)
+                {
+                    errors=err.errors;
+                }
+                else{
+                    errors=[{message:err.message}];
+                }
+                res.status(400).json({errors:errors});
+            }); 
+        }
+    }
+    catch(err)
+    {
+        res.sendStatus(400);
+    }
+}
+
 CompanyController.getOneCompany=function(req,res){
     if(req.user.role!=="admin"){
         res.sendStatus(401);
         return;
     }
     try{
-        models.company.findByPk(req.params.id).then(result=>{
+        models.user.findByPk(req.params.id).then(result=>{
             res.json({result});
         })
         .catch(err=>{
@@ -102,17 +149,13 @@ CompanyController.getOneCompany=function(req,res){
     }
 }
 
-CompanyController.updateCompany=function(req,res){
-    res.send("NOT IMPLEMENTED");
-}
-
 CompanyController.deleteCompany=function(req,res){
     if(req.user.role!=="admin"){
         res.sendStatus(401);
         return;
     }
     try{
-        models.company.findByPk(req.params.id).then(company=>{
+        models.user.findByPk(req.params.id).then(company=>{
             if(company){
                 company.update({status:"passive"})
                 .then(result=>{
@@ -141,7 +184,7 @@ CompanyController.setStatus=(req,res)=>{
     {
         res.sendStatus(400);   
     }
-    models.company.update({
+    models.user.update({
         status,
         }, {
         where: {
@@ -159,5 +202,26 @@ CompanyController.setStatus=(req,res)=>{
         res.sendStatus(400);
     });
 }
+
+CompanyController.getEmployees=function(req,res){
+    if(req.user.role==="admin" || req.user.role==="customer"){
+        try{
+            models.user.findAll({where:{role:"employee",companyId:req.user.id}}).then(result=>{
+                res.json(result);
+            })
+            .catch(err=>{
+                res.status(400).json({error:err});
+            });
+        }
+        catch(err){
+            res.sendStatus(400);
+        }
+    }
+    else{
+        res.sendStatus(401);
+        return;
+    }
+}
+
 
 module.exports = CompanyController;

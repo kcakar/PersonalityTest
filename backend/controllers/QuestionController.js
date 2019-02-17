@@ -56,7 +56,6 @@ QuestionController.getByOrder=function(req,res){
         return;
     }
     try{
-        console.log(req.params)
         models.question.findOne(
             {
                 where: {
@@ -109,12 +108,9 @@ QuestionController.createOrUpdate=function(req,res){
                 }
             })
             .then(question=>{
-                console.log("6")
-
                 res.json(question);
             })
             .catch(err=>{
-                console.log(err);
                 let errors=[];
                 if(err.errors)
                 {

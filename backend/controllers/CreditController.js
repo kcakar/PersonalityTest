@@ -5,7 +5,7 @@ const CreditController={};
 
 CreditController.create=function(req,res){
     try{
-        if(req.user.role!=="company"){
+        if(req.user.role!=="company" || req.user.status!=="active"){
             res.sendStatus(401);
             return;
         }
@@ -15,7 +15,7 @@ CreditController.create=function(req,res){
         }
         else{
             creditRequest.status="waiting";
-            models.creditRequest.create({...creditRequest})
+            models.creditRequest.create({...creditRequest ,userId:req.user.id})
             .then(creditRequest=>{
                 res.json(creditRequest);
             })
@@ -46,7 +46,7 @@ CreditController.getAll=function(req,res){
     try{
         models.creditRequest.findAll({
             include: [{
-                model: models.company
+                model: models.user
             }],
             where:{
                 status:{
@@ -61,10 +61,10 @@ CreditController.getAll=function(req,res){
                 companyId:creditRequest.companyId,
                 status:creditRequest.status,
                 createdAt:creditRequest.createdAt,
-                companyName:creditRequest.company.name,
-                companyCurrentCredit:creditRequest.company.credit,
-                phone:creditRequest.company.phone,
-                mail:creditRequest.company.mail,
+                companyName:creditRequest.user.name,
+                companyCurrentCredit:creditRequest.user.credit,
+                phone:creditRequest.user.phone,
+                mail:creditRequest.user.mail,
                 amount:creditRequest.amount
                }
             })
@@ -85,10 +85,10 @@ CreditController.acceptReject=function(req,res){
         return;
     }
     try{
-        let {requestData,decision}=req.body;
+        let {decision}=req.body;
         let {id}=req.params;
-        let {companyId,amount} = requestData;
         const status=decision?"accepted":"rejected";
+        let userId,amount;
 
         models.sequelize.transaction(t=>{
             return models.creditRequest.findByPk(id,{transaction:t})
@@ -96,6 +96,8 @@ CreditController.acceptReject=function(req,res){
                         if(creditRequest.status!=="waiting"){
                             throw new Error("Bu istek zaten cevaplanmış");
                         }
+                        userId=creditRequest.userId;
+                        amount=creditRequest.amount;
                         return creditRequest.update({status},{where:{id},transaction:t})
                     })
                     .then(affectedRows=>{
@@ -103,7 +105,7 @@ CreditController.acceptReject=function(req,res){
                         {
                             throw new Error();
                         }
-                        return decision ? models.company.findByPk(companyId,{transaction:t})
+                        return decision ? models.user.findByPk(userId,{transaction:t})
                                 .then(company=>{
                                     const newCreditAmount=company.credit+amount;
                                     return company.update({credit:newCreditAmount},{transaction:t})

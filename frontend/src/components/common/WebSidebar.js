@@ -31,7 +31,7 @@ const WebSidebar = () => (
           Müşteri Paneli
         </Menu.Item>
       </Link>
-      <Link to={urls.adminPanel }>
+      <Link to={urls.adminPanel() }>
         <Menu.Item as='span'>
           <Icon name='chess queen' />
           Yönetici Paneli

@@ -59,18 +59,15 @@ class App extends Component {
               this.setState({user:localUser});
               ApiHelper.token=localUser.jwt;
               ApiHelper.user=localUser;
-              console.log(ApiHelper)
           }
         }
         ).catch(err=>{
-          console.log(err);
         }).finally(()=>{
           this.setState({visible:true})
         })
     }
     catch(err){
       //happens if there is no user string in the local store
-      console.log(err);
       this.setState({visible:true})
     }
   }
@@ -93,7 +90,7 @@ class App extends Component {
   }
 
   render() {
-    const {isLoggedIn,role}=this.state.user;
+    const {isLoggedIn,role,status}=this.state.user;
     const {visible}=this.state;
 
     return (
@@ -126,11 +123,11 @@ class App extends Component {
                 />
                 <PrivateRoute 
                   path={urls.customerPanel()}
-                  isAuthenticated={isLoggedIn&&(role==="company"||role==="admin")}
+                  isAuthenticated={isLoggedIn&&((role==="company" &&status==="active")||role==="admin")}
                   component={() => <CustomerDashboard/>}
                 />
                 <PrivateRoute 
-                  path={urls.adminPanel}
+                  path={urls.adminPanel()}
                   isAuthenticated={isLoggedIn&&role==="admin"}
                   component={() => <AdminDashboard/>}
                 />

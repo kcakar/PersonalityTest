@@ -16,6 +16,24 @@ const createCompany = (company) => {
     })
 }
 
+const updateCompany=(company,isNewPass,newPass)=>{
+    return fetch(urls.api.company.update(company.id), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+        body: JSON.stringify({
+            company,
+            isNewPass,
+            newPass
+        }),
+    })
+    .then(response=>{
+        return response.ok?response:response.json()
+    })
+    .catch(err=>{
+        throw Object.assign(new Error("Şirket düzenlenemedi"),{ code: 402 });
+    })
+}
+
 const getAllCompanies = () => {
     return fetch(urls.api.companies.get, {
         method: "GET",
@@ -147,7 +165,6 @@ const approveRejectCreditRequest=(requestData,decision)=>{
         method: "POST",
         ...ApiHelper.ajaxSettings(),
         body: JSON.stringify({
-            requestData,
             decision
         }),
     }).then(response=>{
@@ -161,6 +178,57 @@ const approveRejectCreditRequest=(requestData,decision)=>{
     })
 }
 
+const getAdminStatistics=()=>{
+    return fetch(urls.api.statistics.getAdmin(), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("İstatistiklere ulaşılamadı."),{ code: 402 });
+        }
+    })
+}
+
+const getCustomerStatistics=(companyId)=>{
+    throw("NOT IMPLEMENTED")
+}
+
+const getTestOptions=(language)=>{
+    return fetch(urls.api.settings.getTestOptionsByLanguage(language), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Şıklara ulaşılamadı."),{ code: 402 });
+        }
+    })
+}
+
+const updateCreateTestOptions=(options)=>{
+    return fetch(urls.api.settings.updateCreateOptions(options), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            options
+        }),
+    }).then(response=>{
+        if(response.ok)
+        {
+            
+        }
+        else{
+            throw Object.assign(new Error("Şıklar güncellenemedi."),{ code: 402 });
+        }
+    })
+}
 //helper
 let ApiHelper = {}
 
@@ -172,6 +240,7 @@ ApiHelper.functions = {
     company: {
         create: createCompany,
         changeStatus: changeCompanyStatus,
+        update:updateCompany
     },
     companies: {
         get: getAllCompanies
@@ -186,6 +255,14 @@ ApiHelper.functions = {
         create:createCreditRequest,
         get:getAllCreditRequests,
         approveReject:approveRejectCreditRequest,
+    },
+    statistics:{
+        getAdmin:getAdminStatistics,
+        getCustomer:getCustomerStatistics
+    },
+    settings:{
+        getTestOptions:getTestOptions,
+        updateCreateTestOptions:updateCreateTestOptions
     }
 }
 

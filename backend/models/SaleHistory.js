@@ -25,7 +25,7 @@ module.exports = (sequelize,dataTypes)=>{
     }); 
     
     SaleHistory.associate = function(models) {
-        models.saleHistory.belongsTo(models.company);
+        models.saleHistory.belongsTo(models.user,{ foreignKey: { allowNull: false }});
         models.saleHistory.belongsTo(models.creditRequest);
     };
 

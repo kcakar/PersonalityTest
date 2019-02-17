@@ -6,7 +6,7 @@ const urls={
     test:"/enneagram/Test/Start",
     results:"/enneagram/Test/Results",
     customerPanel:(id="")=>`/enneagram/Management/${id}`,
-    adminPanel:"/enneagram/Admin",
+    adminPanel:()=>"/enneagram/Admin",
     login:"/enneagram/login",
     api:{
         auth:{
@@ -15,7 +15,8 @@ const urls={
         },
         company:{
             create:server+"/company/",
-            changeStatus:(id)=>`${server}/company/${id}/status`
+            changeStatus:(id)=>`${server}/company/${id}/status`,
+            update:(id)=>`${server}/company/${id}/`
         },
         companies:{
             get:server+"/companies/"
@@ -33,6 +34,14 @@ const urls={
             create:()=>`${server}/credit-request/`,
             getAll:()=>`${server}/credit-request/`,
             approveReject:(id)=>`${server}/credit-request/${id}/`
+        },
+        statistics:{
+            getAdmin:()=>`${server}/admin-statistics/`,
+            getCustomer:(companyId)=>`${server}/customer-statistics/${companyId}`,
+        },
+        settings:{
+            getTestOptionsByLanguage:(language)=>`${server}/settings/test-options/${language}`,
+            updateCreateOptions:()=>`${server}/settings/test-options/`
         }
     },
 

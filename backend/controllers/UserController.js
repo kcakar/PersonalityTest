@@ -11,7 +11,7 @@ UserController.getAllUsers=function(req,res){
 
 UserController.createuser=function(req,res){
     let user=models.user.build({
-        email:"kcakar",
+        mail:"kcakar",
         name:"Keremcan Çakar",
         password:"kerempass",
         title:"Web Developer",

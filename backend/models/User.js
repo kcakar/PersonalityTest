@@ -6,7 +6,11 @@ const saltRounds = 8;
 
 module.exports = (sequelize,dataTypes)=>{
     let User=sequelize.define('user', {
-        email:{
+        status:{
+            type:dataTypes.ENUM,
+            values: ["active","passive","deleted"],
+        },
+        mail:{
             type:dataTypes.STRING(100),
             allowNull: false, 
             unique: true,
@@ -14,6 +18,9 @@ module.exports = (sequelize,dataTypes)=>{
                 notEmpty: true,
                 len: [3,100]
             }
+        },
+        phone:{
+            type:dataTypes.STRING(100),
         },
         password:{
             type:dataTypes.STRING(200),
@@ -51,17 +58,22 @@ module.exports = (sequelize,dataTypes)=>{
         role:{
             type:dataTypes.ENUM,
             values: ["admin","company","employee"],
+        },
+        credit:{
+            type:dataTypes.INTEGER,
+            validate:{
+                isNumeric: true,
+            }
+        },
+        companyId:{
+            type:dataTypes.STRING(200),
         }
     }); 
     
     User.associate = function(models) {
         models.user.hasOne(models.testSession);
-        models.user.belongsTo(models.company, {
-            onDelete: "CASCADE",
-            foreignKey: {
-                allowNull: false
-            }
-        });
+        models.user.hasMany(models.creditRequest);
+        models.user.hasMany(models.saleHistory);
     };
 
     User.getHashPassword=(password)=>{
@@ -78,7 +90,7 @@ module.exports = (sequelize,dataTypes)=>{
         expirationDate.setDate(today.getDate() + 60);
       
         return jwt.sign({
-          email: userModel.email,
+          mail: userModel.mail,
           id: userModel.id,
           role:userModel.role,
           exp: parseInt(expirationDate.getTime() / 1000, 10),
@@ -88,7 +100,7 @@ module.exports = (sequelize,dataTypes)=>{
     User.toAuthJSON=(userModel)=>{
         return{
             id:userModel.id,
-            email:userModel.email,
+            mail:userModel.mail,
             token:this.generateJWT(userModel)
         };
     }

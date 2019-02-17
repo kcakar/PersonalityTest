@@ -18,7 +18,7 @@ module.exports = (sequelize,dataTypes)=>{
     }); 
     
     CreditRequest.associate = function(models) {
-        models.creditRequest.belongsTo(models.company);
+        models.creditRequest.belongsTo(models.user,{ foreignKey: { allowNull: false }});
     };
 
     return CreditRequest;

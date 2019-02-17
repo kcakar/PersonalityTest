@@ -9,11 +9,20 @@ const UserController=require('../controllers/UserController');
 const CompanyController=require('../controllers/CompanyController');
 const QuestionController=require('../controllers/QuestionController');
 const CreditController=require('../controllers/CreditController');
+const StatisticController=require('../controllers/StatisticController');
+const SettingsController=require('../controllers/SettingsController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Docs' });
 });
+
+//stats
+router.get('/admin-statistics/',passport.authenticate('jwt', {session: false}),StatisticController.getAdminStats);
+
+//Settings
+router.get('/settings/test-options/:language',passport.authenticate('jwt', {session: false}),SettingsController.getOptionsByLanguage);
+router.post('/settings/test-options/',passport.authenticate('jwt', {session: false}),SettingsController.updateCreateOptions);
 
 //credit-request
 router.post('/credit-request/',passport.authenticate('jwt', {session: false}),CreditController.create);
@@ -30,7 +39,9 @@ router.get('/questions/:lang/:order/',passport.authenticate('jwt', {session: fal
 //company
 router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
 router.get('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.getOneCompany);
+router.post('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.updateCompany);
 router.delete('/company/:id',passport.authenticate('jwt', {session: false}),CompanyController.deleteCompany);
+router.delete('/company/:id/employees',passport.authenticate('jwt', {session: false}),CompanyController.getEmployees);
 
 router.post('/company/:id/status/',passport.authenticate('jwt', {session: false}),CompanyController.setStatus);
 
@@ -58,12 +69,13 @@ router.post('/auth/login', function (req, res, next) {
            const token=models.user.generateJWT(user);
            const clientUser={
                name:user.name,
-               email:user.email,
+               mail:user.mail,
                id:user.id,
                role:user.role,
                title:user.title,
                companyId:user.companyId,
-               jwt:token
+               jwt:token,
+               status:user.status
            }
            return res.json({user:clientUser});
         });

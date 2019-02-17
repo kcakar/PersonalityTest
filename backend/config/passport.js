@@ -9,13 +9,13 @@ const models=require('../models');
 const keys=require('../config/keys');
 
 passport.use(new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'mail',
         passwordField: 'password'
     },  
-    function (email, password, cb) {
+    function (mail, password, cb) {
         //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
 
-        return models.user.findOne({where:{email}})
+        return models.user.findOne({where:{mail}})
            .then(user => {
                if (!user) {
                    return cb(null, false, {message: 'Incorrect email or password.'});
@@ -39,7 +39,6 @@ passport.use(new JWTStrategy({
         secretOrKey   : keys.privateKey
     },
     function (jwtPayload, cb) {
-        console.log(jwtPayload);
         //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
         return models.user.findOne({where:{id:jwtPayload.id}})
             .then(user => {

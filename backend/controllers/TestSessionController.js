@@ -7,10 +7,8 @@ TestSessionController.createTest=function(req,res){
         startDate:new Date(),
         userId:1234,
     }).save().then(test=>{
-        console.log(test);
         res.send(test);
     }).catch(error=>{
-        console.log(error);
         res.send(error);
     });
 }

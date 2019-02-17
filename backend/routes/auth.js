@@ -11,7 +11,6 @@ const getTokenFromHeaders = (req) => {
 };
 
 const onlyAdmins=(err, user, next)=>{
-  console.log(err)
   next();
 }
 

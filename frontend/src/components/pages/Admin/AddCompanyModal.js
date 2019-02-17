@@ -60,15 +60,15 @@ class AddCompanyModal extends Component {
     let errors=[];
 
     if(!company.name || company.name.lenth<3){
-        errors.push("İsim alanı zorunludur.");
+        errors.push("İsim alanı zorunludur. En az 3 karakterden oluşmalıdır.");
     }
     if(!company.password || company.password.lenth<3)
     {
-        errors.push("Şifre alanı zorunludur.");
+        errors.push("Şifre alanı zorunludur. En az 3 karakterden oluşmalıdır.");
     }
     if(!company.mail || company.mail.lenth<3)
     {
-        errors.push("Mail alanı zorunludur.");
+        errors.push("Mail alanı zorunludur. En az 3 karakterden oluşmalıdır.");
     }
     this.setState({errors});
     if(errors.length===0){
@@ -103,7 +103,10 @@ class AddCompanyModal extends Component {
                 <Segment secondary>
                     <Grid.Row>
                         <Grid.Column>
-                            <p>Turuncu alanlar zorunludur. <br/>Şirket şifresine bu ekrandan sonra bir daha ulaşamazsınız. <br/>Lütfen şirketi yaratmadan bu şifreyi kopyalayınız.</p>
+                            <p>Mail sisteme giriş yapılırken kullanılacaktır.</p>
+                            <p>Turuncu alanlar zorunludur.</p>
+                            <p>Şirket şifresine bu ekrandan sonra bir daha ulaşamazsınız.</p>
+                            <p>Lütfen şirketi yaratmadan bu şifreyi kopyalayınız.</p>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>

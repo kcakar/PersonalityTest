@@ -19,7 +19,7 @@ class Login extends React.Component{
             redirectToReferrer: false,
             from:null,
             user:{
-                email:"",
+                mail:"",
                 password:""
             },
             isLoading:false
@@ -43,7 +43,7 @@ class Login extends React.Component{
         const { toastManager } = this.props;
 
         this.setState({isLoading:true});
-        Authorization.login(this.state.user.email,this.state.user.password).then(result=>{
+        Authorization.login(this.state.user.mail,this.state.user.password).then(result=>{
             if(!result.ok){
                 toastManager.add('Hatalı kullanıcı adı veya şifre', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
                 this.setState({isLoading:false});
@@ -72,12 +72,23 @@ class Login extends React.Component{
         console.log(this.state.from);
         if(this.state.from)
         {
-            this.props.history.push(this.state.from);
+            if(userRole==="company")
+            {
+                this.props.history.push(urls.customerPanel());
+            }
+            else if(userRole==="admin")
+            {
+                this.props.history.push(urls.adminPanel());
+            }
+            else if(userRole==="customer")
+            {
+                this.props.history.push(urls.intro);
+            }
         }
         else{
             switch (userRole) {
                 case "admin":
-                    this.props.history.push(urls.adminPanel);
+                    this.props.history.push(urls.adminPanel());
                     break;
                 case "company":
                     this.props.history.push(urls.customerPanel());
@@ -111,7 +122,7 @@ class Login extends React.Component{
                                 </Header>
                                 <Form size='large'>
                                     <Segment>
-                                        <Form.Input name="email" fluid icon='user' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='E-mail' />
+                                        <Form.Input name="mail" fluid icon='user' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='E-mail' />
                                         <Form.Input name="password" fluid icon='lock' onChange={this.handleTextChange} autoComplete="on" iconPosition='left' placeholder='Şifre' type='password' />
                                             {this.state.isLoading?
                                             (

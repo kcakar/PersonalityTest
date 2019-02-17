@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react';
 import {withToastManager } from 'react-toast-notifications';
 import {Link } from 'react-router-dom';
@@ -7,6 +6,7 @@ import {Link } from 'react-router-dom';
 import AddCompanyModal from './AddCompanyModal';
 import ApiHelper from '../../../helpers/ApiHelper';
 import urls from '../../../helpers/URLs';
+import EditCompanyModal from './EditCompanyModal';
 
 class CompanyManagement extends React.Component{ 
     constructor(props){
@@ -178,7 +178,7 @@ class CompanyManagement extends React.Component{
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {data.map(({ id,name,credit,phone,mail,status}) => 
+                    {data.map(({ id,name,credit,phone,mail,status},index) => 
                         {
                             console.log(id)
                             return <Table.Row key={id}>
@@ -189,7 +189,7 @@ class CompanyManagement extends React.Component{
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
                                 <Table.Cell collapsing>
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Link to={urls.customerPanel(id)}><Button icon> <Icon name='globe' /> </Button></Link>} content="Şirket paneline git" />
-                                    <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon> <Icon name='edit' /> </Button>} content="Düzenle" />
+                                    <Popup style={{opacity:0.9}} basic inverted trigger={<EditCompanyModal refreshCompanyTable={this.refreshCompanyTable} company={data[index]}></EditCompanyModal>} content="Düzenle" />
                                     {status==="active"?
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Button icon onClick={()=>this.companyStatusChange(id,status)}> <Icon name='check circle outline' color="green" /> </Button>} content="Şirketi pasif duruma getir" />
                                     :
@@ -213,10 +213,6 @@ class CompanyManagement extends React.Component{
         </Transition>
         )
     }
-}
-
-CompanyManagement.propTypes = {
-    companyData:PropTypes.any.isRequired,
 }
 
 export default withToastManager(CompanyManagement);
