@@ -11,12 +11,15 @@ class SendTest extends Component {
     testSession:{
       name:"",
       title:"",
-      password:""
+      password:"",
+      mail:""
     },
     validate:{
       name:true,
-      password:true
-    }
+      password:true,
+      mail:true
+    },
+    isMailApproved:false
   }
 
   componentDidMount(){
@@ -48,12 +51,33 @@ class SendTest extends Component {
     currentStep++;
     this.setState({ currentStep })
   }
-      
   
   handleChange=(e,{name,value})=>{
     let {testSession}=this.state;
     testSession[name]=value;
+    console.log(name)
+    if(name==="name")
+    {
+      this.generateUsername(value);
+    }
     this.setState({testSession});
+  }
+
+  generateUsername=(name)=>{
+    console.log("generateUsername"+   name)
+    let {testSession}=this.state;
+    const username= name.toString()               // Convert to string
+        .normalize('NFD')               // Change diacritics
+        .replace(/[\u0300-\u036f]/g,'') // Remove illegal characters
+        .replace(/\s+/g,'-')            // Change whitespace to dashes
+        .toLowerCase()                  // Change to lowercase
+        .replace(/&/g,'-and-')          // Replace ampersand
+        .replace(/[^a-z0-9\-]/g,'')     // Remove anything that is not a letter, number or dash
+        .replace(/-+/g,'-')             // Remove duplicate dashes
+        .replace(/^-*/,'')              // Remove starting dashes
+        .replace(/-*$/,''); 
+    testSession.mail=username;
+    this.setState({testSession})
   }
 
   sendTest=()=>{
@@ -68,9 +92,10 @@ class SendTest extends Component {
     })
   }
 
-  validate(){
+  validate=()=>{
     let {validate,testSession}=this.state;
     let result=true;
+
     if(!testSession.name ||testSession.name.lenth<3)
     {
       result=false;
@@ -81,8 +106,24 @@ class SendTest extends Component {
       result=false;
       validate.password=false;
     }
+    if(!testSession.mail || testSession.mail.indexOf(" ")>0)
+    {
+      result=false;
+      validate.mail=false;
+    }
     this.setState({validate});
     return result;
+  }
+
+  checkUsername=()=>{
+    const {toastManager}=this.props;
+    ApiHelper.functions.employee.checkUsername(this.state.testSession.mail)
+    .then(result=>{
+        this.setState({isMailApproved:true});
+    })
+    .catch(err=>{
+        toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+    })
   }
 
   render() {
@@ -106,6 +147,7 @@ class SendTest extends Component {
                 <option key={title} value={title} />
               ))}
             </datalist>
+            <Input color='green' error={!this.state.validate.mail} onChange={this.handleChange} value={testSession.mail} label="Kullanıcı adı" name="mail" placeholder="Kullanıcı adı" icon={<Icon name='question circle outline' inverted circular link onClick={this.checkUsername} />}/>
             <Input error={!this.state.validate.password} onChange={this.handleChange} value={testSession.password} label="Şifre" name="password" placeholder="Şifre" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
             <Button onClick={this.nextStep} color='green' inverted floated="right">
               <Icon name='checkmark' /> Test linki oluştur

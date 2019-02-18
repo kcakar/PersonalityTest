@@ -44,7 +44,8 @@ const urls={
             updateCreateOptions:()=>`${server}/settings/test-options/`
         },
         employee:{
-            getEmployees:(companyId)=>`${server}/company/${companyId}/employees/`
+            getEmployees:(companyId)=>`${server}/company/${companyId}/employees/`,
+            checkUsername:(companyId)=>`${server}/company/${companyId}/username/`
         },
         test:{
             create:(companyId)=>`${server}/company/${companyId}/test/`

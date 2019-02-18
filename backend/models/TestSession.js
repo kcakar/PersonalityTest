@@ -14,7 +14,7 @@ module.exports = (sequelize,dataTypes)=>{
         },
         stage:{
             type: dataTypes.ENUM,
-            values: ["1","2","3","finished"],
+            values: ["intro","1","2","3","finished"],
             defaultValue: "1"
         },
         stagePersonalityType:{

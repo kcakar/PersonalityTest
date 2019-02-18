@@ -265,6 +265,24 @@ const sendTest=(companyId,testSession)=>{
     })
 }
 
+const checkUsername=(companyId,username)=>{
+    return fetch(urls.api.employee.checkUsername(companyId), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            username
+        }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            throw Object.assign(new Error("Kullanıcı adı kontrol edilemedi."),{ code: 402 });
+        }
+        else{
+            return response.json();
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -303,6 +321,9 @@ ApiHelper.functions = {
     },
     test:{
         send:sendTest
+    },
+    employee:{
+        checkUsername:ApiHelper.checkUsername
     }
 }
 

@@ -2,27 +2,54 @@ const models=require('../models');
 
 const TestSessionController={};
 
-TestSessionController.createTest=function(req,res){
-    let {companyId}=req.params.companyId;
+TestSessionController.create=function(req,res){
+    let {id}=req.params;
     let {testSession}=req.body;
-
-    CreditController.create=function(req,res){
-        try{
-            if(req.user.role!=="company" || req.user.status!=="active"){
-                res.sendStatus(401);
-                return;
-            }
-            if(!testSession){
-                res.sendStatus(400);
-            }
-            else{
-                
-            }
+    
+    try{
+        if(req.user.role!=="company" || req.user.status!=="active" || req.user.id!==parseInt(id)){
+            res.sendStatus(401);
         }
-        catch(err)
-        {
-            res.sendStatus(400);
+        else{
+            models.sequelize.transaction(t=>{
+                return models.user.getHashPassword(testSession.password)
+                .then(hashPassword=>{
+                    return models.user.create({
+                        name:testSession.name,
+                        password:hashPassword,
+                        status:"active",
+                        mail:testSession.name,
+                        title:testSession.title,
+                        role:"employee",
+                        companyId:req.user.id
+                    },{transaction:t})
+                })
+                .then(dbUser=>{
+                    return models.testSession.create({
+                        userId:dbUser.id,
+                        stage:"intro"
+                    },{transaction:t})
+                })
+            })
+            .then(r=>{
+                res.sendStatus(200);
+            })
+            .catch(err=>{
+                let errors=[];
+                if(err.errors)
+                {
+                    errors=err.errors;
+                }
+                else{
+                    errors=[{message:err}];
+                }
+                res.status(400).json({errors:errors});
+            });
         }
+    }
+    catch(err)
+    {
+        res.sendStatus(400);
     }
 }
 
