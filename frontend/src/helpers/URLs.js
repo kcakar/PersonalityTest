@@ -2,8 +2,7 @@ const server="http://localhost:3001/api/v1";
 
 const urls={
     homepage:"/enneagram",
-    intro:"/enneagram/Test",
-    test:"/enneagram/Test/Start",
+    test:"/enneagram/Test",
     results:"/enneagram/Test/Results",
     customerPanel:(id="")=>`/enneagram/Management/${id}`,
     adminPanel:()=>"/enneagram/Admin",
@@ -45,10 +44,12 @@ const urls={
         },
         employee:{
             getEmployees:(companyId)=>`${server}/company/${companyId}/employees/`,
-            checkUsername:(companyId)=>`${server}/company/${companyId}/username/`
+            checkUsername:()=>`${server}/user/username/`
         },
         test:{
-            create:(companyId)=>`${server}/company/${companyId}/test/`
+            create:(companyId)=>`${server}/company/${companyId}/test/`,
+            getQuestions:(employeeId,stage,language)=>`${server}/employee/${employeeId}/stage/${stage}/question/${language}`,
+            saveTestAnswer:(employeeId)=>`${server}/employee/${employeeId}/answer/}`
         }
     },
 

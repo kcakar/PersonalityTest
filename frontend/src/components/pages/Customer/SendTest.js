@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal,Input,Grid,Step ,Segment} from 'semantic-ui-react'
+import PropTypes from 'prop-types';
+import { Button, Header, Icon, Modal,Input,Grid,Step ,Segment, Message} from 'semantic-ui-react'
 import {withToastManager} from 'react-toast-notifications';
 
 import ApiHelper from '../../../helpers/ApiHelper';
@@ -19,16 +20,19 @@ class SendTest extends Component {
       password:true,
       mail:true
     },
-    isMailApproved:false
+    isMailApproved:true
   }
 
   componentDidMount(){
     this.passGenerator();
   }
 
-  handleOpen = () => this.setState({ modalOpen: true ,currentStep:1})
+  handleOpen = () => {this.setState({ modalOpen: true ,currentStep:1});this.passGenerator();}
 
-  handleClose = () => this.setState({ modalOpen: false,currentStep:1 })
+  handleClose = () =>{ 
+    this.props.refreshDashboard();
+    this.setState({ modalOpen: false,currentStep:1,testSession:{name:"",title:"",password:"",mail:""} })
+  }
 
   passGenerator=()=>{
     let {testSession}=this.state;
@@ -45,9 +49,19 @@ class SendTest extends Component {
 
   nextStep = () => {
     let currentStep = this.state.currentStep;
-    if (currentStep === 1 && !this.validate()) {
-      return;
+    if (currentStep === 1 ) {
+      if(this.validate())
+      {
+        this.checkUsername();
+      }
     }
+    else{
+      this.incrementStep();
+    }
+  }
+
+  incrementStep=()=>{
+    let currentStep = this.state.currentStep;
     currentStep++;
     this.setState({ currentStep })
   }
@@ -61,23 +75,28 @@ class SendTest extends Component {
       this.generateUsername(value);
     }
     this.setState({testSession});
+    this.validate();
   }
 
   generateUsername=(name)=>{
-    console.log("generateUsername"+   name)
     let {testSession}=this.state;
-    const username= name.toString()               // Convert to string
-        .normalize('NFD')               // Change diacritics
-        .replace(/[\u0300-\u036f]/g,'') // Remove illegal characters
-        .replace(/\s+/g,'-')            // Change whitespace to dashes
-        .toLowerCase()                  // Change to lowercase
-        .replace(/&/g,'-and-')          // Replace ampersand
-        .replace(/[^a-z0-9\-]/g,'')     // Remove anything that is not a letter, number or dash
-        .replace(/-+/g,'-')             // Remove duplicate dashes
-        .replace(/^-*/,'')              // Remove starting dashes
-        .replace(/-*$/,''); 
-    testSession.mail=username;
+
+    const username= this.normalize(testSession.name);
+    const companyName= this.normalize(ApiHelper.user.name);
+    testSession.mail=`${username}@${companyName}`;
     this.setState({testSession})
+  }
+
+  normalize=(text)=>{
+    return text.toString()               // Convert to string
+    .normalize('NFD')               // Change diacritics
+    .replace(/[\u0300-\u036f]/g,'') // Remove illegal characters
+    .replace(/\s+/g,'')            // Change whitespace to dashes
+    .replace(/&/g,'')          // Replace ampersand
+    .replace(/[^a-zA-Z0-9\-]/g,'')     // Remove anything that is not a letter, number or dash
+    .replace(/-+/g,'-')             // Remove duplicate dashes
+    .replace(/^-*/,'')              // Remove starting dashes
+    .replace(/-*$/,''); 
   }
 
   sendTest=()=>{
@@ -95,21 +114,17 @@ class SendTest extends Component {
   validate=()=>{
     let {validate,testSession}=this.state;
     let result=true;
-
-    if(!testSession.name ||testSession.name.lenth<3)
+    validate.name=true;
+    validate.password=true;
+    if(!(testSession.name && testSession.name.length>3))
     {
       result=false;
       validate.name=false;
     }
-    if(!testSession.password ||testSession.password.lenth<5)
+    if(!(testSession.password && testSession.password.length>5))
     {
       result=false;
       validate.password=false;
-    }
-    if(!testSession.mail || testSession.mail.indexOf(" ")>0)
-    {
-      result=false;
-      validate.mail=false;
     }
     this.setState({validate});
     return result;
@@ -119,7 +134,13 @@ class SendTest extends Component {
     const {toastManager}=this.props;
     ApiHelper.functions.employee.checkUsername(this.state.testSession.mail)
     .then(result=>{
-        this.setState({isMailApproved:true});
+        if(!result.exist){
+          this.setState({isMailApproved:true});
+          this.incrementStep();
+        }
+        else{
+          this.setState({isMailApproved:false});
+        }
     })
     .catch(err=>{
         toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
@@ -140,6 +161,7 @@ class SendTest extends Component {
       <Segment className="step-1" color='yellow' secondary>
         <Grid.Row >
           <Grid.Column className="inputs">
+            {!this.state.isMailApproved && <Message error list={["Bu kullanıcı ismi zaten mevcut. Lütfen kullanıcı ismini değiştiriniz."]}/>}
             <Input error={!this.state.validate.name} onChange={this.handleChange} value={testSession.name} label="Çalışan ismi" name="name" placeholder="İsim Soyisim"/>
             <Input onChange={this.handleChange} value={testSession.title} label="Ünvan" name="title" list='titles' placeholder='Ünvan' />
             <datalist id='titles'>
@@ -147,7 +169,7 @@ class SendTest extends Component {
                 <option key={title} value={title} />
               ))}
             </datalist>
-            <Input color='green' error={!this.state.validate.mail} onChange={this.handleChange} value={testSession.mail} label="Kullanıcı adı" name="mail" placeholder="Kullanıcı adı" icon={<Icon name='question circle outline' inverted circular link onClick={this.checkUsername} />}/>
+            <Input color='green' error={!this.state.validate.mail} onChange={this.handleChange} value={testSession.mail} label="Kullanıcı adı" name="mail" placeholder="Kullanıcı adı" />
             <Input error={!this.state.validate.password} onChange={this.handleChange} value={testSession.password} label="Şifre" name="password" placeholder="Şifre" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
             <Button onClick={this.nextStep} color='green' inverted floated="right">
               <Icon name='checkmark' /> Test linki oluştur
@@ -166,7 +188,7 @@ class SendTest extends Component {
         </Grid.Row>
         <Grid.Row>
             <p><b>Kullanıcı adı:</b></p>
-            <p>{testSession.name}</p>
+            <p>{testSession.mail}</p>
             <p><b>Şifre:</b></p>
             <p>{testSession.password}</p>
         </Grid.Row>
@@ -238,5 +260,10 @@ class SendTest extends Component {
     )
   }
 }
+
+SendTest.propTypes = {
+  refreshDashboard:PropTypes.any.isRequired
+}
+
 
 export default withToastManager(SendTest);

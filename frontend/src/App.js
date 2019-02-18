@@ -4,7 +4,6 @@ import {ToastProvider } from 'react-toast-notifications';
 import { Loader,Dimmer } from 'semantic-ui-react';
 
 //pages
-import Intro from './components/pages/Test/Intro';
 import Test from './components/pages/Test/Test';
 import Results from './components/pages/Test/Results';
 import CustomerDashboard from './components/pages/Customer/CustomerDashboard';
@@ -101,16 +100,11 @@ class App extends Component {
       <Router>
         <ToastProvider>
           <div className="App">
-            <header>
+            {/* <header>
               <WebSidebar/>
-            </header>
+            </header> */}
               <main>
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
-                <PrivateRoute 
-                  path={urls.intro}
-                  isAuthenticated={isLoggedIn&&role==="employee"}
-                  component={() => <Intro testUrl={urls.test}/>}
-                />
                 <PrivateRoute 
                   path={urls.test}
                   isAuthenticated={isLoggedIn&&role==="employee"}

@@ -23,9 +23,16 @@ class AddCompanyModal extends Component {
         this.validate=this.validate.bind(this);
     }
 
-  handleOpen = () => this.setState({ modalOpen: true })
+    componentDidMount(){
+        this.passGenerator();
+    }
 
-  handleClose = () => this.setState({ modalOpen: false })
+  handleOpen = () => {
+      this.setState({ modalOpen: true });
+      this.passGenerator();
+    }
+
+  handleClose = () => this.setState({ modalOpen: false ,company:{ name:"", password:"", phone:"", mail:"", credit:"0" }})
   
   handleChange = (e,{name,value})=>{
       let {company}=this.state;
@@ -46,13 +53,28 @@ class AddCompanyModal extends Component {
             }
             else{
                 this.handleClose();
-                this.props.refreshCompanyTable();
+                setTimeout(() => {
+                    this.props.refreshCompanyTable();
+                }, 100);
             }
         })
         .catch(err=>{
             this.setState({errors:[err.message]});
         })
     }
+  }
+
+  passGenerator=()=>{
+    let {company}=this.state;
+
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+    for (var i = 0; i < 6; i++){
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    company.password=text;
+    this.setState({company});
   }
 
   validate(){
@@ -88,9 +110,7 @@ class AddCompanyModal extends Component {
         </Button.Content>
     </Button>);
 
-    return (
-      
-      <Modal closeIcon
+    return <Modal closeIcon
         trigger={trigger}
         open={this.state.modalOpen}
         onClose={this.handleClose}
@@ -114,11 +134,11 @@ class AddCompanyModal extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column>
-                            <Input onChange={this.handleChange} className="required" name="name" placeholder="Şirket ismi" type="text"/>
-                            <Input onChange={this.handleChange} className="required" name="password" placeholder="Şifre" type="text"/>
-                            <Input onChange={this.handleChange} className="required" name="mail" placeholder="Email" type="mail"/>
-                            <Input onChange={this.handleChange} name="phone" placeholder="Telefon" type="phone"/>
-                            <Input onChange={this.handleChange} name="credit" placeholder="Kredi miktarı" type="number"/>
+                            <Input label="Şirket ismi" onChange={this.handleChange} value={this.state.company.name} className="required" name="name" placeholder="Şirket ismi" type="text"/>
+                            <Input label="Şifre" onChange={this.handleChange} value={this.state.company.password} className="required" name="password" placeholder="Şifre" type="text" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
+                            <Input label="Kullanıcı adı / Mail" onChange={this.handleChange} value={this.state.company.mail} className="required" name="mail" placeholder="Email" type="mail"/>
+                            <Input label="Telefon" onChange={this.handleChange} value={this.state.company.Telefon} name="phone" placeholder="Telefon" type="phone"/>
+                            <Input label="Test Hakkı" onChange={this.handleChange} value={this.state.company.credit} name="credit" placeholder="Test Hakkı" type="number"/>
                         </Grid.Column>
                     </Grid.Row>
                     <Button color='green' inverted floated="right" onClick={this.addCompany}>
@@ -129,7 +149,7 @@ class AddCompanyModal extends Component {
           </Modal.Description>
         </Modal.Content>
       </Modal>
-    )
+    
   }
 }
 

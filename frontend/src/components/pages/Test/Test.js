@@ -1,42 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container,Transition,Segment,Radio,Progress,Icon } from 'semantic-ui-react';
-import PulseButton from '../../common/PulseButton';
-import Loading from '../../common/Loading';
+import { Container,Transition,Segment,Radio,Progress,Icon,Image,Header } from 'semantic-ui-react';
 import { Redirect} from 'react-router-dom';
+import {withToastManager} from 'react-toast-notifications';
 
-        
-const  mockQuestions=[];
+import Intro from './Intro';
+import PulseButton from '../../common/PulseButton';
+import ApiHelper from '../../../helpers/ApiHelper';
 
 class Test extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            currentAnswer:0,
-            questionCount:2,
-            currentQuestion:null,
-            stage:0,
-            questionVisible:true,
-            personality:{
-                type1:0,
-                type2:0,
-                type3:0,
-                type4:0,
-                type5:0,
-                type6:0,
-                type7:0,
-                type8:0,
-                type9:0,
-            }
-        }
-        this.selectAnwser=this.selectAnwser.bind(this);
-        this.animateQuestionText=this.animateQuestionText.bind(this);
-        this.handleAnswer=this.handleAnswer.bind(this);
-        this.applyAnswer=this.applyAnswer.bind(this);
-        this.finishTest=this.finishTest.bind(this);
+    state={
+        questions:[],
+        language:"tr",
+        currentAnswer:0,
+        currentQuestion:null,
+        stage:-1,
+        questionVisible:true,
     }
 
     componentDidMount(){
+        const {toastManager}=this.props;
+        ApiHelper.functions.test.getQuestions(1,"tr")
+            .then(questions=>{
+                this.setState({questions});
+            })
+            .catch((err)=>{
+                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            })
+    }
+
+    componentWillUnmount(){
+        this.finishTest();
+    }
+
+    testStart=()=>{
         let currentQuestion=null;
 
         if(!this.state.currentQuestion)//test just started,get the first question
@@ -44,34 +41,35 @@ class Test extends React.Component{
             currentQuestion=Object.assign({},this.getQuestion(1));
         }
 
-        const questionCount=this.getQuestionCount();
-        this.setState({questionCount,currentQuestion});
+        this.setState({currentQuestion,stage:1});
     }
 
-    componentWillUnmount(){
-        this.finishTest();
+    getQuestion=(order) => {
+        return this.state.questions[order - 1];
     }
 
-     getQuestion(order) {
-         return mockQuestions[order - 1];
-     }
-
-     getQuestionCount() {
-         return mockQuestions.length;
-     }
-
-    animateQuestionText(currentQuestion){
-        this.setState({questionVisible:false});
-        setTimeout(() => {
-            this.setState({currentQuestion,currentAnswer:0});
-            this.setState({questionVisible:true});
-        }, 200);
+    finishTest=() => {
+        this.setState({isFinished:true,currentQuestion:null,currentAnswer:0});
+        this.props.testFinished(this.state.personality);
     }
 
-    moveToNextQuestion(){
+    selectAnwser=(currentAnswer) => {
+        this.setState({currentAnswer});
+    }
+
+    handleAnswer=(answer) => {
+        this.applyAnswer();
+        this.moveToNextQuestion();
+    }
+
+    applyAnswer=() => {
+        //save answer to db
+    }
+
+    moveToNextQuestion=() => {
         let currentQuestion=Object.assign({},this.state.currentQuestion);
         currentQuestion.order++;
-        if(currentQuestion.order>this.state.questionCount)
+        if(currentQuestion.order>this.state.questions.length)
         {
             this.finishTest();
         }
@@ -81,12 +79,15 @@ class Test extends React.Component{
         }
     }
 
-    finishTest(){
-        this.setState({isFinished:true,currentQuestion:null,currentAnswer:0});
-        this.props.testFinished(this.state.personality);
+    animateQuestionText=(currentQuestion) => {
+        this.setState({questionVisible:false});
+        setTimeout(() => {
+            this.setState({currentQuestion,currentAnswer:0});
+            this.setState({questionVisible:true});
+        }, 200);
     }
-
-    getMood(value){
+    
+    getMood=(value) => {
         switch (value) {
             case -2:
                 return {
@@ -121,34 +122,12 @@ class Test extends React.Component{
         }
     }
 
-    selectAnwser(currentAnswer){
-        this.setState({currentAnswer});
-    }
-
-    handleAnswer(answer){
-        this.applyAnswer();
-        this.moveToNextQuestion();
-    }
-
-    applyAnswer(){
-        let personality=Object.assign({},this.state.personality);
-        personality["type"+this.state.currentQuestion.personalityType]+=this.state.currentAnswer;
-        this.setState({personality});
-    }
-
-    render(){
-        if(this.state.isFinished){
-            return <Redirect to="/Results" />
-        }
+    renderStage1=()=>{
         const mood=this.getMood(this.state.currentAnswer);
-
-
-
-        let content= !this.state.currentQuestion? <Loading/>:
-            <section className="test flex-center">
+        return <section className="test flex-center">
                 <div className="test-container centered">
                     <div className="progress">
-                        <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questionCount} progress='ratio'/>
+                        <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questions.length} progress='ratio'/>
                     </div>
                         <section className="test">
                             <Container>
@@ -159,56 +138,24 @@ class Test extends React.Component{
                                         </div>
                                         <div className="answers-container">
                                             <div className="mood-container">
-                                                <Icon.Group size='huge'>
-                                                    <Icon  color={mood.color} name={mood.name} />
-                                                </Icon.Group>
+                                                <Icon.Group size='huge'><Icon  color={mood.color} name={mood.name} /></Icon.Group>
                                             </div>
                                         
                                             <div className="answers">
                                                 <div className="answer">
-                                                    <Radio
-                                                        label="Kesinlikle katılmıyorum"
-                                                        name='radioGroup'
-                                                        value={-2}
-                                                        checked={this.state.currentAnswer === -2}
-                                                        onChange={()=>this.selectAnwser(-2)}
-                                                    />
+                                                    <Radio label="Kesinlikle katılmıyorum"  value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio
-                                                        label="Katılmıyorum"
-                                                        name='radioGroup'
-                                                        value={-1}
-                                                        checked={this.state.currentAnswer === -1}
-                                                        onChange={()=>this.selectAnwser(-1)}
-                                                    />
+                                                    <Radio label="Katılmıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio
-                                                        label="Kararsızım"
-                                                        name='radioGroup'
-                                                        value={-1}
-                                                        checked={this.state.currentAnswer === 0}
-                                                        onChange={()=>this.selectAnwser(0)}
-                                                    />
+                                                    <Radio label="Kararsızım" name='radioGroup' value={-1} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio
-                                                        label="Katılıyorum"
-                                                        name='radioGroup'
-                                                        value={-1}
-                                                        checked={this.state.currentAnswer === 1}
-                                                        onChange={()=>this.selectAnwser(1)}
-                                                    />
+                                                    <Radio label="Katılıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio
-                                                        label="Kesinlikle katılıyorum"
-                                                        name='radioGroup'
-                                                        value={-1}
-                                                        checked={this.state.currentAnswer === 2}
-                                                        onChange={()=>this.selectAnwser(2)}
-                                                    />
+                                                    <Radio label="Kesinlikle katılıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === 2} onChange={()=>this.selectAnwser(2)} />
                                                 </div>
                                             </div>
                                         </div>
@@ -220,9 +167,25 @@ class Test extends React.Component{
                             </Container>
                         </section>
                 </div>
-            </section>
-            ;
-        return content;
+            </section>;
+
+    }
+
+    render(){
+        const {stage,questions}=this.state;
+
+        if(this.state.isFinished){
+            return <Redirect to="/Results" />
+        }
+        switch (stage) {
+            case -1:
+                return <Intro isLoaded={questions.length>0} testStart={this.testStart}/>
+            case 1:
+                return this.renderStage1();
+            default:
+            return <Intro/>
+        }
+
     }
 }
 
@@ -230,4 +193,4 @@ Test.propTypes = {
     testFinished:PropTypes.func.isRequired,
 }
 
-export default Test;
+export default withToastManager(Test);

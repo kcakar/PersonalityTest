@@ -80,9 +80,9 @@ class Login extends React.Component{
             {
                 this.props.history.push(urls.adminPanel());
             }
-            else if(userRole==="customer")
+            else if(userRole==="employee")
             {
-                this.props.history.push(urls.intro);
+                this.props.history.push(urls.test);
             }
         }
         else{
@@ -94,7 +94,7 @@ class Login extends React.Component{
                     this.props.history.push(urls.customerPanel());
                 break;
                 case "employee":
-                    this.props.history.push(urls.intro);
+                    this.props.history.push(urls.test);
                 break;
                 default:
                     this.props.history.push(urls.homepage);

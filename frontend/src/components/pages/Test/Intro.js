@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container,Header,Transition,Segment,Image } from 'semantic-ui-react';
+import { Container,Header,Transition,Segment,Image,Button,Loader } from 'semantic-ui-react';
 import PulseButton from '../../common/PulseButton';
 import logo from '../../../assets/enneagram.svg';
 
@@ -31,7 +31,13 @@ class Intro extends React.Component{
                                     <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
                                     <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
                                 </ul>
-                                <PulseButton positive url={this.props.testUrl}>Teste başlayın</PulseButton>
+                                {this.props.isLoaded?
+                                <PulseButton positive onClick={this.props.testStart}>Teste başlayın</PulseButton>
+                                :
+                                (<Button color='orange' fluid size='large' onClick={this.login} disabled>
+                                    <Loader active inline inverted size='small'/>
+                                </Button>)
+                                }
                             </Segment>
                         </Container>
                     </Transition>
@@ -42,7 +48,7 @@ class Intro extends React.Component{
 }
 
 Intro.propTypes = {
-    testUrl:PropTypes.any.isRequired,
+    testStart:PropTypes.any.isRequired,
 }
 
 export default Intro;

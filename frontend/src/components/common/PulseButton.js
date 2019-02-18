@@ -4,23 +4,18 @@ import {withRouter} from 'react-router-dom';
 
 
 class PulseButton extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            visible:true,
-            duration:200,
-            animation:'pulse'
-        }
-        this.handleClick=this.handleClick.bind(this);
-        this.callClickHandler=this.callClickHandler.bind(this);
+    state={
+        visible:true,
+        duration:200,
+        animation:'pulse'
     }
 
-    handleClick(){
+    handleClick=()=>{
         this.setState({visible:!this.state.visible});
         setTimeout(this.callClickHandler,this.state.duration);
     }    
 
-    callClickHandler(){
+    callClickHandler=()=>{
         if(this.props.url)
         {
             this.props.history.push(this.props.url);        

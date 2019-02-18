@@ -18,6 +18,18 @@ class PersonnelTable extends React.Component{
     }
 
     componentDidMount(){
+        this.setTableData();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        if(this.props.personnelData!==prevProps.personnelData)
+        {
+            this.setTableData();
+        }
+        
+    }
+
+    setTableData=()=>{
         const {personnelData}=this.props;
         this.setState({
                 visible:true,
@@ -118,7 +130,7 @@ class PersonnelTable extends React.Component{
                 <Table.Row>
                     <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
                         <Input placeholder="Arama..." onChange={this.handleTableFilter} />
-                        <SendTest personnelTitles={this.props.personnelTitles}/>
+                        <SendTest refreshDashboard={this.props.refreshDashboard} personnelTitles={this.props.personnelTitles}/>
                         <AskCredit/>
                     </Table.HeaderCell>
                 </Table.Row>
@@ -162,14 +174,19 @@ class PersonnelTable extends React.Component{
             {data.map(({ id,name,title, characterType,wingType, dateCompleted, isTestDone}) => 
                 {
                     let dateText= isTestDone?moment(dateCompleted).format('DD/MM/YYYY, kk:mm'):<span className="red">Test Beklemede</span>
+                    let typetext= isTestDone?`Tip ${characterType}`:`-`;
+                    let wingtext= isTestDone?`Kanat ${wingType}`:`-`;
+
                     return <Table.Row key={id}>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{title}</span>} content={title} /></Table.Cell>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{dateText}</span>} content={dateText} /></Table.Cell>
-                        <Table.Cell style={{backgroundColor:this.getCharacterColor(characterType)}}>Tip {characterType}</Table.Cell>
-                        <Table.Cell>Kanat {wingType}</Table.Cell>
+                        <Table.Cell style={{backgroundColor:this.getCharacterColor(characterType)}}>{typetext}</Table.Cell>
+                        <Table.Cell>{wingtext}</Table.Cell>
                         <Table.Cell>
-                            <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
+                            {
+                                isTestDone && <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
+                            }
                         </Table.Cell>
                     </Table.Row>
                     }
@@ -190,6 +207,7 @@ class PersonnelTable extends React.Component{
 PersonnelTable.propTypes = {
     personnelData:PropTypes.any.isRequired,
     personnelTitles:PropTypes.any.isRequired,
+    refreshDashboard:PropTypes.func.isRequired
 }
 
 export default PersonnelTable;

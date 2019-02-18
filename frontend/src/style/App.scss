@@ -17,7 +17,7 @@ body,h1,h2,h3,h4,h5,h6,ul,li,p,figcaption,.button.ui,.ui.header,.ui.input>input,
 }
 
 body {
-    padding-left: $header-width;
+    // padding-left: $header-width;
     width: 100%;
     font-weight: thin;
     font-size:12px;
@@ -25,18 +25,18 @@ body {
     -webkit-font-variant-ligatures: no-common-ligatures;
 }
 
-header {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: $header-width;
-    height: 100%;
-    padding: 0;
-    text-align: center;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+// header {
+//     position: fixed;
+//     left: 0;
+//     top: 0;
+//     width: $header-width;
+//     height: 100%;
+//     padding: 0;
+//     text-align: center;
+//     -webkit-box-sizing: border-box;
+//     -moz-box-sizing: border-box;
+//     box-sizing: border-box;
+// }
 
 h1,h2,h3,h4,h5,h6{
     // font-family: 'Montserrat', sans-serif;

@@ -9,24 +9,11 @@ body, h1, h2, h3, h4, h5, h6, ul, li, p, figcaption, .button.ui, .ui.header, .ui
   color: #333; }
 
 body {
-  padding-left: 6rem;
   width: 100%;
   font-weight: thin;
   font-size: 12px;
   font-variant-ligatures: no-common-ligatures;
   -webkit-font-variant-ligatures: no-common-ligatures; }
-
-header {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 6rem;
-  height: 100%;
-  padding: 0;
-  text-align: center;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;

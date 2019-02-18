@@ -1,8 +1,8 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Transition, Header, Grid } from 'semantic-ui-react';
-import PersonnelTable from './PersonnelTable';
+import {withToastManager} from 'react-toast-notifications';
 
+import PersonnelTable from './PersonnelTable';
 import PersonnelByTypeGraph from './PersonnelByTypeGraph';
 import ApiHelper from '../../../helpers/ApiHelper';
 import Statistics from './Statistics';
@@ -10,33 +10,50 @@ import Statistics from './Statistics';
 class CustomerDasbhoard extends React.Component{
     state={
         visible:false,
-        data:[]
+        data:[],
+        titles:[],
+        stats:{
+            credit:0,
+            waiting:0,
+            done:0,
+        }
     }
 
     getPersonnelData=()=>{
-        console.log(ApiHelper.user)
         const {toastManager}=this.props;
         ApiHelper.functions.company.employees()
         .then(data=>{
-            this.setState({visible:true,data});
+            let titles=[];
+            if(data.length>0)
+            {
+                titles=[...new Set(this.state.data.map(p=>p.title))];
+            }
+            this.setState({visible:true,data,titles});
         }).catch(err=>{
             toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
         });
     }
 
-    componentDidMount=()=>{
-        this.getPersonnelData();
+    getStatData=()=>{
+        const {toastManager}=this.props;
+
+        ApiHelper.functions.statistics.getCustomer(ApiHelper.user.id)
+        .then(result=>{
+            this.setState({
+                stats:{...result,credit:ApiHelper.user.credit}
+            })
+        })
+        .catch(err=>{
+            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+        })
     }
 
-    getTitles=()=>{
-        console.log(this.state)
-        if(this.state.data.length>0)
-        {
-            return [...new Set(this.state.data.map(p=>p.title))];
-        }
-        else{
-            return [];
-        }
+    componentDidMount=()=>{
+        this.refreshDashboard();
+    }
+    refreshDashboard=()=>{
+        this.getPersonnelData();
+        this.getStatData();
     }
 
     render(){
@@ -44,14 +61,14 @@ class CustomerDasbhoard extends React.Component{
         <section className="customer-dashboard dashboard">
             <Transition visible={this.state.visible} animation='fade' duration={500}>
                 <div className="dashboard-center">
-                    <Statistics/>
+                    <Statistics stats={this.state.stats}/>
                     <Grid columns={3} divided className="statistics centered" centered>
                         <Grid.Row>
                             <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
                             <PersonnelByTypeGraph personnelData={this.state.data} />
                         </Grid.Row>
                         <Grid.Row className="customer-table">
-                            <PersonnelTable personnelData={this.state.data} personnelTitles={this.getTitles()}/>
+                            <PersonnelTable refreshDashboard={this.refreshDashboard} personnelData={this.state.data} personnelTitles={this.state.titles}/>
                         </Grid.Row>
                     </Grid>
                 </div>
@@ -61,4 +78,4 @@ class CustomerDasbhoard extends React.Component{
     }
 }
 
-export default CustomerDasbhoard;
+export default withToastManager(CustomerDasbhoard);

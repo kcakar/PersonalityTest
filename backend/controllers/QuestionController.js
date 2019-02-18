@@ -32,6 +32,38 @@ QuestionController.getAll=function(req,res){
     }
 }
 
+QuestionController.getAllByUserByStage=function(req,res){
+    let {id,stage,language}=req.params;
+
+    if(req.user.role==="employee" && req.user.id===parseInt(id)){
+        try{
+            models.question.findAll(
+                {
+                    attributes:["id","text","order"],
+                    where:{
+                        language:language,
+                        stage:stage
+                    }
+                }
+            ).then(result=>{
+                result=result.map(row=>{delete row.createdAt;return row;})
+                res.json(result);
+            })
+            .catch(err=>{
+                res.status(400).json({error:err});
+            });
+        }
+        catch(err){
+            res.sendStatus(400);
+        }
+    }
+    else{
+        res.sendStatus(401);
+    }
+    
+}
+
+
 QuestionController.getOne=function(req,res){
     if(req.user.role!=="admin"){
         res.sendStatus(401);

@@ -260,13 +260,20 @@ const sendTest=(companyId,testSession)=>{
     }).then(response=>{
         if(!response.ok)
         {
-            throw Object.assign(new Error("Test isteği ile ilgili bir hata oluştu."),{ code: 402 });
+            if(response.status===412)
+            {
+                return response.json().then(data=>{
+                    throw Object.assign(new Error(data.message),{ code: 402 });
+                })
+            }else{
+                throw Object.assign(new Error("Test isteği ile ilgili bir hata oluştu."),{ code: 402 });
+            }
         }
     })
 }
 
-const checkUsername=(companyId,username)=>{
-    return fetch(urls.api.employee.checkUsername(companyId), {
+const checkUsername=(username)=>{
+    return fetch(urls.api.employee.checkUsername(), {
         method: "POST",
         ...ApiHelper.ajaxSettings(),
         body: JSON.stringify({
@@ -283,6 +290,20 @@ const checkUsername=(companyId,username)=>{
     })
 }
 
+const getTestQuestions=(stage,language)=>{
+    return fetch(urls.api.test.getQuestions(ApiHelper.user.id,stage,language), {
+        ...ApiHelper.ajaxSettings(),
+        method: "GET",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Sorulara ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
 //helper
 let ApiHelper = {}
 
@@ -320,10 +341,11 @@ ApiHelper.functions = {
         updateCreateTestOptions:updateCreateTestOptions
     },
     test:{
-        send:sendTest
+        send:sendTest,
+        getQuestions:getTestQuestions
     },
     employee:{
-        checkUsername:ApiHelper.checkUsername
+        checkUsername:checkUsername
     }
 }
 
