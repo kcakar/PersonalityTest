@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { Button, Header, Icon, Modal,Input,Grid,Step ,Segment, Message} from 'semantic-ui-react'
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { Button, Header, Icon, Modal,Input,Grid,Step ,Segment, Message,Label} from 'semantic-ui-react'
 import {withToastManager} from 'react-toast-notifications';
 
 import ApiHelper from '../../../helpers/ApiHelper';
+import Urls from '../../../helpers/URLs';
 
 class SendTest extends Component {
   state = { 
@@ -20,6 +22,7 @@ class SendTest extends Component {
       password:true,
       mail:true
     },
+    clipboardText:"",
     isMailApproved:true
   }
 
@@ -27,7 +30,7 @@ class SendTest extends Component {
     this.passGenerator();
   }
 
-  handleOpen = () => {this.setState({ modalOpen: true ,currentStep:1});this.passGenerator();}
+  handleOpen = () => {this.setState({ modalOpen: true ,currentStep:1});this.passGenerator();this.generateUsername("")}
 
   handleClose = () =>{ 
     this.props.refreshDashboard();
@@ -74,8 +77,19 @@ class SendTest extends Component {
     {
       this.generateUsername(value);
     }
+    if(name==="mail")
+    {
+      this.generateExtension(value);
+    }
     this.setState({testSession});
     this.validate();
+  }
+
+  generateExtension=(username)=>{
+    let {testSession}=this.state;
+    const companyName= this.normalize(ApiHelper.user.name);
+    testSession.mail=`${username}@${companyName}`;
+    this.setState({testSession})
   }
 
   generateUsername=(name)=>{
@@ -135,7 +149,7 @@ class SendTest extends Component {
     ApiHelper.functions.employee.checkUsername(this.state.testSession.mail)
     .then(result=>{
         if(!result.exist){
-          this.setState({isMailApproved:true});
+          this.setState({isMailApproved:true,clipboardText:`Enneagram panel bilgileriniz aşağıdaki gibidir.\n\nGiriş adresi:\n${Urls.server}${Urls.login}\n\nKullanıcı adı:\n${this.state.testSession.mail}\n\nŞifre:\n${this.state.testSession.password}`});
           this.incrementStep();
         }
         else{
@@ -158,57 +172,71 @@ class SendTest extends Component {
     </Button>);
 
     const step1=(
-      <Segment className="step-1" color='yellow' secondary>
-        <Grid.Row >
-          <Grid.Column className="inputs">
-            {!this.state.isMailApproved && <Message error list={["Bu kullanıcı ismi zaten mevcut. Lütfen kullanıcı ismini değiştiriniz."]}/>}
-            <Input error={!this.state.validate.name} onChange={this.handleChange} value={testSession.name} label="Çalışan ismi" name="name" placeholder="İsim Soyisim"/>
-            <Input onChange={this.handleChange} value={testSession.title} label="Ünvan" name="title" list='titles' placeholder='Ünvan' />
-            <datalist id='titles'>
-              {this.state.personnelTitles.map(title=>(
-                <option key={title} value={title} />
-              ))}
-            </datalist>
-            <Input color='green' error={!this.state.validate.mail} onChange={this.handleChange} value={testSession.mail} label="Kullanıcı adı" name="mail" placeholder="Kullanıcı adı" />
-            <Input error={!this.state.validate.password} onChange={this.handleChange} value={testSession.password} label="Şifre" name="password" placeholder="Şifre" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
-            <Button onClick={this.nextStep} color='green' inverted floated="right">
-              <Icon name='checkmark' /> Test linki oluştur
-            </Button>
-          </Grid.Column>
-        </Grid.Row> 
-      </Segment>);
+      <Grid.Row>
+        <Grid.Column>
+          <Segment attached className="step-1 step" color='yellow' secondary>
+              <div className="inputs">
+                {!this.state.isMailApproved && <Message error list={["Bu kullanıcı ismi zaten mevcut. Lütfen kullanıcı ismini değiştiriniz."]}/>}
+                <Input error={!this.state.validate.name} onChange={this.handleChange} value={testSession.name} label="Çalışan ismi" name="name" placeholder="İsim Soyisim"/>
+                <Input onChange={this.handleChange} value={testSession.title} label="Ünvan" name="title" list='titles' placeholder='Ünvan' />
+                <datalist id='titles'>
+                  {this.state.personnelTitles.map(title=>(
+                    <option key={title} value={title} />
+                  ))}
+                </datalist>
+                <Input value={testSession.mail.split('@')[0]}  labelPosition='right'  color='green' error={!this.state.validate.mail} onChange={this.handleChange} name="mail" placeholder="Kullanıcı adı" >
+                <Label>Kullanıcı adı</Label>
+                <input />
+                <Label>@{testSession.mail.split('@')[1]}</Label>
+                </Input>
+                <Input error={!this.state.validate.password} onChange={this.handleChange} value={testSession.password} label="Şifre" name="password" placeholder="Şifre" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
+              </div>
+          </Segment>
+          <Button attached='bottom' onClick={this.nextStep} color='orange' >
+            <Icon name='address card outline' /> Test linki oluştur
+          </Button>
+        </Grid.Column>
+      </Grid.Row>);
 
     const step2=(
-      <Segment className="step-2"  color='olive' secondary>
-        <Grid.Row>
-          <Grid.Column>
+      <Grid.Row>
+        <Grid.Column>
+          <Segment attached className="step-2 step"  color='olive' secondary>
+
             <p>Lütfen aşağıdaki bilgileri kullanıcıya iletiniz.</p>
             <p>Şifre bilgisine bir daha ulaşamayacaksınız.</p>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-            <p><b>Kullanıcı adı:</b></p>
-            <p>{testSession.mail}</p>
-            <p><b>Şifre:</b></p>
-            <p>{testSession.password}</p>
-        </Grid.Row>
-        <Button color='green' inverted floated="right" onClick={this.sendTest}>
-          <Icon name='checkmark' /> Onayla
-        </Button>
-      </Segment>
+
+            <Label as='h3' color='orange' ribbon>Kullanıcı adı:</Label>
+            <span>{testSession.mail}</span>
+
+            <Label as='h3' color='orange' ribbon>Şifre:</Label>
+            <span>{testSession.password}</span>
+
+            <div>
+              <CopyToClipboard text={this.state.clipboardText}>
+                <Button icon labelPosition='left'><Icon name='copy outline' />Bilgileri kopyala</Button>
+              </CopyToClipboard>
+            </div>
+
+          </Segment>
+          <Button attached="bottom" color='olive' onClick={this.sendTest}>
+            <Icon name='send' /> Onayla
+          </Button>
+        </Grid.Column>
+      </Grid.Row>
     );
 
     const step3=(
-      <Segment className="step-3" color='green' secondary>
         <Grid.Row>
           <Grid.Column>
-            <p>Test sahibi testini bitirdiği zaman raporlara tablodan ulaşabilirsiniz.</p>
-            <Button color='green' inverted floated="right" onClick={this.handleClose}>
+            <Segment attached className="step-3 step" color='green' secondary>
+              <p>Test sahibi testini bitirdiği zaman raporlara tablodan ulaşabilirsiniz.</p>
+            </Segment>
+            <Button attached="bottom" color='green' onClick={this.handleClose}>
               <Icon name='checkmark' /> Tamamla
             </Button>
           </Grid.Column>
         </Grid.Row>
-      </Segment>
         );
 
     return (
@@ -264,6 +292,5 @@ class SendTest extends Component {
 SendTest.propTypes = {
   refreshDashboard:PropTypes.any.isRequired
 }
-
 
 export default withToastManager(SendTest);

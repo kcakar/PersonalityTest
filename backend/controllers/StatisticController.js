@@ -56,8 +56,6 @@ StatisticController.getAdminStats=function(req,res){
 }
 
 StatisticController.getCustomerStats=function(req,res){
-    console.log(parseInt(req.params.companyId))
-    console.log(req.user.id)
     if(req.user.role==="admin" || (req.user.role==="company"&& (parseInt(req.params.companyId)===req.user.id) && req.user.status==="active")){
         try{
             let waiting,done=0;
@@ -100,7 +98,7 @@ StatisticController.getCustomerStats=function(req,res){
             })
             .then(dbWaiting=>{
                 waiting=dbWaiting || 0;
-                res.json({done,waiting});
+                res.json({done,waiting,credit:req.user.credit});
             })
             .catch(err=>{
                 res.status(400).json({error:err});

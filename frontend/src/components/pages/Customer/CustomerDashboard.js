@@ -40,7 +40,7 @@ class CustomerDasbhoard extends React.Component{
         ApiHelper.functions.statistics.getCustomer(ApiHelper.user.id)
         .then(result=>{
             this.setState({
-                stats:{...result,credit:ApiHelper.user.credit}
+                stats:{...result}
             })
         })
         .catch(err=>{

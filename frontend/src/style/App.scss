@@ -88,6 +88,7 @@ hr{
         border-radius: 0;
     }
 
+
     &.active.progress .bar{
         min-width: 3em;
     }
@@ -340,16 +341,27 @@ section.customer-dashboard{
     }
 
     .step-2{
-        .ui.button{
-            min-width:13rem;
-            margin: 0.3rem 0 0 0;
+        display: flex;
+        flex-direction: column;
+        .row{
+            margin:0.5rem 0;
         }
-        .ui.input{
-            margin:1.4rem 0 0 0;
-            width:100%
+        button{
+            margin:1rem 0 0 0;
+        }
+        .ribbon{
+            margin:1rem 0 1rem;
+            font-size: 1.2rem;
         }
     }
-    
+
+    .step-3{
+        .column{
+            display:flex;
+            flex-direction: column;
+        }
+    }   
+
     .ui.steps{
         width:100%;
     }

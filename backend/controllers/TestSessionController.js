@@ -44,7 +44,7 @@ TestSessionController.create=function(req,res){
                     return models.user.findByPk(req.user.id,{transaction:t});
                 })
                 .then(user=>{
-                    if(user.credit<=0){
+                    if(user.credit<0){
                         throw("Hakkınız bitti");
                     }
                     else{

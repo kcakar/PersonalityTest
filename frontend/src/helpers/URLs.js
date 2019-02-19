@@ -1,6 +1,7 @@
 const server="http://localhost:3001/api/v1";
 
 const urls={
+    server,
     homepage:"/enneagram",
     test:"/enneagram/Test",
     results:"/enneagram/Test/Results",

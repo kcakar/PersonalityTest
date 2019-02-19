@@ -11,6 +11,13 @@ import ApiHelper from '../../../helpers/ApiHelper';
 class Test extends React.Component{
     state={
         questions:[],
+        options:{
+            option1:"",
+            option2:"",
+            option3:"",
+            option4:"",
+            option5:"",
+        },
         language:"tr",
         currentAnswer:0,
         currentQuestion:null,
@@ -21,8 +28,8 @@ class Test extends React.Component{
     componentDidMount(){
         const {toastManager}=this.props;
         ApiHelper.functions.test.getQuestions(1,"tr")
-            .then(questions=>{
-                this.setState({questions});
+            .then(result=>{
+                this.setState({...result});
             })
             .catch((err)=>{
                 toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
@@ -124,6 +131,7 @@ class Test extends React.Component{
 
     renderStage1=()=>{
         const mood=this.getMood(this.state.currentAnswer);
+        const {options}=this.state;
         return <section className="test flex-center">
                 <div className="test-container centered">
                     <div className="progress">
@@ -143,19 +151,19 @@ class Test extends React.Component{
                                         
                                             <div className="answers">
                                                 <div className="answer">
-                                                    <Radio label="Kesinlikle katılmıyorum"  value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
+                                                    <Radio label={options.option1} value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio label="Katılmıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
+                                                    <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio label="Kararsızım" name='radioGroup' value={-1} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)} />
+                                                    <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio label="Katılıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
+                                                    <Radio label={options.option4} name='radioGroup' value={-1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
                                                 </div>
                                                 <div className="answer">
-                                                    <Radio label="Kesinlikle katılıyorum" name='radioGroup' value={-1} checked={this.state.currentAnswer === 2} onChange={()=>this.selectAnwser(2)} />
+                                                    <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer === 2} onChange={()=>this.selectAnwser(2)} />
                                                 </div>
                                             </div>
                                         </div>

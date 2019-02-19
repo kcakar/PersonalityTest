@@ -34,6 +34,8 @@ QuestionController.getAll=function(req,res){
 
 QuestionController.getAllByUserByStage=function(req,res){
     let {id,stage,language}=req.params;
+    let questions=[];
+    let options=[];
 
     if(req.user.role==="employee" && req.user.id===parseInt(id)){
         try{
@@ -46,8 +48,19 @@ QuestionController.getAllByUserByStage=function(req,res){
                     }
                 }
             ).then(result=>{
-                result=result.map(row=>{delete row.createdAt;return row;})
-                res.json(result);
+                questions=result;
+                return models.testOption.findAll(
+                    {
+                        attributes:["option1","option2","option3","option4","option5"],
+                        where:{
+                            language:{[Op.eq]:req.params.language}
+                        }
+                    }
+                )
+            })
+            .then(dbOptions=>{
+                options=dbOptions.length>0 ? dbOptions[0]:[];
+                res.json({questions,options});
             })
             .catch(err=>{
                 res.status(400).json({error:err});
@@ -62,7 +75,6 @@ QuestionController.getAllByUserByStage=function(req,res){
     }
     
 }
-
 
 QuestionController.getOne=function(req,res){
     if(req.user.role!=="admin"){
@@ -160,7 +172,6 @@ QuestionController.createOrUpdate=function(req,res){
         res.sendStatus(400);
     }
 }
-
 
 QuestionController.delete=function(req,res){
     res.send("NOT IMPLEMENTED");
