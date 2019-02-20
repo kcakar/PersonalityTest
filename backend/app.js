@@ -27,11 +27,25 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const corsOptions = {
+
+// var whitelist = ['http://localhost:3000/', 'https://kcakar.github.io']
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   },
+//   optionsSuccessStatus:200
+// }
+
+var corsOptions = {
   origin: 'http://localhost:3000/',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
-app.use(cors());
+
+app.use(cors(corsOptions));
 
 app.use(passport.initialize());
 require('./config/passport');

@@ -1,4 +1,5 @@
-const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+// const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+const server="https://localhost:3001/api/v1";
 
 const urls={
     server,

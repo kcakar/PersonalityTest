@@ -9,8 +9,19 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {}; 
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+console.log(config)
+console.log(env)
+console.log(env)
+console.log(env)
+console.log(env)
+console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV)
+
+if (process.env.NODE_ENV==="production") {
+  sequelize = new Sequelize(process.env.JAWSDB_URL);
+  console.log("remote dv")
 } else {
 
   sequelize = new Sequelize(config.database, config.username, config.password, config);
