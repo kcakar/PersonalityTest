@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router,Route } from 'react-router-dom';
+import { BrowserRouter as Router,Route,Redirect } from 'react-router-dom';
 import {ToastProvider } from 'react-toast-notifications';
 import { Loader,Dimmer } from 'semantic-ui-react';
 
@@ -99,10 +99,10 @@ class App extends Component {
       </Dimmer>):
       <Router>
         <ToastProvider>
+          {
+              visible && !isLoggedIn &&<Redirect to={urls.login}></Redirect>
+          }
           <div className="App">
-            {/* <header>
-              <WebSidebar/>
-            </header> */}
               <main>
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
                 <PrivateRoute 
