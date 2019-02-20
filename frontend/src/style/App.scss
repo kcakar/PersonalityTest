@@ -441,3 +441,17 @@ section.login{
         line-height: 25px;
     }
 }
+
+.user-menu{
+    position:fixed;
+    top:1rem;
+    right:1rem;
+
+    i.inverted.circular.purple.icon{
+        transition: background-color 0.2s linear;
+    }
+
+    i.inverted.circular.purple.icon:hover {
+        background-color: black!important;
+    }
+}

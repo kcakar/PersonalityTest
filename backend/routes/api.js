@@ -95,7 +95,8 @@ router.get('/companies/',passport.authenticate('jwt', {session: false}),CompanyC
 
 //test
 router.post('/company/:id/test',passport.authenticate('jwt', {session: false}),TestSessionController.create);
-
+router.post('/employee/:id/test',passport.authenticate('jwt', {session: false}),TestSessionController.updateTest);
+router.post('/employee/:id/answer',passport.authenticate('jwt', {session: false}),TestSessionController.createAnswer);
 
 
 module.exports = router;

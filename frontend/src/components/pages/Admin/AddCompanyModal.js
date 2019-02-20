@@ -47,7 +47,6 @@ class AddCompanyModal extends Component {
         .then(data=>{
             if(data.errors)
             {
-                console.log(data);
                 let errors=data.errors.map(e=>e.message);
                 this.setState({errors});
             }

@@ -33,7 +33,6 @@ class CreditModal extends React.Component{
           this.props.getTableData();
     })
     .catch(err=>{
-      console.log(err);
         toastManager.add(`İstek ile ilgili bir hata oluştu.`, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
     })
   }

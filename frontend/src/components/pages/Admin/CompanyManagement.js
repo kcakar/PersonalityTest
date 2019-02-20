@@ -170,7 +170,6 @@ class CompanyManagement extends React.Component{
                     <Table.Body>
                     {data.map(({ id,name,credit,phone,mail,status},index) => 
                         {
-                            console.log(id)
                             return <Table.Row key={id}>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>

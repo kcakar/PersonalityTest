@@ -21,7 +21,7 @@ class Test extends React.Component{
         language:"tr",
         currentAnswer:0,
         currentQuestion:null,
-        stage:-1,
+        stage:"-1",
         questionVisible:true,
     }
 
@@ -29,7 +29,8 @@ class Test extends React.Component{
         const {toastManager}=this.props;
         ApiHelper.functions.test.getQuestions(1,"tr")
             .then(result=>{
-                this.setState({...result});
+                let {currentQuestion,...rest}=result;
+                this.setState({currentQuestion: result.questions[currentQuestion-1],...rest});
             })
             .catch((err)=>{
                 toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
@@ -41,6 +42,8 @@ class Test extends React.Component{
     }
 
     testStart=()=>{
+        const {toastManager}=this.props;
+
         let currentQuestion=null;
 
         if(!this.state.currentQuestion)//test just started,get the first question
@@ -48,7 +51,13 @@ class Test extends React.Component{
             currentQuestion=Object.assign({},this.getQuestion(1));
         }
 
-        this.setState({currentQuestion,stage:1});
+        ApiHelper.functions.test.update({stage:"1",questionId:currentQuestion.id})
+            .then(result=>{
+                this.setState({currentQuestion,stage:"1"});
+            })
+            .catch((err)=>{
+                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            })
     }
 
     getQuestion=(order) => {
@@ -66,11 +75,25 @@ class Test extends React.Component{
 
     handleAnswer=(answer) => {
         this.applyAnswer();
-        this.moveToNextQuestion();
     }
 
     applyAnswer=() => {
-        //save answer to db
+        const {toastManager}=this.props;
+        const {currentQuestion,currentAnswer}=this.state;
+        const answer={
+            questionId:currentQuestion.id,
+            selectedOption:currentAnswer.toString()
+        };
+        const nextQuestion=this.getQuestion(currentQuestion.order+1);
+        const nextQuestionId=nextQuestion?nextQuestion.id:null;
+        ApiHelper.functions.test.saveAnswer(answer,nextQuestionId)
+            .then(result=>{
+                this.setState({...result});
+                this.moveToNextQuestion();
+            })
+            .catch((err)=>{
+                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            })
     }
 
     moveToNextQuestion=() => {
@@ -94,43 +117,7 @@ class Test extends React.Component{
         }, 200);
     }
     
-    getMood=(value) => {
-        switch (value) {
-            case -2:
-                return {
-                    color:"red",
-                    name:"frown outline"
-                }
-            case -1:
-                return {
-                    color:"orange",
-                    name:"frown outline"
-                }
-            case 0:
-                return {
-                    color:"grey",
-                    name:"meh outline"
-                }
-            case 1:
-                return {
-                    color:"olive",
-                    name:"smile outline"
-                }
-            case 2:
-                return {
-                    color:"green",
-                    name:"smile outline"
-                }
-            default:
-                return {
-                    color:"green",
-                    name:"meh outline"
-                }
-        }
-    }
-
     renderStage1=()=>{
-        const mood=this.getMood(this.state.currentAnswer);
         const {options}=this.state;
         return <section className="test flex-center">
                 <div className="test-container centered">
@@ -145,10 +132,6 @@ class Test extends React.Component{
                                             <span>{this.state.currentQuestion.text}</span>
                                         </div>
                                         <div className="answers-container">
-                                            <div className="mood-container">
-                                                <Icon.Group size='huge'><Icon  color={mood.color} name={mood.name} /></Icon.Group>
-                                            </div>
-                                        
                                             <div className="answers">
                                                 <div className="answer">
                                                     <Radio label={options.option1} value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
@@ -186,9 +169,9 @@ class Test extends React.Component{
             return <Redirect to="/Results" />
         }
         switch (stage) {
-            case -1:
+            case "-1":
                 return <Intro isLoaded={questions.length>0} testStart={this.testStart}/>
-            case 1:
+            case "1":
                 return this.renderStage1();
             default:
             return <Intro/>

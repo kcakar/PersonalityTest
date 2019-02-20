@@ -72,7 +72,6 @@ class SendTest extends Component {
   handleChange=(e,{name,value})=>{
     let {testSession}=this.state;
     testSession[name]=value;
-    console.log(name)
     if(name==="name")
     {
       this.generateUsername(value);

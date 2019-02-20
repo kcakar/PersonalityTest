@@ -68,8 +68,6 @@ class Login extends React.Component{
     }
 
     redirect(userRole){
-        console.log(userRole);
-        console.log(this.state.from);
         if(this.state.from)
         {
             if(userRole==="company")

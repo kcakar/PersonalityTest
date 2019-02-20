@@ -44,7 +44,6 @@ class EditCompanyModal extends Component {
         if(this.validate()){
             ApiHelper.functions.company.update(company,isNewPass,newPass)
             .then(data=>{
-                console.log("err")
                 if(data.errors)
                 {
                     let errors=data.errors.map(e=>e.message);

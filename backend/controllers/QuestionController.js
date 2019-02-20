@@ -60,7 +60,28 @@ QuestionController.getAllByUserByStage=function(req,res){
             })
             .then(dbOptions=>{
                 options=dbOptions.length>0 ? dbOptions[0]:[];
-                res.json({questions,options});
+                return models.testSession.findOne(
+                    {
+                        attributes: ["stage","stagePersonalityType"],
+                        where:{
+                            userId:req.user.id
+                        },
+                        include:[{
+                            model:models.question,
+                            attributes: ["order"]
+                        }]
+                    }
+                )
+            })
+            .then(session=>{
+                if(session)
+                {
+                    let currentQuestion=session.question?session.question.order:1;
+                    res.json({questions,options,stage:session.stage,currentQuestion});
+                }
+                else{
+                    res.json({questions,options});
+                }
             })
             .catch(err=>{
                 res.status(400).json({error:err});

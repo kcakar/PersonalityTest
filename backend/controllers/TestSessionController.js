@@ -56,7 +56,6 @@ TestSessionController.create=function(req,res){
                 res.sendStatus(200);
             })
             .catch(err=>{
-                console.log(err)
                 if(err==="Hakkınız bitti")
                 {
                     res.status(412).json({message:err});
@@ -86,7 +85,80 @@ TestSessionController.getOneTest=function(req,res){
 }
 
 TestSessionController.updateTest=function(req,res){
-    res.send("NOT IMPLEMENTED");
+    let {id}=req.params;
+    let {testSession}=req.body;
+    
+    try{
+        if(req.user.role!=="employee" || req.user.status!=="active" || req.user.id!==parseInt(id)){
+            res.sendStatus(401);
+        }
+        else{
+            models.testSession.update({...testSession},{
+                where:{userId:req.user.id}
+            })
+            .then(r=>{
+                res.sendStatus(200);
+            })
+            .catch(err=>{
+                let errors=[];
+                if(err.errors)
+                {
+                    errors=err.errors;
+                }
+                else{
+                    errors=[{message:err}];
+                }
+                res.status(400).json({errors:errors});
+            });
+        }
+    }
+    catch(err)
+    {
+        res.sendStatus(400);
+    }
+}
+
+TestSessionController.createAnswer=function(req,res){
+    let {id}=req.params;
+    let {answer,nextQuestionId}=req.body;
+    
+    try{
+        if(req.user.role!=="employee" || req.user.status!=="active" || req.user.id!==parseInt(id)){
+            res.sendStatus(401);
+        }
+        else{
+            models.sequelize.transaction(t=>{
+                return models.userAnswer.destroy({where:{userId:req.user.id,questionId:answer.questionId}},{transaction:t})
+                .then(r=>{
+                    return models.userAnswer.create({...answer,userId:req.user.id},{transaction:t})
+                })
+                .then(answer=>{
+                    return models.testSession.update({questionId:nextQuestionId},{
+                        where:{userId:req.user.id}
+                        ,transaction:t
+                     })
+                })
+            })
+            .then(r=>{
+                res.sendStatus(200);
+            })
+            .catch(err=>{
+                let errors=[];
+                if(err.errors)
+                {
+                    errors=err.errors;
+                }
+                else{
+                    errors=[{message:err}];
+                }
+                res.status(400).json({errors:errors});
+            });
+        }
+    }
+    catch(err)
+    {
+        res.sendStatus(400);
+    }
 }
 
 

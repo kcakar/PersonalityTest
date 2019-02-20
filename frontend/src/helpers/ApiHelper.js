@@ -272,6 +272,28 @@ const sendTest=(companyId,testSession)=>{
     })
 }
 
+const updateTest=(testSession)=>{
+    return fetch(urls.api.test.update(ApiHelper.user.id), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            testSession
+        }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            if(response.status===412)
+            {
+                return response.json().then(data=>{
+                    throw Object.assign(new Error(data.message),{ code: 402 });
+                })
+            }else{
+                throw Object.assign(new Error("Test ile ilgili bir hata oluştu."),{ code: 402 });
+            }
+        }
+    })
+}
+
 const checkUsername=(username)=>{
     return fetch(urls.api.employee.checkUsername(), {
         method: "POST",
@@ -304,6 +326,21 @@ const getTestQuestions=(stage,language)=>{
         }
     })
 }
+
+const saveAnswer=(answer,nextQuestionId)=>{
+    return fetch(urls.api.test.saveTestAnswer(ApiHelper.user.id), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+        body: JSON.stringify({
+            answer,
+            nextQuestionId
+        }),
+    }).then(response=>{
+        if(!response.ok)
+            throw Object.assign(new Error("Cevap kaydedilemedi"),{ code: 402 });
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -342,7 +379,9 @@ ApiHelper.functions = {
     },
     test:{
         send:sendTest,
-        getQuestions:getTestQuestions
+        getQuestions:getTestQuestions,
+        saveAnswer:saveAnswer,
+        update:updateTest
     },
     employee:{
         checkUsername:checkUsername

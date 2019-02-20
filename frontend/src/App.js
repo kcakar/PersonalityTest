@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router,Route,Redirect } from 'react-router-dom';
+import { BrowserRouter as Router,Route } from 'react-router-dom';
 import {ToastProvider } from 'react-toast-notifications';
 import { Loader,Dimmer } from 'semantic-ui-react';
 
@@ -9,9 +9,11 @@ import Results from './components/pages/Test/Results';
 import CustomerDashboard from './components/pages/Customer/CustomerDashboard';
 import AdminDashboard from './components/pages/Admin/AdminDashboard';
 import Login from './components/pages/Authorization/Login';
+import RedirectToLogin from './components/common/RedirectToLogin';
+import UserMenu from './components/common/UserMenu';
 
 //common stuff
-import WebSidebar from './components/common/WebSidebar';
+// import WebSidebar from './components/common/WebSidebar';
 import PrivateRoute from './components/common/PrivateRoute';
 
 //css
@@ -88,6 +90,11 @@ class App extends Component {
     localStorage.setItem(localStorageUser, JSON.stringify(user));
   }
 
+  logout=()=>{
+    localStorage.removeItem(localStorageUser);
+    this.setState({ user:{ isLoggedIn:false }, results:{}, visible:true })
+  }
+
   render() {
     const {isLoggedIn,role,status}=this.state.user;
     const {visible}=this.state;
@@ -100,11 +107,14 @@ class App extends Component {
       <Router>
         <ToastProvider>
           {
-              visible && !isLoggedIn &&<Redirect to={urls.login}></Redirect>
+              visible && !isLoggedIn && <RedirectToLogin/>
           }
           <div className="App">
               <main>
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
+                {
+                  isLoggedIn && <UserMenu logout={this.logout}/>
+                }
                 <PrivateRoute 
                   path={urls.test}
                   isAuthenticated={isLoggedIn&&role==="employee"}

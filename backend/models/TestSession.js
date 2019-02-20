@@ -6,12 +6,6 @@ module.exports = (sequelize,dataTypes)=>{
             isDate:true
           }
         },
-        currentQuestion:{
-          type:dataTypes.INTEGER,
-          validate:{
-            notEmpty: true,
-          }
-        },
         stage:{
             type: dataTypes.ENUM,
             values: ["intro","1","2","3","finished"],
@@ -31,7 +25,7 @@ module.exports = (sequelize,dataTypes)=>{
             allowNull: false
           }
         });
-        models.testSession.belongsTo(models.question);//check
+        models.testSession.belongsTo(models.question);
     };
 
     return TestSession;
