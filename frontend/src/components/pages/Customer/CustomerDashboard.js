@@ -62,7 +62,7 @@ class CustomerDasbhoard extends React.Component{
             <Transition visible={this.state.visible} animation='fade' duration={500}>
                 <div className="dashboard-center">
                     <Statistics stats={this.state.stats}/>
-                    <Grid columns={3} divided className="statistics centered" centered>
+                    <Grid divided className="statistics centered" centered>
                         <Grid.Row>
                             <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
                             <PersonnelByTypeGraph personnelData={this.state.data} />

@@ -49,6 +49,7 @@ class Intro extends React.Component{
 
 Intro.propTypes = {
     testStart:PropTypes.any.isRequired,
+    isLoaded:PropTypes.any.isRequired,
 }
 
 export default Intro;

@@ -31,7 +31,7 @@ class AdminNavigation extends React.Component {
       return (
         <Transition visible={this.state.visible} animation='fade' duration={500}>
           <div className='admin-menu'>
-            <Menu pointing secondary>
+            <Menu fluid pointing secondary>
               {Object.keys(tabs).map(
                 (tabKey)=>
                   <Menu.Item 

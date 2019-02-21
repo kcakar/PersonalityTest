@@ -135,7 +135,7 @@ class AddCompanyModal extends Component {
                         <Grid.Column>
                             <Input label="Şirket ismi" onChange={this.handleChange} value={this.state.company.name} className="required" name="name" placeholder="Şirket ismi" type="text"/>
                             <Input label="Şifre" onChange={this.handleChange} value={this.state.company.password} className="required" name="password" placeholder="Şifre" type="text" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
-                            <Input label="Kullanıcı adı / Mail" onChange={this.handleChange} value={this.state.company.mail} className="required" name="mail" placeholder="Email" type="mail"/>
+                            <Input label="Mail" onChange={this.handleChange} value={this.state.company.mail} className="required" name="mail" placeholder="Email" type="mail"/>
                             <Input label="Telefon" onChange={this.handleChange} value={this.state.company.Telefon} name="phone" placeholder="Telefon" type="phone"/>
                             <Input label="Test Hakkı" onChange={this.handleChange} value={this.state.company.credit} name="credit" placeholder="Test Hakkı" type="number"/>
                         </Grid.Column>

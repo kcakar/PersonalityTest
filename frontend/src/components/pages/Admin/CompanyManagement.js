@@ -123,7 +123,7 @@ class CompanyManagement extends React.Component{
         <Transition visible={this.state.visible} animation='fade' duration={500}>
             <div className="request-table">
                 <Header>Sistemdeki şirketler</Header>
-                <Table singleLine sortable celled fixed selectable color="orange">
+                <Table compact singleLine sortable celled selectable color="orange">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
@@ -156,7 +156,7 @@ class CompanyManagement extends React.Component{
                                 >
                                 Telefon
                             </Table.HeaderCell>
-                            <Table.HeaderCell
+                            <Table.HeaderCell 
                                 sorted={column === 'currentCredit' ? direction : null}
                                 onClick={()=>this.handleSort('currentCredit')}
                                 >
@@ -175,7 +175,7 @@ class CompanyManagement extends React.Component{
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
+                                <Table.Cell collapsing><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
                                 <Table.Cell collapsing>
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<Link to={urls.customerPanel(id)}><Button icon> <Icon name='globe' /> </Button></Link>} content="Şirket paneline git" />
                                     <Popup style={{opacity:0.9}} basic inverted trigger={<EditCompanyModal refreshCompanyTable={this.refreshCompanyTable} company={data[index]}></EditCompanyModal>} content="Düzenle" />

@@ -184,9 +184,9 @@ class SendTest extends Component {
                   ))}
                 </datalist>
                 <Input value={testSession.mail.split('@')[0]}  labelPosition='right'  color='green' error={!this.state.validate.mail} onChange={this.handleChange} name="mail" placeholder="Kullanıcı adı" >
-                <Label>Kullanıcı adı</Label>
-                <input />
-                <Label>@{testSession.mail.split('@')[1]}</Label>
+                  <Label>Kullanıcı adı</Label>
+                  <input />
+                  <Label>@{testSession.mail.split('@')[1]}</Label>
                 </Input>
                 <Input error={!this.state.validate.password} onChange={this.handleChange} value={testSession.password} label="Şifre" name="password" placeholder="Şifre" icon={<Icon name='refresh' inverted circular link onClick={this.passGenerator} />}/>
               </div>

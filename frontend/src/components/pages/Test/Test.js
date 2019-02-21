@@ -44,13 +44,12 @@ class Test extends React.Component{
     testStart=()=>{
         const {toastManager}=this.props;
 
-        let currentQuestion=null;
+        let currentQuestion=this.state.currentQuestion;
 
-        if(!this.state.currentQuestion)//test just started,get the first question
+        if(!currentQuestion)//test just started,get the first question
         {
             currentQuestion=Object.assign({},this.getQuestion(1));
         }
-
         ApiHelper.functions.test.update({stage:"1",questionId:currentQuestion.id})
             .then(result=>{
                 this.setState({currentQuestion,stage:"1"});
@@ -164,6 +163,7 @@ class Test extends React.Component{
 
     render(){
         const {stage,questions}=this.state;
+        console.log(questions)
 
         if(this.state.isFinished){
             return <Redirect to="/Results" />
@@ -174,7 +174,7 @@ class Test extends React.Component{
             case "1":
                 return this.renderStage1();
             default:
-            return <Intro/>
+            return <Intro isLoaded={questions.length>0} testStart={this.testStart}/>
         }
 
     }
