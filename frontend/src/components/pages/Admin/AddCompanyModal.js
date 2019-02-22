@@ -102,7 +102,7 @@ class AddCompanyModal extends Component {
 
   render() {
     const trigger=(
-    <Button onClick={this.handleOpen} compact primary animated='vertical' floated='right' >
+    <Button onClick={this.handleOpen} compact primary animated='vertical'>
         <Button.Content visible>Yeni şirket ekle</Button.Content>
         <Button.Content hidden>
             <Icon name='building outline' />

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import ApiHelper from '../../../helpers/ApiHelper';
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 class CreditModal extends React.Component{
   constructor(props)
@@ -24,16 +24,16 @@ class CreditModal extends React.Component{
   }
 
   handleRequest=(decision)=>{
-    const {toastManager}=this.props;
+    
     this.handleClose();
     ApiHelper.functions.creditRequest.approveReject(this.props.requestData,decision)
         .then(result=>{
           const text=decision?"kabul edildi":"reddedildi";
-          toastManager.add(`İstek ${text}.`, { appearance: "success",autoDismiss: true,autoDismissTimeout:3000});
+          toast.success(`İstek ${text}.`,{position: toast.POSITION.TOP_CENTER});
           this.props.getTableData();
     })
     .catch(err=>{
-        toastManager.add(`İstek ile ilgili bir hata oluştu.`, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+        toast.error(`İstek ile ilgili bir hata oluştu.`,{position: toast.POSITION.TOP_CENTER});
     })
   }
 
@@ -77,4 +77,4 @@ CreditModal.propTypes = {
     getTableData:PropTypes.func.isRequired
 }
 
-export default withToastManager(CreditModal)
+export default CreditModal

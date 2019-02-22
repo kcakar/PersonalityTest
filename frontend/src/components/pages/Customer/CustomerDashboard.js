@@ -1,6 +1,6 @@
 import React from 'react';
 import { Transition, Header, Grid } from 'semantic-ui-react';
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import PersonnelTable from './PersonnelTable';
 import PersonnelByTypeGraph from './PersonnelByTypeGraph';
@@ -20,7 +20,7 @@ class CustomerDasbhoard extends React.Component{
     }
 
     getPersonnelData=()=>{
-        const {toastManager}=this.props;
+        
         ApiHelper.functions.company.employees()
         .then(data=>{
             let titles=[];
@@ -30,12 +30,11 @@ class CustomerDasbhoard extends React.Component{
             }
             this.setState({visible:true,data,titles});
         }).catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-        });
+toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        });
     }
 
     getStatData=()=>{
-        const {toastManager}=this.props;
+        
 
         ApiHelper.functions.statistics.getCustomer(ApiHelper.user.id)
         .then(result=>{
@@ -44,8 +43,7 @@ class CustomerDasbhoard extends React.Component{
             })
         })
         .catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-        })
+toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        })
     }
 
     componentDidMount=()=>{
@@ -78,4 +76,4 @@ class CustomerDasbhoard extends React.Component{
     }
 }
 
-export default withToastManager(CustomerDasbhoard);
+export default CustomerDasbhoard;

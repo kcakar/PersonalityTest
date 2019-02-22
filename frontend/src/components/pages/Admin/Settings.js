@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment,Header,Transition,Button,Form,Input} from 'semantic-ui-react'
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import LanguageSelector from '../../common/LanguageSelector';
 import ApiHelper from '../../../helpers/ApiHelper';
@@ -42,7 +42,7 @@ class Settings extends React.Component{
     }
 
     getOptionsByLanguage=(language)=>{
-        const { toastManager } = this.props;
+        
         ApiHelper.functions.settings.getTestOptions(language)
             .then(options=>{
                 if(options.length>0)
@@ -55,19 +55,19 @@ class Settings extends React.Component{
                 }
             })
             .catch(err=>{
-                toastManager.add(err.message, { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+                toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
             })
     }
 
     saveOptions=()=>{
-        const { toastManager } = this.props;
+        
         ApiHelper.functions.settings.updateCreateTestOptions(this.state.options)
         .then(res=>{
-            toastManager.add("Şıklar güncellendi", { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+            toast.success("Şıklar güncellendi",{position: toast.POSITION.TOP_CENTER});
             this.getOptionsByLanguage(this.state.options.language);
         })
         .catch(err=>{
-            toastManager.add(err.message, { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
         })
     }
 
@@ -139,4 +139,4 @@ class Settings extends React.Component{
     }
 }
 
-export default withToastManager(Settings);
+export default Settings;

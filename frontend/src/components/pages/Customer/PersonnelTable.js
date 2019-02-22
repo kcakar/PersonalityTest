@@ -128,9 +128,13 @@ class PersonnelTable extends React.Component{
         <Table singleLine sortable celled fixed selectable color="orange">
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
+                    <Table.HeaderCell className="no-hover" colSpan='3' singleLine>
                         <Input placeholder="Arama..." onChange={this.handleTableFilter} />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="no-hover" colSpan='1' singleLine>
                         <SendTest refreshDashboard={this.props.refreshDashboard} personnelTitles={this.props.personnelTitles}/>
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="no-hover" colSpan='2' singleLine>
                         <AskCredit/>
                     </Table.HeaderCell>
                 </Table.Row>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react';
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import CreditModal from './CreditModal';
 import ApiHelper from '../../../helpers/ApiHelper';
@@ -30,7 +30,6 @@ class RequestTable extends React.Component{
     }
 
     getTableData(){
-        const {toastManager}=this.props;
         ApiHelper.functions.creditRequest.get()
         .then(requestData=>{
             this.setState({
@@ -43,7 +42,7 @@ class RequestTable extends React.Component{
             });
         })
         .catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
         })
     }
 
@@ -178,4 +177,4 @@ class RequestTable extends React.Component{
     }
 }
 
-export default withToastManager(RequestTable);
+export default RequestTable;

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Button, Header, Icon, Modal,Input,Grid,Step ,Segment, Message,Label} from 'semantic-ui-react'
-import {withToastManager} from 'react-toast-notifications';
+import {  toast } from "react-toastify";
 
 import ApiHelper from '../../../helpers/ApiHelper';
 import Urls from '../../../helpers/URLs';
@@ -113,14 +113,14 @@ class SendTest extends Component {
   }
 
   sendTest=()=>{
-    const {toastManager}=this.props;
+    
 
     ApiHelper.functions.test.send(ApiHelper.user.id,this.state.testSession)
     .then(res=>{
       this.nextStep();
     })
     .catch(err=>{
-        toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+      toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
     })
   }
 
@@ -144,7 +144,7 @@ class SendTest extends Component {
   }
 
   checkUsername=()=>{
-    const {toastManager}=this.props;
+    
     ApiHelper.functions.employee.checkUsername(this.state.testSession.mail)
     .then(result=>{
         if(!result.exist){
@@ -156,14 +156,14 @@ class SendTest extends Component {
         }
     })
     .catch(err=>{
-        toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+      toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
     })
   }
 
   render() {
     const {testSession}=this.state;
     const trigger=(
-    <Button onClick={this.handleOpen} compact primary animated='vertical' floated='right' >
+    <Button onClick={this.handleOpen} compact primary animated='vertical'>
         <Button.Content visible>Test Yolla</Button.Content>
         <Button.Content hidden>
             <Icon name='chart pie' />
@@ -205,10 +205,10 @@ class SendTest extends Component {
             <p>Lütfen aşağıdaki bilgileri kullanıcıya iletiniz.</p>
             <p>Şifre bilgisine bir daha ulaşamayacaksınız.</p>
 
-            <Label as='h3' color='orange' ribbon>Kullanıcı adı:</Label>
+            <Label as='h3' color='orange' ribbon size="tiny">Kullanıcı adı:</Label>
             <span>{testSession.mail}</span>
 
-            <Label as='h3' color='orange' ribbon>Şifre:</Label>
+            <Label as='h3' color='orange' ribbon size="tiny">Şifre:</Label>
             <span>{testSession.password}</span>
 
             <div>
@@ -292,4 +292,4 @@ SendTest.propTypes = {
   refreshDashboard:PropTypes.any.isRequired
 }
 
-export default withToastManager(SendTest);
+export default SendTest;

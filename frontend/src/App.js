@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router,Route } from 'react-router-dom';
-import {ToastProvider } from 'react-toast-notifications';
+import { ToastContainer,cssTransition } from 'react-toastify';
 import { Loader,Dimmer } from 'semantic-ui-react';
 
 //pages
@@ -19,6 +19,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 //css
 import 'semantic-ui-css/semantic.min.css'
 import './style/App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 //data
 import Authorization from './helpers/Authorization';
@@ -27,6 +28,12 @@ import ApiHelper from './helpers/ApiHelper';
 //application variables
 import urls from './helpers/URLs';
 const localStorageUser="enneagram-user";
+
+//toast settings
+const toastAnimation = cssTransition({
+  enter: 'toastIn',
+  exit: 'toastOut',
+});
 
 
 class App extends Component {
@@ -57,13 +64,12 @@ class App extends Component {
           }
           else{
               localUser.isLoggedIn=true;
-              this.setState({user:localUser});
               ApiHelper.token=localUser.jwt;
               ApiHelper.user=localUser;
+              this.setState({user:localUser,visible:true});
           }
         }
         ).catch(err=>{
-        }).finally(()=>{
           this.setState({visible:true})
         })
     }
@@ -105,12 +111,11 @@ class App extends Component {
         <Loader size='massive'>Sistem hazırlanıyor</Loader>
       </Dimmer>):
       <Router>
-        <ToastProvider>
-          {
-              visible && !isLoggedIn && <RedirectToLogin/>
-          }
           <div className="App">
               <main>
+                {
+                  visible && !isLoggedIn && <RedirectToLogin/>
+                }
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
                 {
                   isLoggedIn && <UserMenu logout={this.logout}/>
@@ -136,8 +141,8 @@ class App extends Component {
                   component={() => <AdminDashboard/>}
                 />
               </main>
+              <ToastContainer autoClose={2000}  transition={toastAnimation}/>
           </div>
-        </ToastProvider>
       </Router>
     )
   }

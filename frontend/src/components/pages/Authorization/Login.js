@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid,Header,Button,Form,Segment,Transition,Loader } from 'semantic-ui-react';
 import {withRouter } from 'react-router-dom';
 import Authorization from '../../../helpers/Authorization';
-import {withToastManager } from 'react-toast-notifications';
+import { toast } from "react-toastify";
 import PropTypes from 'prop-types';
 import urls from '../../../helpers/URLs';
 
@@ -40,12 +40,10 @@ class Login extends React.Component{
     }
     
     login(){
-        const { toastManager } = this.props;
-
         this.setState({isLoading:true});
         Authorization.login(this.state.user.mail,this.state.user.password).then(result=>{
             if(!result.ok){
-                toastManager.add('Hatalı kullanıcı adı veya şifre', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+                toast.error('Hatalı kullanıcı adı veya şifre',{position: toast.POSITION.TOP_CENTER});
                 this.setState({isLoading:false});
             }
             else{
@@ -58,10 +56,10 @@ class Login extends React.Component{
         })
         .catch(err=>{
             if(err.message===errorTypes.ServerUnreachable){
-                toastManager.add('Giriş yapılamadı. Sisteme ulaşılamıyor.', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+                toast.error('Giriş yapılamadı. Sisteme ulaşılamıyor.',{position: toast.POSITION.TOP_CENTER});
             }
             else{
-                toastManager.add('Giriş yapılamadı.', { appearance: 'error' ,autoDismiss: true,autoDismissTimeout:3000});
+                toast.error('Giriş yapılamadı.',{position: toast.POSITION.TOP_CENTER});
             }
             this.setState({isLoading:false});
         });
@@ -116,7 +114,7 @@ class Login extends React.Component{
                         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
                             <Grid.Column style={{ maxWidth: 450 }}>
                                 <Header as='h1' color='orange' textAlign='center'>
-                                ENNEAGRAM
+                                Enneagram
                                 </Header>
                                 <Form size='large'>
                                     <Segment>
@@ -150,4 +148,4 @@ class Login extends React.Component{
 Login.propTypes = {
     saveUserToLocalStore:PropTypes.any.isRequired,
 }
-export default withToastManager(withRouter(Login));
+export default withRouter(Login);

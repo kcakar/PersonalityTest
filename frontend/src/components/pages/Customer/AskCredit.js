@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal,Input } from 'semantic-ui-react'
-import {withToastManager} from 'react-toast-notifications';
+import { Button, Header, Icon, Modal,Input,Segment } from 'semantic-ui-react'
+import {  toast } from "react-toastify";
 
 import ApiHelper from '../../../helpers/ApiHelper';
 
@@ -21,7 +21,6 @@ class AskCredit extends Component {
   handleChange=(e,{value}) => this.setState({amount:value})
 
   sendCreditRequest(){
-    const {toastManager} =this.props;
     let creditRequest={
       amount:this.state.amount,
       companyId:ApiHelper.user.companyId
@@ -29,16 +28,16 @@ class AskCredit extends Component {
     ApiHelper.functions.creditRequest.create(creditRequest)
     .then(()=>{
       this.handleClose();
-      toastManager.add('İstek yollandı.', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
+      toast.success('İstek yollandı.',{position: toast.POSITION.TOP_CENTER});
     })
     .catch(err=>{
-        toastManager.add('İstek yollanamadı.', { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+        toast.error('İstek yollanamadı.',{position: toast.POSITION.TOP_CENTER});
     })
   }
 
   render() {
     const trigger=(
-        <Button onClick={this.handleOpen}  compact color="teal" animated='vertical' floated='right' >
+        <Button onClick={this.handleOpen}  compact color="teal" animated='vertical'>
             <Button.Content visible>Test Hakkı Talebi</Button.Content>
             <Button.Content hidden>
                 <Icon name='shop' />
@@ -56,18 +55,18 @@ class AskCredit extends Component {
         <Header icon='browser' content='Test hakkı talebi' />
         <Modal.Content>
           <Modal.Description>
+            <Segment attached>
                 <Header>Talep etmek istediğiniz test miktarını giriniz</Header>
                 <Input placeholder="Miktar" type="number" onChange={this.handleChange}/><br/>
+            </Segment>
+            <Button attached="bottom" color='green' onClick={this.sendCreditRequest}>
+              <Icon name='checkmark' /> Talebi tamamla
+            </Button>
           </Modal.Description>
         </Modal.Content>
-        <Modal.Actions>
-          <Button color='green' inverted onClick={this.sendCreditRequest}>
-            <Icon name='checkmark' /> Talebi tamamla
-          </Button>
-        </Modal.Actions>
       </Modal>
     )
   }
 }
 
-export default withToastManager(AskCredit)
+export default AskCredit

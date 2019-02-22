@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table,Pagination,Popup ,Input,Header,Transition,Button,Icon} from 'semantic-ui-react';
-import {withToastManager } from 'react-toast-notifications';
+import { toast } from "react-toastify";
 import {Link } from 'react-router-dom';
 
 import AddCompanyModal from './AddCompanyModal';
@@ -105,14 +105,14 @@ class CompanyManagement extends React.Component{
     }
 
     companyStatusChange=(id,currentStatus)=>{
-        const { toastManager } = this.props;
+        
         currentStatus=currentStatus==="active"?"passive":"active";
         ApiHelper.functions.company.changeStatus(id,currentStatus)
         .then(()=>{
             this.getTableData();
-            toastManager.add("Şirket durumu değiştirildi", { appearance: "success",autoDismiss: true,autoDismissTimeout:3000});
+            toast.success("Şirket durumu değiştirildi",{position: toast.POSITION.TOP_CENTER});
         }).catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
         });
     }
  
@@ -126,8 +126,10 @@ class CompanyManagement extends React.Component{
                 <Table compact singleLine sortable celled selectable color="orange">
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell className="no-hover" colSpan='6' singleLine>
+                            <Table.HeaderCell className="no-hover" colSpan='3' singleLine>
                                 <Input placeholder="Arama..." onChange={this.handleTableFilter} />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className="no-hover" colSpan='3' singleLine>
                                 <AddCompanyModal refreshCompanyTable={this.refreshCompanyTable}></AddCompanyModal>
                             </Table.HeaderCell>
                         </Table.Row>
@@ -204,4 +206,4 @@ class CompanyManagement extends React.Component{
     }
 }
 
-export default withToastManager(CompanyManagement);
+export default CompanyManagement;

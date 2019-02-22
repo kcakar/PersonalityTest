@@ -1,6 +1,6 @@
 import React from 'react';
 import {Segment,Header,Transition,Button} from 'semantic-ui-react'
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import QuestionEditor from './QuestionEditor';
 import LanguageSelector from '../../common/LanguageSelector';
@@ -36,7 +36,7 @@ class QuestionManagement extends React.Component{
     }
 
     getQuestionsByLanguage(language){
-        const { toastManager } = this.props;
+        
         return ApiHelper.functions.question.getAllByLanguage(language)
             .then(data=>{
                 data=this.fillEmptyQuestions(data,language);
@@ -49,8 +49,7 @@ class QuestionManagement extends React.Component{
                 }
             })
             .catch(err=>{
-                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-            })
+    toast.error(err.message,{position: toast.POSITION.TOP_CENTER});            })
     }
 
     fillEmptyQuestions(questions,language){
@@ -73,7 +72,7 @@ class QuestionManagement extends React.Component{
     }
 
     saveQuestion(){
-        const { toastManager } = this.props;
+        
         let {selectedQuestion,referenceQuestion}=this.state;
         //eğer soru türkçe değilse, kişilik tipini türkçe referans sorudan alır.
         if(selectedQuestion.language!=="tr"){
@@ -81,11 +80,10 @@ class QuestionManagement extends React.Component{
         }
         ApiHelper.functions.question.createOrUpdate(this.state.selectedQuestion)
         .then(()=>{
-            toastManager.add('Soru kaydedildi', { appearance: 'success' ,autoDismiss: true,autoDismissTimeout:3000});
+            toast.success('Soru kaydedildi',{position: toast.POSITION.TOP_CENTER});
         })
         .catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-        })
+toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        })
     }
 
     handleQuestionChange(selectedQuestion){
@@ -126,4 +124,4 @@ class QuestionManagement extends React.Component{
     }
 }
 
-export default withToastManager(QuestionManagement);
+export default QuestionManagement;

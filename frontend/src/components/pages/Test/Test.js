@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Container,Transition,Segment,Radio,Progress,Icon,Image,Header } from 'semantic-ui-react';
 import { Redirect} from 'react-router-dom';
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import Intro from './Intro';
 import PulseButton from '../../common/PulseButton';
@@ -26,36 +26,41 @@ class Test extends React.Component{
     }
 
     componentDidMount(){
-        const {toastManager}=this.props;
+        
         ApiHelper.functions.test.getQuestions(1,"tr")
             .then(result=>{
                 let {currentQuestion,...rest}=result;
                 this.setState({currentQuestion: result.questions[currentQuestion-1],...rest});
             })
             .catch((err)=>{
-                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-            })
+    toast.error(err.message,{position: toast.POSITION.TOP_CENTER});            })
     }
 
     componentWillUnmount(){
         this.finishTest();
     }
 
-    testStart=()=>{
-        const {toastManager}=this.props;
+    testStart = () => {
+        let currentQuestion = this.state.currentQuestion;
 
-        let currentQuestion=this.state.currentQuestion;
-
-        if(!currentQuestion)//test just started,get the first question
+        if (!currentQuestion) //test just started,get the first question
         {
-            currentQuestion=Object.assign({},this.getQuestion(1));
+            currentQuestion = Object.assign({}, this.getQuestion(1));
         }
-        ApiHelper.functions.test.update({stage:"1",questionId:currentQuestion.id})
-            .then(result=>{
-                this.setState({currentQuestion,stage:"1"});
+        ApiHelper.functions.test.update({
+                stage: "1",
+                questionId: currentQuestion.id
             })
-            .catch((err)=>{
-                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
+            .then(result => {
+                this.setState({
+                    currentQuestion,
+                    stage: "1"
+                });
+            })
+            .catch((err) => {
+                toast.error(err.message, {
+                    position: toast.POSITION.TOP_CENTER
+                });
             })
     }
 
@@ -77,7 +82,7 @@ class Test extends React.Component{
     }
 
     applyAnswer=() => {
-        const {toastManager}=this.props;
+        
         const {currentQuestion,currentAnswer}=this.state;
         const answer={
             questionId:currentQuestion.id,
@@ -91,8 +96,7 @@ class Test extends React.Component{
                 this.moveToNextQuestion();
             })
             .catch((err)=>{
-                toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-            })
+    toast.error(err.message,{position: toast.POSITION.TOP_CENTER});            })
     }
 
     moveToNextQuestion=() => {
@@ -123,39 +127,39 @@ class Test extends React.Component{
                     <div className="progress">
                         <Progress indicating  value={this.state.currentQuestion.order} total={this.state.questions.length} progress='ratio'/>
                     </div>
-                        <section className="test">
-                            <Container>
-                                <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
-                                    <Segment textAlign='center' size='big' className="question">        
-                                        <div className="question-text">
-                                            <span>{this.state.currentQuestion.text}</span>
-                                        </div>
-                                        <div className="answers-container">
-                                            <div className="answers">
-                                                <div className="answer">
-                                                    <Radio label={options.option1} value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
-                                                </div>
-                                                <div className="answer">
-                                                    <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
-                                                </div>
-                                                <div className="answer">
-                                                    <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)} />
-                                                </div>
-                                                <div className="answer">
-                                                    <Radio label={options.option4} name='radioGroup' value={-1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
-                                                </div>
-                                                <div className="answer">
-                                                    <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer === 2} onChange={()=>this.selectAnwser(2)} />
-                                                </div>
+                    <section className="test">
+                        <Container>
+                            <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
+                                <Segment textAlign='center' size='big' className="question">        
+                                    <div className="question-text">
+                                        <span>{this.state.currentQuestion.text}</span>
+                                    </div>
+                                    <div className="answers-container">
+                                        <div className="answers">
+                                            <div className="answer">
+                                                <Radio label={options.option1} value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)} name='radioGroup'/>
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)} />
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option4} name='radioGroup' value={-1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer === 2} onChange={()=>this.selectAnwser(2)} />
                                             </div>
                                         </div>
-                                        <div className="submit">
-                                            <PulseButton onClick={this.handleAnswer}>Cevapla</PulseButton>
-                                        </div>
-                                    </Segment>
-                                </Transition>
-                            </Container>
-                        </section>
+                                    </div>
+                                    <div className="submit">
+                                        <PulseButton onClick={this.handleAnswer}>Cevapla</PulseButton>
+                                    </div>
+                                </Segment>
+                            </Transition>
+                        </Container>
+                    </section>
                 </div>
             </section>;
 
@@ -184,4 +188,4 @@ Test.propTypes = {
     testFinished:PropTypes.func.isRequired,
 }
 
-export default withToastManager(Test);
+export default Test;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Statistic,Loader } from 'semantic-ui-react'
-import {withToastManager} from 'react-toast-notifications';
+import { ToastContainer, toast } from "react-toastify";
 
 import ApiHelper from '../../../helpers/ApiHelper';
 
@@ -17,18 +17,16 @@ class Statistics extends Component {
     }
 
     componentDidMount(){
-        const {toastManager}=this.props;
-
         ApiHelper.functions.statistics.getAdmin()
         .then(result=>{
             this.setState({
-                stats:result
+                stats:result,
+                isLoading:false
             })
         })
-        .catch(err=>{
-            toastManager.add(err.message, { appearance: "error",autoDismiss: true,autoDismissTimeout:3000});
-        })
-        .finally(()=>{
+        .catch(err=>
+        {
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
             this.setState({isLoading:false});
         })
     }
@@ -73,4 +71,4 @@ class Statistics extends Component {
   }
 }
 
-export default withToastManager(Statistics)
+export default Statistics
