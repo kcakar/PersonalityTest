@@ -48,7 +48,6 @@ class App extends Component {
     }
 
     this.getResults=this.getResults.bind(this);
-    this.testFinished=this.testFinished.bind(this);
     this.saveUserToLocalStore=this.saveUserToLocalStore.bind(this);
   }
 
@@ -81,11 +80,6 @@ class App extends Component {
 
   getResults(){
       return this.state.results;
-  }
-
-  testFinished(personality){
-    const results=Object.assign({},personality);
-    this.setState({results});
   }
 
   saveUserToLocalStore(user,redirectFunc){
@@ -123,7 +117,7 @@ class App extends Component {
                 <PrivateRoute 
                   path={urls.test}
                   isAuthenticated={isLoggedIn&&role==="employee"}
-                  component={() => <Test getQuestion={this.getQuestion} getQuestionCount={this.getQuestionCount} testFinished={this.testFinished}/>}
+                  component={() => <Test/>}
                 />
                 <PrivateRoute 
                   path={urls.results}

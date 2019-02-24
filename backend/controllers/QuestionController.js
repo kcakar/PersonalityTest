@@ -1,7 +1,5 @@
 const models=require('../models');
-const Sequelize = require('sequelize');
 
-const Op = Sequelize.Op;
 
 const QuestionController={};
 
@@ -30,71 +28,6 @@ QuestionController.getAll=function(req,res){
     catch(err){
         res.sendStatus(400);
     }
-}
-
-QuestionController.getAllByUserByStage=function(req,res){
-    let {id,stage,language}=req.params;
-    let questions=[];
-    let options=[];
-
-    if(req.user.role==="employee" && req.user.id===parseInt(id)){
-        try{
-            models.question.findAll(
-                {
-                    attributes:["id","text","order"],
-                    where:{
-                        language:language,
-                        stage:stage
-                    }
-                }
-            ).then(result=>{
-                questions=result;
-                return models.testOption.findAll(
-                    {
-                        attributes:["option1","option2","option3","option4","option5"],
-                        where:{
-                            language:{[Op.eq]:req.params.language}
-                        }
-                    }
-                )
-            })
-            .then(dbOptions=>{
-                options=dbOptions.length>0 ? dbOptions[0]:[];
-                return models.testSession.findOne(
-                    {
-                        attributes: ["stage","stagePersonalityType"],
-                        where:{
-                            userId:req.user.id
-                        },
-                        include:[{
-                            model:models.question,
-                            attributes: ["order"]
-                        }]
-                    }
-                )
-            })
-            .then(session=>{
-                if(session)
-                {
-                    let currentQuestion=session.question?session.question.order:1;
-                    res.json({questions,options,stage:session.stage,currentQuestion});
-                }
-                else{
-                    res.json({questions,options});
-                }
-            })
-            .catch(err=>{
-                res.status(400).json({error:err});
-            });
-        }
-        catch(err){
-            res.sendStatus(400);
-        }
-    }
-    else{
-        res.sendStatus(401);
-    }
-    
 }
 
 QuestionController.getOne=function(req,res){

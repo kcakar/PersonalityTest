@@ -81,7 +81,6 @@ router.get('/question/:id',passport.authenticate('jwt', {session: false}),Questi
 
 router.get('/questions/:lang/',passport.authenticate('jwt', {session: false}),QuestionController.getAll);
 router.get('/questions/:lang/:order/',passport.authenticate('jwt', {session: false}),QuestionController.getByOrder);
-router.get('/employee/:id/stage/:stage/question/:language',passport.authenticate('jwt', {session: false}),QuestionController.getAllByUserByStage);
 
 //company
 router.post('/company/',passport.authenticate('jwt', {session: false}),CompanyController.createCompany);
@@ -97,6 +96,6 @@ router.get('/companies/',passport.authenticate('jwt', {session: false}),CompanyC
 router.post('/company/:id/test',passport.authenticate('jwt', {session: false}),TestSessionController.create);
 router.post('/employee/:id/test',passport.authenticate('jwt', {session: false}),TestSessionController.updateTest);
 router.post('/employee/:id/answer',passport.authenticate('jwt', {session: false}),TestSessionController.createAnswer);
-
+router.post('/employee/:id/stage/:lang',passport.authenticate('jwt', {session: false}),TestSessionController.getUserStage);
 
 module.exports = router;

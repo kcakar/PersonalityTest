@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Container,Transition,Segment,List,Header,Icon,Grid,Divider } from 'semantic-ui-react';
 import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
@@ -7,53 +6,47 @@ import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'rec
 import Loading from '../../common/Loading';
 import PrintButton from '../../common/PrintButton';
 
-import ResultData from '../../mockdata/Type6';
+import ApiHelper from '../../../helpers/ApiHelper';
 
 class Results extends React.Component{
-    constructor(props){
-        super(props);
-
-        this.state={
-            visible:false,
-            personality:null,
-            graph:[
-                { subject: '1', A: 0, fullMark: 100 },
-                { subject: '2', A: 0,  fullMark: 100 },
-                { subject: '3', A: 0,  fullMark: 100 },
-                { subject: '4', A: 0,  fullMark: 100 },
-                { subject: '5', A: 0,  fullMark: 100 },
-                { subject: '6', A: 0,  fullMark: 100 },
-                { subject: '7', A: 0,  fullMark: 100 },
-                { subject: '8', A: 0,  fullMark: 100 },
-                { subject: '9', A: 0,  fullMark: 100 },
-            ]
-        }
-
-        this.fillGraphData=this.fillGraphData.bind(this);
+    state={
+        visible:false,
+        personality:null,
+        graph:[
+            { subject: '1', A: 0, fullMark: 100 },
+            { subject: '2', A: 0,  fullMark: 100 },
+            { subject: '3', A: 0,  fullMark: 100 },
+            { subject: '4', A: 0,  fullMark: 100 },
+            { subject: '5', A: 0,  fullMark: 100 },
+            { subject: '6', A: 0,  fullMark: 100 },
+            { subject: '7', A: 0,  fullMark: 100 },
+            { subject: '8', A: 0,  fullMark: 100 },
+            { subject: '9', A: 0,  fullMark: 100 },
+        ]
     }
 
-    componentDidMount(){
+    componentDidMount=()=>{
+        ApiHelper.functions.test.getResults();
         const personality=Object.assign({},this.props.getResults());
-        this.fillGraphData(personality);
+        
+        // this.fillGraphData(personality);
         this.setState({personality,visible:true});
     }
 
-    fillGraphData(personality){
-        let graph=[];
-        if(Object.keys(personality).length>0)
-        {
-            for(let i=1;i<=9;i++){
-                let value=personality["type"+i];
-                if(value<0){
-                    value=0;
-                }
-                graph.push({subject:i,A:value,fullMark:100});
-            }
-            this.setState({graph});
-        }
-    }
-
-
+    // fillGraphData=(personality)=>{
+    //     let graph=[];
+    //     if(Object.keys(personality).length>0)
+    //     {
+    //         for(let i=1;i<=9;i++){
+    //             let value=personality["type"+i];
+    //             if(value<0){
+    //                 value=0;
+    //             }
+    //             graph.push({subject:i,A:value,fullMark:100});
+    //         }
+    //         this.setState({graph});
+    //     }
+    // }
 
     render(){
         let content= !this.state.personality? <Loading/>:
@@ -167,10 +160,6 @@ class Results extends React.Component{
 
         return content;
     }
-}
-
-Results.propTypes = {
-    getResults:PropTypes.func.isRequired,
 }
 
 export default Results;

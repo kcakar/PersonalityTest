@@ -30,7 +30,8 @@ class CustomerDasbhoard extends React.Component{
             }
             this.setState({visible:true,data,titles});
         }).catch(err=>{
-toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        });
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        
+        });
     }
 
     getStatData=()=>{
@@ -43,7 +44,8 @@ toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        });
             })
         })
         .catch(err=>{
-toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        })
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        
+        })
     }
 
     componentDidMount=()=>{

@@ -51,8 +51,8 @@ const urls={
         test:{
             create:(companyId)=>`${server}/company/${companyId}/test/`,
             update:(employeeId)=>`${server}/employee/${employeeId}/test/`,
-            getQuestions:(employeeId,stage,language)=>`${server}/employee/${employeeId}/stage/${stage}/question/${language}`,
             saveTestAnswer:(employeeId)=>`${server}/employee/${employeeId}/answer/`,
+            getStage:(employeeId,lang)=>`${server}/employee/${employeeId}/stage/${lang}`
         }
     },
 

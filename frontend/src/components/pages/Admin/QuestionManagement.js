@@ -49,7 +49,8 @@ class QuestionManagement extends React.Component{
                 }
             })
             .catch(err=>{
-    toast.error(err.message,{position: toast.POSITION.TOP_CENTER});            })
+                toast.error(err.message,{position: toast.POSITION.TOP_CENTER});            
+            })
     }
 
     fillEmptyQuestions(questions,language){
@@ -83,7 +84,8 @@ class QuestionManagement extends React.Component{
             toast.success('Soru kaydedildi',{position: toast.POSITION.TOP_CENTER});
         })
         .catch(err=>{
-toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        })
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});        
+        })
     }
 
     handleQuestionChange(selectedQuestion){

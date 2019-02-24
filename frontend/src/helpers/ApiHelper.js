@@ -312,21 +312,6 @@ const checkUsername=(username)=>{
     })
 }
 
-const getTestQuestions=(stage,language)=>{
-    return fetch(urls.api.test.getQuestions(ApiHelper.user.id,stage,language), {
-        ...ApiHelper.ajaxSettings(),
-        method: "GET",
-    }).then(response=>{
-        if(response.ok)
-        {
-            return response.json();
-        }
-        else{
-            throw Object.assign(new Error("Sorulara ulaşılamadı"),{ code: 402 });
-        }
-    })
-}
-
 const saveAnswer=(answer,nextQuestionId)=>{
     return fetch(urls.api.test.saveTestAnswer(ApiHelper.user.id), {
         ...ApiHelper.ajaxSettings(),
@@ -338,6 +323,24 @@ const saveAnswer=(answer,nextQuestionId)=>{
     }).then(response=>{
         if(!response.ok)
             throw Object.assign(new Error("Cevap kaydedilemedi"),{ code: 402 });
+    })
+}
+
+const getStage=(lang,deniedOptions)=>{
+    return fetch(urls.api.test.getStage(ApiHelper.user.id,lang), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+        body: JSON.stringify({
+            deniedOptions
+        }),
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Sorulara ulaşılamadı"),{ code: 402 });
+        }
     })
 }
 
@@ -379,9 +382,9 @@ ApiHelper.functions = {
     },
     test:{
         send:sendTest,
-        getQuestions:getTestQuestions,
         saveAnswer:saveAnswer,
-        update:updateTest
+        update:updateTest,
+        getStage:getStage
     },
     employee:{
         checkUsername:checkUsername

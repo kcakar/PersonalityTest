@@ -6,8 +6,7 @@ module.exports = (sequelize, dataTypes) => {
       validate: {
         notEmpty: true
       }
-    },
-
+    }
   });
 
   UserAnswer.associate = function(models) {
