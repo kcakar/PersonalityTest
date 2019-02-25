@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Container,Transition,Segment,Radio,Progress } from 'semantic-ui-react';
 import { Redirect} from 'react-router-dom';
 import {  toast } from "react-toastify";

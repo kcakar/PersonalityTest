@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment,Header,Transition,Button,Form,Input} from 'semantic-ui-react'
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import LanguageSelector from '../../common/LanguageSelector';
 import ApiHelper from '../../../helpers/ApiHelper';

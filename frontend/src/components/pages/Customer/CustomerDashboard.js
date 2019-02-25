@@ -1,6 +1,6 @@
 import React from 'react';
 import { Transition, Header, Grid } from 'semantic-ui-react';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import PersonnelTable from './PersonnelTable';
 import PersonnelByTypeGraph from './PersonnelByTypeGraph';

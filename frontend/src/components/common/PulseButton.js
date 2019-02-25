@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader,Button,Transition} from 'semantic-ui-react';
+import { Button,Transition} from 'semantic-ui-react';
 import {withRouter} from 'react-router-dom';
 
 

@@ -106,6 +106,7 @@ class SendTest extends Component {
     .replace(/[\u0300-\u036f]/g,'') // Remove illegal characters
     .replace(/\s+/g,'')            // Change whitespace to dashes
     .replace(/&/g,'')          // Replace ampersand
+    // eslint-disable-next-line
     .replace(/[^a-zA-Z0-9\-]/g,'')     // Remove anything that is not a letter, number or dash
     .replace(/-+/g,'-')             // Remove duplicate dashes
     .replace(/^-*/,'')              // Remove starting dashes

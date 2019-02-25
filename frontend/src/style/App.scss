@@ -493,7 +493,17 @@ section.admin-dashboard {
         margin: 2rem 0 3rem;
     }
 
+    .question-selector-tabs{
+        margin-bottom:1rem;
+    }
+
     .question-selector {
+        &.stage {
+            .ui.button {
+                width: 7.3rem;
+                border-radius: 0.5rem;
+            }
+        }
         .ui.button {
             width: 30px;
             height: 30px;
@@ -509,7 +519,7 @@ section.admin-dashboard {
             &.selected-question {
                 background-color: #333
             }
-        }
+        } 
     }
 
     .question-editor {

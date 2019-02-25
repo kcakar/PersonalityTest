@@ -7,7 +7,7 @@ import Loading from '../../common/Loading';
 import PrintButton from '../../common/PrintButton';
 
 import ApiHelper from '../../../helpers/ApiHelper';
-
+let ResultData={};
 class Results extends React.Component{
     state={
         visible:false,

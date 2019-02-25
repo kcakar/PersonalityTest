@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Statistic,Loader } from 'semantic-ui-react'
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import ApiHelper from '../../../helpers/ApiHelper';
 

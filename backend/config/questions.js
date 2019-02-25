@@ -419,16 +419,8 @@ const stage1 = [
   },
   {
     text:
-      "Hızlı ve pratik düşünen, heyecanlı yaşayıp hayatın tadını çıkarmayı seven biriyim.",
-    order: 54,
-    personalityType: 7,
-    language: "tr",
-    stage: "1"
-  },
-  {
-    text:
       "İnsanları anlamak ve kendimi anlatmak benim için önemlidir ancak bu durum beni durum zaman zaman beni çok yorar.",
-    order: 55,
+    order: 54,
     personalityType: 4,
     language: "tr",
     stage: "1"
@@ -436,7 +428,7 @@ const stage1 = [
   {
     text:
       "Beni zorlamadıkları sürece doğru bulmasam da, herkesi olduğu gibi kabul ederim.",
-    order: 56,
+    order: 55,
     personalityType: 9,
     language: "tr",
     stage: "1"
@@ -444,7 +436,7 @@ const stage1 = [
   {
     text:
       "Ufak bir ima ve olumsuzluk sezdiğim zaman insanların asıl niyetleri konusunda şüphelenirim ve temkinli davranırırım.",
-    order: 57,
+    order: 56,
     personalityType: 6,
     language: "tr",
     stage: "1"
@@ -452,7 +444,7 @@ const stage1 = [
   {
     text:
       "Himayesindeki kişilere koruyucu ve yönlendirici olan, her tür zorluklara dayanıklı, hızlı ve cesur kararlar alan biriyim.",
-    order: 58,
+    order: 57,
     personalityType: 8,
     language: "tr",
     stage: "1"
@@ -460,7 +452,7 @@ const stage1 = [
   {
     text:
       "Zamanımı ve enerjimi çoğunlukla kendime ayırırım, çevremdekilerden beklentim yok denecek kadar azdır.",
-    order: 59,
+    order: 58,
     personalityType: 5,
     language: "tr",
     stage: "1"
@@ -468,7 +460,7 @@ const stage1 = [
   {
     text:
       "Kural ve prosedürleri önemserim, insanların bu konudaki duyarsızlığından çok rahatsız olurum.",
-    order: 60,
+    order: 59,
     personalityType: 1,
     language: "tr",
     stage: "1"
@@ -476,7 +468,7 @@ const stage1 = [
   {
     text:
       "Kendimi bulmak ve anlamak temel arayışlarımdandır ve bu konuda duygusal dürüstlük benim için önemlidir.",
-    order: 61,
+    order: 60,
     personalityType: 4,
     language: "tr",
     stage: "1"
@@ -484,21 +476,21 @@ const stage1 = [
   {
     text:
       "Şüpheli, öngörülemeyen veya yolunda gitmeyen durumlar hemen dikkatimi çeker. Bu durumda tedirgin ve endişeli olurum.",
-    order: 62,
+    order: 61,
     personalityType: 6,
     language: "tr",
     stage: "1"
   },
   {
     text: "Hayatı anlamanın ancak bilgiyle mümkün olacağına inanırım.",
-    order: 63,
+    order: 62,
     personalityType: 5,
     language: "tr",
     stage: "1"
   },
   {
     text: "Karar verirken akılcı olup en doğru olan ne ise onu yaparım.",
-    order: 64,
+    order: 63,
     personalityType: 1,
     language: "tr",
     stage: "1"

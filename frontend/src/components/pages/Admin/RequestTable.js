@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table,Pagination,Popup ,Input,Header,Transition} from 'semantic-ui-react';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import CreditModal from './CreditModal';
 import ApiHelper from '../../../helpers/ApiHelper';

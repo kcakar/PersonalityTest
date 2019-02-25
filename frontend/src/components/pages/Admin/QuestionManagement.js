@@ -1,51 +1,36 @@
 import React from 'react';
-import {Segment,Header,Transition,Button} from 'semantic-ui-react'
-import { ToastContainer, toast } from "react-toastify";
+import {Segment,Header,Transition} from 'semantic-ui-react'
+import { toast } from "react-toastify";
 
 import QuestionEditor from './QuestionEditor';
 import LanguageSelector from '../../common/LanguageSelector';
 import ApiHelper from '../../../helpers/ApiHelper';
+import QuestionSelector from './QuestionSelector';
 
 class QuestionManagement extends React.Component{ 
-    constructor(props){
-        super(props);
-
-        this.state={
-            visible:false,
-            data:[],
-            language:"tr",
-            turkishQuestions:[],
-            selectedQuestion:null,
-            referenceQuestion:null,
-            selectedOrder:0,
-        }
-
-        this.fillEmptyQuestions=this.fillEmptyQuestions.bind(this);
-        this.handleLanguageChange=this.handleLanguageChange.bind(this);
-        this.handleQuestionChange=this.handleQuestionChange.bind(this);
-        this.saveQuestion=this.saveQuestion.bind(this);
-        this.selectQuestion=this.selectQuestion.bind(this);
+    state={
+        visible:false,
+        turkishQuestions:[],
+        data:[],
+        language:"tr",
+        selectedQuestion:null,
+        referenceQuestion:null
     }
 
-    componentDidMount(){
+    componentDidMount=()=>{
         this.getQuestionsByLanguage(this.state.language);
     }
 
-    handleLanguageChange(e,{value}){
-        this.getQuestionsByLanguage(value);
-    }
-
-    getQuestionsByLanguage(language){
-        
+    getQuestionsByLanguage=(language)=>{
         return ApiHelper.functions.question.getAllByLanguage(language)
             .then(data=>{
                 data=this.fillEmptyQuestions(data,language);
                 if(language==="tr"){
-                 this.setState({visible:true,language,data,turkishQuestions:data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:data[0]})
+                 this.setState({visible:true,language,data,turkishQuestions:data,selectedQuestion:data[0],referenceQuestion:data[0]})
                 }
                 else{
                  const referenceQuestion=this.state.turkishQuestions.find(q=>q.order===1);
-                 this.setState({visible:true,language,data,selectedOrder:1,selectedQuestion:data[0],referenceQuestion:referenceQuestion })
+                 this.setState({visible:true,language,data,selectedQuestion:data[0],referenceQuestion:referenceQuestion })
                 }
             })
             .catch(err=>{
@@ -53,27 +38,47 @@ class QuestionManagement extends React.Component{
             })
     }
 
-    fillEmptyQuestions(questions,language){
-        let data=[];
-        for(let i=1;i<64;i++){
-            const question=questions.find(x=>x.order===i);
-            data.push(question||this.getNewQuestionModel(i,language))
+    handleLanguageChange=(e,{value})=>{
+        this.getQuestionsByLanguage(value);
+    }
+
+    fillEmptyQuestions=(questions,language)=>{
+        let {turkishQuestions}=this.state;
+        if(language==="tr")//no eempty questions for turkish
+        {
+            return questions;
         }
-        return data;
+        else{
+            let data=turkishQuestions.map(turkishQuestion=>{
+                const question = questions.find(x =>
+                    x.order === turkishQuestion.order &&
+                    x.stage === turkishQuestion.stage &&
+                    x.personalityType === turkishQuestion.personalityType &&
+                    x.wingType === turkishQuestion.wingType &&
+                    x.altType === turkishQuestion.altType);
+
+                return question || this.getNewQuestionModel(turkishQuestion,language);
+            })
+            return data;
+        }
     }
     
-    getNewQuestionModel(order,language){
-        return {text:"",order,personalityType:1,language};
+    getNewQuestionModel=(turkishQuestion,newLanguage)=>{
+        let {language,text,id,...rest}=turkishQuestion;
+        return {
+                text:"",
+                language:newLanguage,
+                ...rest
+            };
     }
 
-    selectQuestion(selectedOrder){
-        const selectedQuestion=this.state.data.find((q)=>q.order===selectedOrder);
-        const referenceQuestion=this.state.turkishQuestions.find((q)=>q.order===selectedOrder);
-        this.setState({selectedQuestion,selectedOrder,referenceQuestion});
+    selectQuestion=(question)=>{
+        const selectedQuestion=this.state.data.find((q)=>q.order===question.order && q.stage===question.stage && q.personalityType===question.personalityType && q.wingType===question.wingType && q.altType===question.altType);
+        const referenceQuestion=this.state.turkishQuestions.find((q)=>q.order===question.order && q.stage===question.stage && q.personalityType===question.personalityType && q.wingType===question.wingType && q.altType===question.altType);
+        this.setState({selectedQuestion,referenceQuestion});
     }
 
-    saveQuestion(){
-        
+    saveQuestion=()=>{
         let {selectedQuestion,referenceQuestion}=this.state;
         //eğer soru türkçe değilse, kişilik tipini türkçe referans sorudan alır.
         if(selectedQuestion.language!=="tr"){
@@ -88,12 +93,12 @@ class QuestionManagement extends React.Component{
         })
     }
 
-    handleQuestionChange(selectedQuestion){
+    handleQuestionChange=(selectedQuestion)=>{
         this.setState({selectedQuestion});
     }
 
     render(){
-        const {data,selectedQuestion,selectedOrder,referenceQuestion}=this.state;
+        const {data,selectedQuestion,referenceQuestion}=this.state;
         return (
         <Transition visible={this.state.visible} animation='fade' duration={500}>
             <div className="request-table">
@@ -103,15 +108,11 @@ class QuestionManagement extends React.Component{
                     <p>Aşağıdaki ekranda seçili dil için çevirisi olan sorular yeşil, olmayan sorular ise kırmızı ile işaretlenmiştir. İlgili sayıya tıklayarak soruyu düzenleyebilirsiniz.</p>
                     <p>Bir dildeki tüm soruları çevirirseniz, dil sistemde otomatik olarak aktifleşecektir.</p>
                     <p>Bir sorunun puanlanacak kişilik tipini sadece Türkçe'den değiştirebilirsiniz. Değişiklik tüm dilleri etkiler.</p>
-                    <Segment className="question-selector">
-                        {data.map((question,index)=>
-                            {
-                                const order=index+1;
-                                const color = question.text ?"green":"red";
-                                return <Button className={selectedOrder===order?"selected-question":""} onClick={()=>this.selectQuestion(order)} key={order} color={color}>{order}</Button>
-                            }
-                        )}
-                    </Segment>
+                    <QuestionSelector 
+                        selectQuestion={this.selectQuestion} 
+                        selectedQuestion={selectedQuestion} 
+                        questionData={data}
+                    />
                     <QuestionEditor 
                         selectedQuestion={selectedQuestion} 
                         referenceQuestion={referenceQuestion} 

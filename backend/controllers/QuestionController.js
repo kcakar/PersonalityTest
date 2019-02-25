@@ -12,7 +12,7 @@ QuestionController.getAll=function(req,res){
     try{
         models.question.findAll(
             {
-                attributes:["id","text","order","personalityType","stage"],
+                attributes:["id","text","order","personalityType","wingType","altType","stage"],
                 where:{
                     language:req.params.lang
                 }
@@ -87,21 +87,10 @@ QuestionController.createOrUpdate=function(req,res){
             .then(dbQuestion=>{
                 if(dbQuestion)
                 {
-                    //soru dili türkçe ise ve kişilik tipi değiştiyse tüm dillerde değişmeli
-                    if(dbQuestion.language==="tr" && dbQuestion.personalityType!==question.personalityType){
-                        return models.question.update({personalityType:question.personalityType},{
-                            where:{
-                                order:dbQuestion.order
-                            }
-                        }).then(count=>{
-                            return dbQuestion.update({...question})
-                        })
-                    }//sadece soruyu update et
-                    else{
-                        return dbQuestion.update({...question})
-                    }
+                    return dbQuestion.update({text:question.text})
                 }
                 else{//bu dilde bu soru yok, baştan yarat
+                    console.log(question)
                     return models.question.create({...question})
                 }
             })

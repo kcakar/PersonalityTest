@@ -22,10 +22,10 @@ StatisticController.getAdminStats=function(req,res){
             return models.user.count({where:{role:"company"}})
         }).then(result=>{
             companies=result || 0;
-            return models.user.count(
+            return models.testSession.count(
                 {
                     where:{
-                        testEndDate:{
+                        altType:{
                             [Op.ne]:null
                             }
                         }

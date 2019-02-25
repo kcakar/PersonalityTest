@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import ApiHelper from '../../../helpers/ApiHelper';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 class CreditModal extends React.Component{
   constructor(props)
