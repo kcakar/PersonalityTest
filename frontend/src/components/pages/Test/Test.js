@@ -6,6 +6,7 @@ import {  toast } from "react-toastify";
 import Intro from './Intro';
 import PulseButton from '../../common/PulseButton';
 import ApiHelper from '../../../helpers/ApiHelper';
+import urls from '../../../helpers/URLs';
 
 class Test extends React.Component{
     state={
@@ -34,16 +35,17 @@ class Test extends React.Component{
     componentDidMount(){
         ApiHelper.functions.test.getStage("tr")
             .then(result=>{
-                if(!result.stage.isFinished)
+                if(result.stage!=="finished")
                 {
-                    this.setState({isFinished:true,currentQuestion:null,currentAnswer:0})
-                }
-                else{
+                    console.log("1")
                     let {currentQuestion,...rest}=result;
                     if(result.questions){
                         currentQuestion= result.questions[currentQuestion-1]
                     }
                     this.setState({currentQuestion,...rest});
+                }
+                else{
+                    this.setState({isFinished:true,currentQuestion:null,currentAnswer:0})
                 }
             })
             .catch((err)=>{
@@ -56,7 +58,7 @@ class Test extends React.Component{
 
         if (!currentQuestion) //test just started,get the first question
         {
-            currentQuestion = Object.assign({}, this.getQuestion(1));
+            currentQuestion = Object.assign({}, this.state.questions[0]);
         }
         ApiHelper.functions.test.update({
                 stage: "1",
@@ -90,17 +92,17 @@ class Test extends React.Component{
     }
 
     handleAnswer=() => {
-        const {currentQuestion,currentAnswer}=this.state;
+        const {currentQuestion,currentAnswer,questions}=this.state;
 
         const answer={
             questionId:currentQuestion.id,
             selectedOption:currentAnswer.toString()
         };
-        const nextQuestion=this.getQuestion(currentQuestion.order+1);
+        const nextQuestion=questions[currentQuestion.order - 1];
         const nextQuestionId=nextQuestion?nextQuestion.id:null;
         ApiHelper.functions.test.saveAnswer(answer,nextQuestionId)
             .then(result=>{
-                this.setState({...result});
+                // this.setState({...result});
                 this.moveToNextQuestion();
             })
             .catch((err)=>{
@@ -184,7 +186,7 @@ class Test extends React.Component{
             wingType:this.state.currentAnswer
         })
         .then(result => {
-            this.getStage();
+            this.setState({deniedOptions:[]},this.getStage)
         })
         .catch((err) => {
             toast.error(err.message, {
@@ -197,7 +199,7 @@ class Test extends React.Component{
         ApiHelper.functions.test.getStage(this.state.language,deniedOptions)
         .then(result=>
             {
-                if(!result.stage.isFinished)
+                if(result.stage!=="finished")
                 {
                     this.setState({stage:result.stage,stageOptions:result.stageOptions})
                 }
@@ -229,7 +231,7 @@ class Test extends React.Component{
                     </div>
                     <section className="test">
                         <Container>
-                            {/* <Transition visible={this.state.questionVisible} animation='fade' duration={100}> */}
+                            <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                                 <Segment textAlign='center' size='big' className="question">        
                                     <div className="question-text">
                                         <span>{this.state.currentQuestion.text}</span>
@@ -257,7 +259,7 @@ class Test extends React.Component{
                                         <PulseButton onClick={this.handleAnswer} isLoading={this.state.isLoadingButton}>Cevapla</PulseButton>
                                     </div>
                                 </Segment>
-                            {/* </Transition> */}
+                            </Transition>
                         </Container>
                     </section>
                 </div>
@@ -357,7 +359,7 @@ class Test extends React.Component{
     render(){
         const {stage,questions}=this.state;
         if(this.state.isFinished){
-            return <Redirect to="/Results" />
+            return <Redirect to={urls.results} />
         }
         switch (stage) {
             case "-1":

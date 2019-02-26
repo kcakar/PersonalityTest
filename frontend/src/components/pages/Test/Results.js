@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Container,Transition,Segment,List,Header,Icon,Grid,Divider } from 'semantic-ui-react';
 import {Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
+import {  toast } from "react-toastify";
 
 import Loading from '../../common/Loading';
 import PrintButton from '../../common/PrintButton';
@@ -22,11 +23,57 @@ class Results extends React.Component{
             { subject: '7', A: 0,  fullMark: 100 },
             { subject: '8', A: 0,  fullMark: 100 },
             { subject: '9', A: 0,  fullMark: 100 },
-        ]
+        ],
+        ResultData:{
+            header:"",
+            intro:{
+                header:"",
+                list:[]
+            },
+            description:{
+                header:"",
+                paragraphs:[],
+                caption:{
+                    quote:"",
+                    owner:""
+                }
+            },
+            sentences:{
+                header:"",
+                quotes:[]
+            },
+            wing:{
+                header:"",
+                w1:{
+                    header:"",
+                    list:[]
+                },
+                w2:{
+                    header:"",
+                    list:[]
+                },
+                caption:{
+                    quote:"",
+                    owner:""
+                }
+            }
+        },
+        session:{
+            wingType:-1,
+            altType:-1,
+            personalityType:-1
+        }
     }
 
     componentDidMount=()=>{
-        ApiHelper.functions.test.getResults();
+        console.log("1")
+        ApiHelper.functions.test.getResults()
+        .then(result=>{
+            this.setState({session:result.result});
+        })
+        .catch((err)=>{
+            toast.error(err.message,{position: toast.POSITION.TOP_CENTER});
+        })
         const personality=Object.assign({},this.props.getResults());
         
         // this.fillGraphData(personality);
@@ -49,6 +96,7 @@ class Results extends React.Component{
     // }
 
     render(){
+        const {ResultData,session}=this.state;
         let content= !this.state.personality? <Loading/>:
             <section className="results-container centered">
                 <PrintButton printElementId="print" label="PDF olarak kaydet"></PrintButton>
@@ -56,8 +104,14 @@ class Results extends React.Component{
                     <section className="results" id="print">
                         <Container>
                             <Segment className="page" textAlign='left' size='large'>  
-                        
-                                <Header as='h2' icon textAlign='center'>
+                                <p>
+                                    Geçici yazı:
+                                    Kişilik tipi:{session.personalityType}
+                                    Kanat tipi:{session.wingType}
+                                    Alt tip:{session.altType}
+
+                                </p>
+                                {/* <Header as='h2' icon textAlign='center'>
                                     <Icon name='users' circular />
                                     <Header.Content>{ResultData.header}</Header.Content>
                                 </Header>
@@ -150,7 +204,7 @@ class Results extends React.Component{
                                         <figcaption>{ResultData.wing.caption.owner}</figcaption>
                                         <hr/>
                                     </figure>
-                                </div>
+                                </div> */}
                             </Segment>
                         </Container>
                     </section>

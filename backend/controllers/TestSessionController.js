@@ -172,7 +172,7 @@ TestSessionController.createAnswer = function(req, res) {
             if (!session.question) {
               updateObject.startDate = new Date();
             } else if (
-              defaultQuestions.stage1Length === session.question.order
+              defaultQuestions.stage1Length === session.question.order+1
             ) {
               updateObject.stage = "2-1";
             }
@@ -355,7 +355,7 @@ TestSessionController.getStageOne = function(req, res, session) {
     .then(dbOptions => {
       options = dbOptions.length > 0 ? dbOptions[0] : [];
       let currentQuestion = session.question ? session.question.order : 1;
-      res.json({ questions, options, stage: "1", currentQuestion });
+      res.json({ questions, options, stage: session.stage, currentQuestion });
     })
     .catch(err => {
       console.log(err);
@@ -488,4 +488,19 @@ TestSessionController.getStage4Question = function(req, res, session) {
       res.status(400).json({ errors: errors });
     });
 };
+
+TestSessionController.getResults = function(req, res) {
+  models.testSession
+    .findOne({
+      where: {
+        userId: req.user.id
+      }
+    })
+    .then(result => {
+      res.json({ result });
+    })
+    .catch(err => {
+      res.status(400).json({ error: err });
+    });
+}
 module.exports = TestSessionController;

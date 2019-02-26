@@ -1,5 +1,5 @@
-// const server="https://personality-test-kcakar.herokuapp.com/api/v1";
-const server="http://localhost:3001/api/v1";
+const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+// const server="http://localhost:3001/api/v1";
 
 const urls={
     server,
@@ -52,7 +52,8 @@ const urls={
             create:(companyId)=>`${server}/company/${companyId}/test/`,
             update:(employeeId)=>`${server}/employee/${employeeId}/test/`,
             saveTestAnswer:(employeeId)=>`${server}/employee/${employeeId}/answer/`,
-            getStage:(employeeId,lang)=>`${server}/employee/${employeeId}/stage/${lang}`
+            getStage:(employeeId,lang)=>`${server}/employee/${employeeId}/stage/${lang}`,
+            getResults:(employeeId)=>`${server}/employee/${employeeId}/results/`
         }
     },
 

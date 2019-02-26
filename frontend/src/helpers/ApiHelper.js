@@ -344,6 +344,21 @@ const getStage=(lang,deniedOptions)=>{
     })
 }
 
+const getResults=(empoyeeId)=>{
+    return fetch(urls.api.test.getResults(ApiHelper.user.id), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Sonuçlara ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -384,7 +399,8 @@ ApiHelper.functions = {
         send:sendTest,
         saveAnswer:saveAnswer,
         update:updateTest,
-        getStage:getStage
+        getStage:getStage,
+        getResults:getResults
     },
     employee:{
         checkUsername:checkUsername
