@@ -5,6 +5,8 @@
 $secondary-font-color:#e96132;
 $header-width:6rem;
 $test-background-color:#eceae5;
+$main-website-color:#1c2f4d;
+$secondary-website-color:#d7bd73;
 
 #root,
 .App {
@@ -707,4 +709,153 @@ section.login {
 
 select{
 font-size: 50px;
+}
+
+//website
+.main-website{
+    header{
+        nav{
+            width:100%;
+
+            ul{
+                max-width: 1250px;
+                margin:0 auto;
+                padding:1.7em 5em;
+                width:100%;
+                display:flex;
+                justify-content: flex-end;
+                li{
+                    list-style: none;
+                    color:#fafafa;
+     
+                    &:not(.phone),&:not(.brand){
+                        margin: 0 1em;
+                    }
+    
+                    &:last-of-type{
+                       margin-right:0;
+                    }
+    
+                    & a{
+                        transition:color .2s linear;
+                    }
+                    & a:hover{
+                        color:$secondary-website-color;
+                    }
+                }
+            }
+
+            &.top{
+                background-color:$main-website-color;
+                .phone{
+                    flex-grow: 1;
+                    font-size:1.25em;
+                    i{
+                        font-size:0.9em;
+                    }
+                 }
+
+                 i{
+                     font-size:1.3em;
+                 }
+            }
+
+            &.bottom{
+                ul{
+                    padding-top:1em;
+                }
+                li{
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                }
+                a{
+                    color:rgba(0,0,0,0.6);
+                    font-size:1.4em;
+                    letter-spacing: 0.11em;
+                    &:hover{
+                        color:#1c2f4d
+                    }
+                }
+
+                .brand{
+                    flex-grow: 1;
+
+                    a{
+                        display: flex;
+                        color:$main-website-color;
+                        font-size:3em;
+                        font-weight: 700;
+                        letter-spacing: 0.05em;
+                        align-items: center;
+                    }
+
+                    img{
+                        height:2em;
+                    }
+
+                    span{
+                        margin:0 0.3em 0;
+                        display: block;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .hero{
+        display: flex;
+        max-width: 1250px;
+        margin:0 auto;
+
+        aside{
+            flex-basis:50%;
+        }
+
+        .man{
+            position: relative;
+            height: 56.2em;
+            img{
+                height:100em;
+            }
+        }
+
+        .content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding:1em;
+
+            h1{
+                color:#222222;
+                font-size:5em;
+            }
+
+            p{
+                font-size:1.5em;
+                line-height: 2em;
+            }
+        }
+    }
+
+    .info{
+        height:50em;
+        background-color:#f0f0f0;
+
+        .content{
+            display: flex;
+            max-width: 1250px;
+            margin:0 auto;
+            justify-content: flex-end;
+            
+            .info-lot{
+                padding:15em 2em;
+                text-align: center;
+                h2{
+                    color:black;
+                }
+            }
+        }
+    }
 }

@@ -11,6 +11,7 @@ import AdminDashboard from './components/pages/Admin/AdminDashboard';
 import Login from './components/pages/Authorization/Login';
 import RedirectToLogin from './components/common/RedirectToLogin';
 import UserMenu from './components/common/UserMenu';
+import MainPage from './components/pages/Website/MainPage';
 
 //common stuff
 // import WebSidebar from './components/common/WebSidebar';
@@ -107,9 +108,10 @@ class App extends Component {
       <Router>
           <div className="App">
               <main>
-                {
+                <Route exact path={urls.homepage} render={()=><MainPage/>} /> 
+                {/* {
                   visible && !isLoggedIn && <RedirectToLogin/>
-                }
+                } */}
                 <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
                 {
                   isLoggedIn && <UserMenu logout={this.logout}/>

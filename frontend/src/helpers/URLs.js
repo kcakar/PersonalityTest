@@ -1,9 +1,9 @@
-const server="https://personality-test-kcakar.herokuapp.com/api/v1";
-// const server="http://localhost:3001/api/v1";
+// const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+const server="http://localhost:3001/api/v1";
 
 const urls={
     server,
-    homepage:"/enneagram",
+    homepage:"/",
     test:"/enneagram/Test",
     results:"/enneagram/Test/Results",
     customerPanel:(id="")=>`/enneagram/Management/${id}`,
