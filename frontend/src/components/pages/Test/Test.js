@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container,Transition,Segment,Radio,Progress } from 'semantic-ui-react';
+import { Container,Transition,Segment,Radio,Progress,Image,Header } from 'semantic-ui-react';
 import { Redirect} from 'react-router-dom';
 import {  toast } from "react-toastify";
 
@@ -7,6 +7,7 @@ import Intro from './Intro';
 import PulseButton from '../../common/PulseButton';
 import ApiHelper from '../../../helpers/ApiHelper';
 import urls from '../../../helpers/URLs';
+import logo from '../../../assets/enneagram.svg';
 
 class Test extends React.Component{
     state={
@@ -37,7 +38,6 @@ class Test extends React.Component{
             .then(result=>{
                 if(result.stage!=="finished")
                 {
-                    console.log("1")
                     let {currentQuestion,...rest}=result;
                     if(result.questions){
                         currentQuestion= result.questions[currentQuestion-1]
@@ -45,7 +45,7 @@ class Test extends React.Component{
                     this.setState({currentQuestion,...rest});
                 }
                 else{
-                    this.setState({isFinished:true,currentQuestion:null,currentAnswer:0})
+                    this.setState({isFinished:true,stage:result.stage,currentQuestion:null,currentAnswer:0})
                 }
             })
             .catch((err)=>{
@@ -179,11 +179,16 @@ class Test extends React.Component{
     handleStage3Answer=()=>{
         this.saveWingType();
     }
+
+    getOtherWingOption=()=>{
+        const option= this.state.stageOptions.find(o=>{return o.wingType!==this.state.currentAnswer});
+        return option.wingType;
+    }
     
     saveWingType=()=>{
         ApiHelper.functions.test.update({
             stage: "4-1",
-            wingType:this.state.currentAnswer
+            wingType:this.getOtherWingOption()
         })
         .then(result => {
             this.setState({deniedOptions:[]},this.getStage)
@@ -204,7 +209,7 @@ class Test extends React.Component{
                     this.setState({stage:result.stage,stageOptions:result.stageOptions})
                 }
                 else{
-                    this.setState({isFinished:true,currentQuestion:null,currentAnswer:0})
+                    this.setState({isFinished:true,stage:result.stage,currentQuestion:null,currentAnswer:0})
                 }
             })
         .catch(err=>toast.error(err.message,{position: toast.POSITION.TOP_CENTER}));
@@ -239,24 +244,24 @@ class Test extends React.Component{
                                     <div className="answers-container">
                                         <div className="answers">
                                             <div className="answer">
-                                                <Radio label={options.option1} name='radioGroup' value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)}/>
-                                            </div>
-                                            <div className="answer">
-                                                <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
-                                            </div>
-                                            <div className="answer">
-                                                <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  0} onChange={()=>this.selectAnwser(0)} />
+                                                <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  2} onChange={()=>this.selectAnwser(2)} />
                                             </div>
                                             <div className="answer">
                                                 <Radio label={options.option4} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  1} onChange={()=>this.selectAnwser(1)} />
                                             </div>
                                             <div className="answer">
-                                                <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  2} onChange={()=>this.selectAnwser(2)} />
+                                                <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  0} onChange={()=>this.selectAnwser(0)} />
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
+                                            </div>
+                                            <div className="answer">
+                                                <Radio label={options.option1} name='radioGroup' value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)}/>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="submit">
-                                        <PulseButton onClick={this.handleAnswer} isLoading={this.state.isLoadingButton}>Cevapla</PulseButton>
+                                        <PulseButton onClick={this.handleAnswer} isLoading={this.state.isLoadingButton}>İlerle</PulseButton>
                                     </div>
                                 </Segment>
                             </Transition>
@@ -274,7 +279,7 @@ class Test extends React.Component{
                             <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                                 <Segment textAlign='center' size='big' className="question">        
                                     <div className="question-text">
-                                        <span>Aşağıdaki ifadelerden size en uzak olanı hangisi?</span>
+                                        <span>Aşağıdaki ifadelerden size en <b>uzak</b> olan hangisi?</span>
                                     </div>
                                     <div className="answers-container">
                                         <div className="answers">
@@ -286,7 +291,7 @@ class Test extends React.Component{
                                         </div>
                                     </div>
                                     <div className="submit">
-                                        <PulseButton onClick={this.handleStage2Answer}>Cevapla</PulseButton>
+                                        <PulseButton onClick={this.handleStage2Answer}>İlerle</PulseButton>
                                     </div>
                                 </Segment>
                             </Transition>
@@ -304,7 +309,7 @@ class Test extends React.Component{
                             <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                                 <Segment textAlign='center' size='big' className="question">        
                                     <div className="question-text">
-                                        <span>Aşağıdaki ifadelerden size en yakın olanı hangisi?</span>
+                                        <span>Aşağıdaki ifadelerden size en <b>uzak</b> olanı hangisi?</span>
                                     </div>
                                     <div className="answers-container">
                                         <div className="answers">
@@ -316,7 +321,7 @@ class Test extends React.Component{
                                         </div>
                                     </div>
                                     <div className="submit">
-                                        <PulseButton onClick={this.handleStage3Answer}>Cevapla</PulseButton>
+                                        <PulseButton onClick={this.handleStage3Answer}>İlerle</PulseButton>
                                     </div>
                                 </Segment>
                             </Transition>
@@ -334,7 +339,7 @@ class Test extends React.Component{
                             <Transition visible={this.state.questionVisible} animation='fade' duration={100}>
                                 <Segment textAlign='center' size='big' className="question">        
                                     <div className="question-text">
-                                        <span>Aşağıdaki ifadelerden size en uzak olanı hangisi?</span>
+                                        <span>Aşağıdaki ifadelerden size en <b>uzak</b> olan hangisi?</span>
                                     </div>
                                     <div className="answers-container">
                                         <div className="answers">
@@ -346,7 +351,7 @@ class Test extends React.Component{
                                         </div>
                                     </div>
                                     <div className="submit">
-                                        <PulseButton onClick={this.handleStage4Answer}>Cevapla</PulseButton>
+                                        <PulseButton onClick={this.handleStage4Answer}>İlerle</PulseButton>
                                     </div>
                                 </Segment>
                             </Transition>
@@ -356,11 +361,31 @@ class Test extends React.Component{
             </section>;
     }
 
+    renderFinish=()=>{
+        return <div className="intro-container flex-center">
+        <section className="intro flex-center">
+                <Transition visible={this.state.visible} animation='scale' duration={500}>
+                    <Container className="centered" text>
+                        <Segment textAlign='center' size='big' >
+                            <Image src={logo} size='medium' circular />  
+                            <Header as='h1'>Tria Akademi</Header>    
+                            <ul>
+                                <li>Test tamamlanmıştır.<br/> Teşekkür ederiz.</li>
+                            </ul>
+                        </Segment>
+                    </Container>
+                </Transition>
+            </section>
+            </div>
+
+
+    }
+
     render(){
         const {stage,questions}=this.state;
-        if(this.state.isFinished){
-            return <Redirect to={urls.results} />
-        }
+        // if(this.state.isFinished){
+        //     return <Redirect to={urls.results} />
+        // }
         switch (stage) {
             case "-1":
                 return <Intro isLoaded={questions.length>0} testStart={this.testStart}/>
@@ -378,6 +403,8 @@ class Test extends React.Component{
                 return this.renderStage4();
             case "4-2":
                 return this.renderStage4();
+            case "finished":
+                return this.renderFinish();
             default:
             return <Intro isLoaded={questions.length>0} testStart={this.testStart}/>
         }

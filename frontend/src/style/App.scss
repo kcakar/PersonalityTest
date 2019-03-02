@@ -5,8 +5,6 @@
 $secondary-font-color:#e96132;
 $header-width:6rem;
 $test-background-color:#eceae5;
-$main-website-color:#1c2f4d;
-$secondary-website-color:#d7bd73;
 
 #root,
 .App {
@@ -711,8 +709,23 @@ select{
 font-size: 50px;
 }
 
+$website-header-color:#222222;
+$main-website-color:#1c2f4d;
+$secondary-website-color:#d7bd73;
 //website
 .main-website{
+    .content{
+        max-width: 1250px;
+        margin:0 auto;
+    }
+    h1,h2,h3,h4,h5,h6{
+        color:$website-header-color;
+    }
+
+    h2{
+        font-size:4em;
+    }
+
     header{
         nav{
             width:100%;
@@ -720,7 +733,7 @@ font-size: 50px;
             ul{
                 max-width: 1250px;
                 margin:0 auto;
-                padding:1.7em 5em;
+                padding:1.2em 5em;
                 width:100%;
                 display:flex;
                 justify-content: flex-end;
@@ -739,6 +752,7 @@ font-size: 50px;
                     & a{
                         transition:color .2s linear;
                     }
+
                     & a:hover{
                         color:$secondary-website-color;
                     }
@@ -749,7 +763,7 @@ font-size: 50px;
                 background-color:$main-website-color;
                 .phone{
                     flex-grow: 1;
-                    font-size:1.25em;
+                    font-size:1.20em;
                     i{
                         font-size:0.9em;
                     }
@@ -791,7 +805,7 @@ font-size: 50px;
                     }
 
                     img{
-                        height:2em;
+                        height:100px;
                     }
 
                     span{
@@ -799,15 +813,19 @@ font-size: 50px;
                         display: block;
                     }
                 }
-
             }
         }
     }
 
     .hero{
-        display: flex;
-        max-width: 1250px;
-        margin:0 auto;
+        .content{
+            display: flex;
+        }
+
+        background-image: url(../assets/hero-bg.png);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: top right;
 
         aside{
             flex-basis:50%;
@@ -821,14 +839,14 @@ font-size: 50px;
             }
         }
 
-        .content{
+        .text{
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding:1em;
 
             h1{
-                color:#222222;
+                color:$website-header-color;
                 font-size:5em;
             }
 
@@ -850,10 +868,79 @@ font-size: 50px;
             justify-content: flex-end;
             
             .info-lot{
+                max-width:600px;
                 padding:15em 2em;
                 text-align: center;
                 h2{
-                    color:black;
+                    font-size:4em;
+                    color:$website-header-color;
+                }
+                p{
+                    font-size:1.5em;
+                    letter-spacing: .1em;
+                }
+            }
+        }
+    }
+
+    .services{
+        padding:5em 0 5em;
+        text-align: center;
+        counter-reset: service-counter;
+
+        .service-list{
+            display: flex;
+            flex-wrap: wrap;
+
+            .service{
+                flex-basis: 33%;
+                padding:5px 0 35px;
+
+                .image{
+                    position: relative;
+                    width:180px;
+                    height:180px;
+                    border-radius:90px;
+                    background-color:$main-website-color;
+                    line-height: 180px;
+                    margin:0 auto;
+                }
+
+                .image i{
+                    font-size:70px;
+                    color:#fff;
+                }
+
+                .image i::after{
+                    counter-increment:  service-counter;
+                    content: counter(service-counter,decimal);
+                    width:182px;
+                    height:182px;
+                    font-size:100px;
+                    position: absolute;
+                    left:calc(50% - 91px);
+                    top:calc(50% - 91px);
+                    border-radius:91px;
+                    color:#fff;
+                    background-color: $secondary-website-color;
+                    transform: scale(0);
+                    transition: all .3s ease 0s;
+                    font-weight: 900;
+                }
+                
+                &:hover .image i::after{
+                    transform: scale(1);
+                }
+
+                h3{
+                    font-size:2em;
+                }
+
+                p{
+                    font-size:1.3em;
+                    max-width:350px;
+                    margin:0 auto;
+
                 }
             }
         }

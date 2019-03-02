@@ -26,9 +26,9 @@ class Intro extends React.Component{
                         <Container className="centered" text>
                             <Segment textAlign='center' size='big' >
                                 <Image src={logo} size='medium' circular />  
-                                <Header as='h1'>Enneagram</Header>     
+                                <Header as='h1'>Tria Akademi</Header>     
                                 <ul>
-                                    <li>Kişilik testi yaklaşık &#123;XX&#125; dakika sürecektir.</li>
+                                    <li>Kişilik testi yaklaşık 25 dakika sürecektir.</li>
                                     <li>Teste daha sonra kaldığınız yerden devam edebilirsiniz.</li>
                                 </ul>
                                 {this.props.isLoaded?

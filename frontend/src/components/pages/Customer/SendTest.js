@@ -149,7 +149,7 @@ class SendTest extends Component {
     ApiHelper.functions.employee.checkUsername(this.state.testSession.mail)
     .then(result=>{
         if(!result.exist){
-          this.setState({isMailApproved:true,clipboardText:`Enneagram panel bilgileriniz aşağıdaki gibidir.\n\nGiriş adresi:\n${Urls.server}${Urls.login}\n\nKullanıcı adı:\n${this.state.testSession.mail}\n\nŞifre:\n${this.state.testSession.password}`});
+          this.setState({isMailApproved:true,clipboardText:`Tria Akademi panel bilgileriniz aşağıdaki gibidir.\n\nGiriş adresi:\n${Urls.webpage}\n\nKullanıcı adı:\n${this.state.testSession.mail}\n\nŞifre:\n${this.state.testSession.password}`});
           this.incrementStep();
         }
         else{

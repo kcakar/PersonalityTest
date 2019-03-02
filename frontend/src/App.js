@@ -28,7 +28,7 @@ import ApiHelper from './helpers/ApiHelper';
 
 //application variables
 import urls from './helpers/URLs';
-const localStorageUser="enneagram-user";
+const localStorageUser="triaakademi-user";
 
 //toast settings
 const toastAnimation = cssTransition({

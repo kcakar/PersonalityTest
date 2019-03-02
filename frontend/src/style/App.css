@@ -441,12 +441,22 @@ section.login {
 select {
   font-size: 50px; }
 
+.main-website .content {
+  max-width: 1250px;
+  margin: 0 auto; }
+
+.main-website h1, .main-website h2, .main-website h3, .main-website h4, .main-website h5, .main-website h6 {
+  color: #222222; }
+
+.main-website h2 {
+  font-size: 4em; }
+
 .main-website header nav {
   width: 100%; }
   .main-website header nav ul {
     max-width: 1250px;
     margin: 0 auto;
-    padding: 1.7em 5em;
+    padding: 1.2em 5em;
     width: 100%;
     display: flex;
     justify-content: flex-end; }
@@ -465,7 +475,7 @@ select {
     background-color: #1c2f4d; }
     .main-website header nav.top .phone {
       flex-grow: 1;
-      font-size: 1.25em; }
+      font-size: 1.20em; }
       .main-website header nav.top .phone i {
         font-size: 0.9em; }
     .main-website header nav.top i {
@@ -492,15 +502,18 @@ select {
       letter-spacing: 0.05em;
       align-items: center; }
     .main-website header nav.bottom .brand img {
-      height: 2em; }
+      height: 100px; }
     .main-website header nav.bottom .brand span {
       margin: 0 0.3em 0;
       display: block; }
 
 .main-website .hero {
-  display: flex;
-  max-width: 1250px;
-  margin: 0 auto; }
+  background-image: url(../assets/hero-bg.png);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: top right; }
+  .main-website .hero .content {
+    display: flex; }
   .main-website .hero aside {
     flex-basis: 50%; }
   .main-website .hero .man {
@@ -508,15 +521,15 @@ select {
     height: 56.2em; }
     .main-website .hero .man img {
       height: 100em; }
-  .main-website .hero .content {
+  .main-website .hero .text {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 1em; }
-    .main-website .hero .content h1 {
+    .main-website .hero .text h1 {
       color: #222222;
       font-size: 5em; }
-    .main-website .hero .content p {
+    .main-website .hero .text p {
       font-size: 1.5em;
       line-height: 2em; }
 
@@ -529,7 +542,57 @@ select {
     margin: 0 auto;
     justify-content: flex-end; }
     .main-website .info .content .info-lot {
+      max-width: 600px;
       padding: 15em 2em;
       text-align: center; }
       .main-website .info .content .info-lot h2 {
-        color: black; }
+        font-size: 4em;
+        color: #222222; }
+      .main-website .info .content .info-lot p {
+        font-size: 1.5em;
+        letter-spacing: .1em; }
+
+.main-website .services {
+  padding: 5em 0 5em;
+  text-align: center;
+  counter-reset: service-counter; }
+  .main-website .services .service-list {
+    display: flex;
+    flex-wrap: wrap; }
+    .main-website .services .service-list .service {
+      flex-basis: 33%;
+      padding: 5px 0 35px; }
+      .main-website .services .service-list .service .image {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        border-radius: 90px;
+        background-color: #1c2f4d;
+        line-height: 180px;
+        margin: 0 auto; }
+      .main-website .services .service-list .service .image i {
+        font-size: 70px;
+        color: #fff; }
+      .main-website .services .service-list .service .image i::after {
+        counter-increment: service-counter;
+        content: counter(service-counter, decimal);
+        width: 182px;
+        height: 182px;
+        font-size: 100px;
+        position: absolute;
+        left: calc(50% - 91px);
+        top: calc(50% - 91px);
+        border-radius: 91px;
+        color: #fff;
+        background-color: #d7bd73;
+        transform: scale(0);
+        transition: all .3s ease 0s;
+        font-weight: 900; }
+      .main-website .services .service-list .service:hover .image i::after {
+        transform: scale(1); }
+      .main-website .services .service-list .service h3 {
+        font-size: 2em; }
+      .main-website .services .service-list .service p {
+        font-size: 1.3em;
+        max-width: 350px;
+        margin: 0 auto; }

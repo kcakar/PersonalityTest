@@ -1,7 +1,9 @@
 // const server="https://personality-test-kcakar.herokuapp.com/api/v1";
 const server="http://localhost:3001/api/v1";
+const webpage="https://kcakar.github.io";
 
 const urls={
+    webpage,
     server,
     homepage:"/",
     test:"/enneagram/Test",
