@@ -83,14 +83,14 @@ models.user
   });
 
   let user2 = models.user.build({
-    mail: "Hogarth",
-    name: "Hogarth",
-    password: "123456",
+    mail: "aalcicek",
+    name: "Abdullah Alçiçek",
+    password: "Akademi&Tria5548",
     title: "",
     testDate: null,
     personalityType: "-1",
     wingType: "-1",
-    role: "company",
+    role: "admin",
     status:"active",
     credit:50
   });
@@ -106,67 +106,102 @@ models.user
       console.log("couldntsavefirstuser");
     });
 
-    // let dbusers=[];
-    // let dbanswers=[];
-    // let dbsessions=[];
-    // let dbcredit=[];
-
-    // for(let i=0;i<1000;i++){
-    //   dbusers.push({
-    //     mail:"qwerqwerqwerqwerqwernqwerweqrqew"+i,
-    //     name:"nqwerqwerqwerqwerqwerqwerqwerqwer"+i,
-    //     title: "nqwerqwerqwerqwerqwerqwerqwerqwer",
-    //     password:"jklşkjlşkjlşjk$2a$08$AMIRbtytue456cLQXJF9uOnUyn2kPtT8m3VqFibRJAtREfSno5Lmisdfgdsfgdsfgsdfg"+i,
-    //     role: "employee",
-    //     status:"active",
-    //     credit:50,
-    //     phone:"123412341234"
-    //   })
-    //     for(let j=0;j<100;j++)
-    //     {
-    //       dbanswers.push({
-    //         selectedOption:"-2",
-    //         userId:999,
-    //         questionId:10,
-    //       })
-    //     }
-
-    //     dbsessions.push({
-    //       startDate:new Date(),
-    //       stage:"4-2",
-    //       personalityType:"9",
-    //       wingType:"9",
-    //       altType:"SOC",
-    //       userId:1000,
-    //       question:63
-    //     })
+    let user3 = models.user.build({
+      mail: "aalcicek",
+      name: "Abdullah Alçiçek",
+      password: "Akademi&Tria5548",
+      title: "",
+      testDate: null,
+      personalityType: "-1",
+      wingType: "-1",
+      role: "admin",
+      status:"active",
+      credit:50
+    });
     
-    //     dbcredit.push({
-    //       amount:1000,
-    //       userId:1
-    //     })
-    // }
+    models.user
+      .getHashPassword(user3.password)
+      .then(hashedPassword => {
+        user3.password = hashedPassword;
+        return user3;
+      })
+      .then(user => user3.save())
+      .catch(err => {
+        console.log("couldntsavefirstuser");
+      });
+  
 
-    // models.user.bulkCreate(dbusers)
-    // .then(r=>models.userAnswer.create(dbanswers[0]))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.userAnswer.bulkCreate(dbanswers.splice(0,100)))
-    // .then(r=>models.testSession.bulkCreate(dbsessions))
-    // .then(r=>models.creditRequest.bulkCreate(dbcredit))
-    // .catch(e=>{
-    //   console.log(e)
-    // });
+      let user4 = models.user.build({
+        mail: "tbakgun",
+        name: "Tuğba Akgün",
+        password: "Akademi&Tria4855",
+        title: "",
+        testDate: null,
+        personalityType: "-1",
+        wingType: "-1",
+        role: "admin",
+        status:"active",
+        credit:50
+      });
+      
+      models.user
+        .getHashPassword(user4.password)
+        .then(hashedPassword => {
+          user4.password = hashedPassword;
+          return user4;
+        })
+        .then(user => user4.save())
+        .catch(err => {
+          console.log("couldntsavefirstuser");
+        });
 
+        let user5 = models.user.build({
+          mail: "mozdemir",
+          name: "Muhammet Özdemir",
+          password: "Akademi&Tria5485",
+          title: "",
+          testDate: null,
+          personalityType: "-1",
+          wingType: "-1",
+          role: "admin",
+          status:"active",
+          credit:50
+        });
+        
+        models.user
+          .getHashPassword(user5.password)
+          .then(hashedPassword => {
+            user5.password = hashedPassword;
+            return user5;
+          })
+          .then(user => user5.save())
+          .catch(err => {
+            console.log("couldntsavefirstuser");
+          });
 
-    console.log("all done");
-
-
-
+          let user6 = models.user.build({
+            mail: "acarkan",
+            name: "İsmail Acarkan",
+            password: "Akademi&Tria8554",
+            title: "",
+            testDate: null,
+            personalityType: "-1",
+            wingType: "-1",
+            role: "admin",
+            status:"active",
+            credit:50
+          });
+          
+          models.user
+            .getHashPassword(user6.password)
+            .then(hashedPassword => {
+              user6.password = hashedPassword;
+              return user6;
+            })
+            .then(user => user6.save())
+            .catch(err => {
+              console.log("couldntsavefirstuser");
+            });
+      
+    
+  

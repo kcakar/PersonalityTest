@@ -38,10 +38,11 @@ class PersonnelByTypeGraph extends React.Component{
         ]
 
         for(let i=0;i<personnelData.length;i++){
-            let {characterType,wingType}=personnelData[i];
-            if(characterType && wingType)
+            console.log(personnelData[i].testSession)
+            let {personalityType,wingType}=personnelData[i].testSession;
+            if(personalityType && wingType)
             {
-                this.increaseType(graphData,characterType,wingType)
+                this.increaseType(graphData,personalityType,wingType)
             }
         }
         return graphData;
