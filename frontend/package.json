@@ -2,7 +2,7 @@
   "name": "personality-test",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kcakar.github.io/enneagram/",
+  "homepage": "https://triaakademi.com/",
   "dependencies": {
     "@react-pdf/renderer": "^1.2.2",
     "html2canvas": "^1.0.0-alpha.12",

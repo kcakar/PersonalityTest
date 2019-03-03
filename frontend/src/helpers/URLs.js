@@ -1,16 +1,16 @@
-// const server="https://personality-test-kcakar.herokuapp.com/api/v1";
-const server="http://localhost:3001/api/v1";
-const webpage="https://kcakar.github.io";
+const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+// const server="http://localhost:3001/api/v1";
+const webpage="https://triaakademi.com/";
 
 const urls={
     webpage,
     server,
     homepage:"/",
-    test:"/enneagram/Test",
-    results:"/enneagram/Test/Results",
-    customerPanel:(id="")=>`/enneagram/Management/${id}`,
-    adminPanel:()=>"/enneagram/Admin",
-    login:"/enneagram/login",
+    test:"/Test",
+    results:"/Test/Results",
+    customerPanel:(id="")=>`/Management/${id}`,
+    adminPanel:()=>"/Admin",
+    login:"/login",
     api:{
         auth:{
             login:server+"/auth/login",

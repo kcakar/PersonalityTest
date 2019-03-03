@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router,Route } from 'react-router-dom';
+import { BrowserRouter as Router,Route,Switch } from 'react-router-dom';
 import { ToastContainer,cssTransition } from 'react-toastify';
 import { Loader,Dimmer } from 'semantic-ui-react';
 
@@ -9,8 +9,6 @@ import Results from './components/pages/Test/Results';
 import CustomerDashboard from './components/pages/Customer/CustomerDashboard';
 import AdminDashboard from './components/pages/Admin/AdminDashboard';
 import Login from './components/pages/Authorization/Login';
-import RedirectToLogin from './components/common/RedirectToLogin';
-import UserMenu from './components/common/UserMenu';
 import MainPage from './components/pages/Website/MainPage';
 
 //common stuff
@@ -108,34 +106,43 @@ class App extends Component {
       <Router>
           <div className="App">
               <main>
-                <Route exact path={urls.homepage} render={()=><MainPage/>} /> 
-                {/* {
-                  visible && !isLoggedIn && <RedirectToLogin/>
-                } */}
-                <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
-                {
-                  isLoggedIn && <UserMenu logout={this.logout}/>
-                }
-                <PrivateRoute 
-                  path={urls.test}
-                  isAuthenticated={isLoggedIn&&role==="employee"}
-                  component={() => <Test/>}
-                />
-                <PrivateRoute 
-                  path={urls.results}
-                  isAuthenticated={isLoggedIn&&role==="employee"}
-                  component={() => <Results getResults={this.getResults}/>}
-                />
-                <PrivateRoute 
-                  path={urls.customerPanel()}
-                  isAuthenticated={isLoggedIn&&((role==="company" && status==="active")||role==="admin")}
-                  component={() => <CustomerDashboard/>}
-                />
-                <PrivateRoute 
-                  path={urls.adminPanel()}
-                  isAuthenticated={isLoggedIn&&role==="admin"}
-                  component={() => <AdminDashboard/>}
-                />
+                <Switch>
+                  <Route exact path={urls.homepage} render={()=><MainPage/>} /> 
+                  {/* {
+                    visible && !isLoggedIn && <RedirectToLogin/>
+                  } */}
+                  <Route exact path={urls.login}  render={() => <Login saveUserToLocalStore={this.saveUserToLocalStore}/>}/> 
+
+                  <PrivateRoute 
+                    path={urls.test}
+                    isAuthenticated={isLoggedIn&&role==="employee"}
+                    logout={this.logout}
+                    component={() => <Test/>}
+                  />
+
+                  <PrivateRoute 
+                    path={urls.results}
+                    isAuthenticated={isLoggedIn&&role==="employee"}
+                    logout={this.logout}
+                    component={() => <Results getResults={this.getResults}/>}
+                  />
+
+                  <PrivateRoute 
+                    path={urls.customerPanel()}
+                    isAuthenticated={isLoggedIn&&((role==="company" && status==="active")||role==="admin")}
+                    logout={this.logout}
+                    component={() => <CustomerDashboard/>}
+                  />
+
+                  <PrivateRoute 
+                    path={urls.adminPanel()}
+                    isAuthenticated={isLoggedIn&&role==="admin"}
+                    logout={this.logout}
+                    component={() => <AdminDashboard/>}
+                  />
+
+                  <Route render={()=><MainPage/>} />
+                </Switch>
               </main>
               <ToastContainer autoClose={2000}  transition={toastAnimation}/>
           </div>
