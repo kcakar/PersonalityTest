@@ -1,14 +1,51 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Icon,Sidebar,Menu } from 'semantic-ui-react';
 import brand from '../../../assets/download_1_x70.gif';
 import man from '../../../assets/adam.png';
 import { Link } from 'react-router-dom';
 import urls from '../../../helpers/URLs'
 
-class Test extends React.Component{
+const VerticalSidebar = ({ animation, direction, visible,handleClose }) => (
+    <Sidebar
+      as={Menu}
+      animation={animation}
+      direction={direction}
+      icon='labeled'
+      inverted
+      vertical
+      visible={visible}
+      width='thin'
+    >
+        <Menu.Item className="close"><Link to={urls.homepage} onClick={handleClose}>Kapat</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Anasayfa</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Koçluk</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Danışmanlık</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Eğitim</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>IES</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Enneagram</Link></Menu.Item>
+        <Menu.Item><Link to={urls.homepage}>Hakkımızda</Link></Menu.Item>
+    </Sidebar>
+  )
+class MainPage extends React.Component{
+    state={
+        animation: 'uncover',
+        direction: 'right',
+        dimmed: false,
+        visible: false,
+    }
+
+    handleMenuClick =  () =>
+    this.setState({ visible: !this.state.visible})
+
     render(){
+        const { animation, dimmed, direction, visible } = this.state
+
         return (
         <div className="main-website">
+        
+            <Sidebar.Pushable>
+            <VerticalSidebar animation={animation} direction={direction} visible={visible} handleClose={this.handleMenuClick} />
+            <Sidebar.Pusher dimmed={dimmed && visible}>
             <header>
                 <nav className="top">
                     <ul className="content">
@@ -31,6 +68,13 @@ class Test extends React.Component{
                         <li><Link to={urls.homepage}>Enneagram</Link></li>
                         <li><Link to={urls.homepage}>Hakkımızda</Link></li>
                         <li className="panel"><Link to={urls.login}>Panele giriş</Link></li>
+                        <li onClick={this.handleMenuClick} className="hamburger-container">
+                            <div className={visible?"hamburger hamburger--spring js-hamburger is-active":"hamburger hamburger--spring js-hamburger"}>
+                                <div className="hamburger-box">
+                                    <div className="hamburger-inner"></div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </nav>
             </header>
@@ -50,6 +94,7 @@ class Test extends React.Component{
                     <div className="info-lot">
                         <h2>Enneagram</h2>
                         <p>Enneagram Kişilik Modeli, dokuz farklı kişilik tipini derinliğiyle ortaya çıkaran güçlü, isabetli ve dinamik bir yapıdır. Enneagram Kişilik Modeli, kişinin yaşamı boyunca ortaya çıkan duygu, düşünce ve eylem tarzlarının tümünü detaylarıyla açıklayıp ve beraberinde zengin bir gelişim perspektifi&nbsp;sunar.</p>
+                        
                     </div>
                 </div>
             </section>
@@ -198,8 +243,10 @@ class Test extends React.Component{
             <footer>
                 <p>© 2019 Tria Academy. All Rights Reserved</p>
             </footer>
+            </Sidebar.Pusher>
+            </Sidebar.Pushable>
         </div>
         )}
 }
 
-export default Test;
+export default MainPage;

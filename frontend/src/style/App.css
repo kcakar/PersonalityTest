@@ -381,6 +381,21 @@ section.admin-dashboard .request-table button {
     .add-company.ui.modal .segment {
       height: 100%; } }
 
+.ui.modal.answers-modal {
+  width: 95vw; }
+  .ui.modal.answers-modal .content {
+    margin: 0;
+    padding: 0; }
+  .ui.modal.answers-modal > .close {
+    z-index: 1002;
+    top: 0px;
+    right: -5px;
+    color: black; }
+  .ui.modal.answers-modal > table {
+    width: 95%; }
+  .ui.modal.answers-modal .ui.table td.collapsing, .ui.modal.answers-modal .ui.table th.collapsing {
+    white-space: initial; }
+
 @media only screen and (max-width: 776px) {
   .ui.modals {
     margin: 0 !important;
@@ -441,6 +456,38 @@ section.login {
 select {
   font-size: 50px; }
 
+.main-website .pusher {
+  background-color: #fff; }
+
+.main-website .pushable .ui.inverted.vertical.labeled.icon.ui.uncover.right.thin.visible.sidebar.menu {
+  background: #fff; }
+
+.main-website .pushable .ui.inverted.menu {
+  background: #fff; }
+
+.main-website .pushable .ui.vertical.menu .item.close {
+  display: none; }
+
+.main-website .pushable .ui.vertical.menu .item {
+  cursor: pointer;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.16); }
+  .main-website .pushable .ui.vertical.menu .item a {
+    color: #1c2f4d; }
+
+@media only screen and (min-width: 860px) {
+  .main-website .pushable .ui.visible.thin.right.sidebar ~ .fixed, .main-website .pushable .ui.visible.thin.right.sidebar ~ .pusher {
+    transform: none !important; } }
+
+@media only screen and (max-width: 500px) {
+  .main-website .pushable .ui.visible.thin.right.sidebar ~ .fixed, .main-website .pushable .ui.visible.thin.right.sidebar ~ .pusher {
+    transform: translate3d(-100vw, 0, 0); }
+  .main-website .pushable .ui.vertical.menu .item.close {
+    display: block; }
+  .main-website .pushable .ui.inverted.vertical.labeled.icon.ui.uncover.right.thin.sidebar.menu {
+    position: fixed;
+    top: 0;
+    width: 100vw; } }
+
 .main-website .content {
   max-width: 1350px;
   margin: 0 auto; }
@@ -453,6 +500,8 @@ select {
 
 .main-website header nav {
   width: 100%; }
+  .main-website header nav .hamburger {
+    display: none; }
   .main-website header nav ul {
     padding: 1em 5em;
     width: 100%;
@@ -512,12 +561,37 @@ select {
     padding: 2em 2em;
     transition: all .2s linear;
     cursor: pointer;
-    height: 2em; }
+    height: 2em;
+    white-space: nowrap; }
     .main-website header nav.bottom .panel a {
       color: #fff;
       font-weight: 700; }
   .main-website header nav.bottom .panel:hover {
     background-color: #d7bd73; }
+  @media only screen and (max-width: 1160px) {
+    .main-website header nav.bottom .brand img {
+      height: 50px; }
+    .main-website header nav.bottom .panel {
+      font-size: .9em;
+      padding: 1.5em 1em;
+      border-radius: 5px; }
+    .main-website header nav.bottom ul li {
+      margin: .4em; } }
+  @media only screen and (max-width: 600px) {
+    .main-website header nav ul {
+      padding: 1em 1em; } }
+  @media only screen and (max-width: 950px) {
+    .main-website header nav ul {
+      padding: 1em 1em; } }
+  @media only screen and (max-width: 860px) {
+    .main-website header nav ul {
+      padding: 1em 1em; }
+    .main-website header nav .hamburger {
+      display: block; }
+    .main-website header nav.bottom ul li:not(:last-of-type) {
+      display: none; }
+    .main-website header nav.bottom ul li:first-child {
+      display: block; } }
 
 .main-website .hero {
   background-image: url(../assets/hero-bg.png);
@@ -545,15 +619,41 @@ select {
     .main-website .hero .text p {
       font-size: 1.5em;
       line-height: 2em; }
+  @media only screen and (max-width: 980px) {
+    .main-website .hero {
+      min-height: 550px; }
+      .main-website .hero .content {
+        align-items: center;
+        vertical-align: middle;
+        align-content: center; }
+      .main-website .hero aside.text {
+        height: 550px;
+        flex-basis: 100%;
+        padding: 50px;
+        letter-spacing: .24em; }
+      .main-website .hero .man {
+        flex-basis: 0;
+        display: none; } }
+  @media only screen and (max-width: 400px) {
+    .main-website .hero aside.text {
+      padding: 0;
+      max-width: 300px;
+      margin: 0 auto; }
+      .main-website .hero aside.text h1 {
+        line-height: 1.1em; }
+      .main-website .hero aside.text p {
+        line-height: 1.5em; } }
 
 .main-website .info {
-  background-color: #f0f0f0; }
+  background-color: #f0f0f0;
+  box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.11); }
   .main-website .info .content {
     display: flex;
     justify-content: flex-end; }
     .main-website .info .content .info-lot {
       max-width: 600px;
       padding: 11em 2em;
+      margin: 0 3em 0 0;
       text-align: center; }
       .main-website .info .content .info-lot h2 {
         font-size: 4em;
@@ -561,18 +661,34 @@ select {
       .main-website .info .content .info-lot p {
         font-size: 1.5em;
         letter-spacing: .1em; }
+  @media only screen and (max-width: 980px) {
+    .main-website .info {
+      background-color: #a4d6e1;
+      justify-content: center; }
+      .main-website .info .content .info-lot {
+        margin: 0;
+        background-image: url("../assets/enneagram.png");
+        background-size: 300px;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        width: 100%;
+        max-width: initial; }
+        .main-website .info .content .info-lot p {
+          max-width: 600px;
+          margin: 0 auto;
+          padding-bottom: 3em; } }
 
 .main-website .services {
   padding: 10em 0 5em;
   text-align: center;
   counter-reset: service-counter; }
   .main-website .services .service-list {
-    padding: 4em 0;
+    padding: 4em 3em;
     display: flex;
     flex-wrap: wrap; }
     .main-website .services .service-list .service {
       flex-basis: 33%;
-      padding: 5px 0 35px; }
+      padding: 5px 30px 35px; }
       .main-website .services .service-list .service .image {
         position: relative;
         width: 180px;
@@ -607,6 +723,12 @@ select {
         font-size: 1.3em;
         max-width: 350px;
         margin: 0 auto; }
+      @media only screen and (max-width: 810px) {
+        .main-website .services .service-list .service {
+          flex-basis: 50%; } }
+      @media only screen and (max-width: 575px) {
+        .main-website .services .service-list .service {
+          flex-basis: 100%; } }
 
 .main-website .personality-types {
   padding: 10em 0 5em;
@@ -617,6 +739,7 @@ select {
     padding: 3em;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     counter-reset: personality-type-counter; }
     .main-website .personality-types .types-list .type {
       flex-basis: 50%;
@@ -655,13 +778,16 @@ select {
       .main-website .personality-types .types-list .type:hover .image:after {
         background-color: #1c2f4d;
         border-radius: 50%; }
-      .main-website .personality-types .types-list .type.reverse {
-        flex-direction: row-reverse; }
-        .main-website .personality-types .types-list .type.reverse .image:before {
-          border-left: 15px solid #fff;
-          border-right: 0;
-          right: inherit;
-          left: 0; }
+      @media only screen and (min-width: 1000px) {
+        .main-website .personality-types .types-list .type.reverse {
+          flex-direction: row-reverse; }
+          .main-website .personality-types .types-list .type.reverse .image:before {
+            border-left: 15px solid #fff;
+            border-right: 0;
+            right: inherit;
+            left: 0; }
+          .main-website .personality-types .types-list .type.reverse h3, .main-website .personality-types .types-list .type.reverse p {
+            text-align: right; } }
       .main-website .personality-types .types-list .type .image, .main-website .personality-types .types-list .type .type-text {
         flex: 1; }
       .main-website .personality-types .types-list .type .image {
@@ -689,16 +815,48 @@ select {
         background-image: url(../assets/type9.jpg); }
       .main-website .personality-types .types-list .type .type-text {
         display: flex;
-        flex-direction: column;
-        vertical-align: middle;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
         padding: 2em; }
         .main-website .personality-types .types-list .type .type-text h3 {
+          flex-basis: 100%;
           font-size: 2em;
           margin-bottom: 1em; }
         .main-website .personality-types .types-list .type .type-text p {
           line-height: 1.6em;
           font-size: 1.2em;
           letter-spacing: .05em; }
+      @media only screen and (max-width: 999px) {
+        .main-website .personality-types .types-list .type {
+          height: 500px;
+          flex-basis: 100%; }
+          .main-website .personality-types .types-list .type:nth-of-type(2n+1) {
+            flex-direction: row-reverse; }
+            .main-website .personality-types .types-list .type:nth-of-type(2n+1) .image:before {
+              border-left: 15px solid #fff;
+              border-right: 0;
+              right: inherit;
+              left: 0; }
+            .main-website .personality-types .types-list .type:nth-of-type(2n+1) h3, .main-website .personality-types .types-list .type:nth-of-type(2n+1) p {
+              text-align: right; } }
+      @media only screen and (max-width: 700px) {
+        .main-website .personality-types .types-list .type {
+          max-width: 500px;
+          flex-direction: column !important;
+          height: auto; }
+          .main-website .personality-types .types-list .type .image {
+            min-height: 400px;
+            margin-bottom: 2em; }
+            .main-website .personality-types .types-list .type .image:before {
+              display: none; }
+          .main-website .personality-types .types-list .type .type-text {
+            padding: 0; }
+            .main-website .personality-types .types-list .type .type-text h3, .main-website .personality-types .types-list .type .type-text p {
+              text-align: left; }
+            .main-website .personality-types .types-list .type .type-text p {
+              letter-spacing: .1em; } }
 
 .main-website .contact {
   display: flex;
@@ -726,6 +884,13 @@ select {
   .main-website .contact aside.map .maps {
     width: 100%;
     height: 100%; }
+  @media only screen and (max-width: 850px) {
+    .main-website .contact {
+      flex-wrap: wrap; }
+      .main-website .contact aside, .main-website .contact aside.map {
+        flex-basis: 100%; }
+      .main-website .contact aside.map {
+        min-height: 350px; } }
 
 .main-website footer {
   height: 5em;
@@ -733,3 +898,84 @@ select {
   font-size: 1.2em; }
   .main-website footer p {
     line-height: 5em; }
+
+.hamburger-container .hamburger {
+  padding: 15px 15px;
+  display: inline-block;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible; }
+
+.hamburger-container .hamburger:hover {
+  opacity: 0.7; }
+
+.hamburger-container .hamburger.is-active:hover {
+  opacity: 0.7; }
+
+.hamburger-container .hamburger.is-active .hamburger-inner,
+.hamburger-container .hamburger.is-active .hamburger-inner::before,
+.hamburger-container .hamburger.is-active .hamburger-inner::after {
+  background-color: #000; }
+
+.hamburger-container .hamburger-box {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative; }
+
+.hamburger-container .hamburger-inner, .hamburger-container .hamburger-inner::before, .hamburger-container .hamburger-inner::after {
+  width: 40px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease; }
+
+.hamburger-container .hamburger-inner::before, .hamburger-container .hamburger-inner::after {
+  content: "";
+  display: block; }
+
+.hamburger-container .hamburger-inner::before {
+  top: -10px; }
+
+.hamburger-container .hamburger-inner::after {
+  bottom: -10px; }
+
+.hamburger-container .hamburger--spring .hamburger-inner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+  top: 2px;
+  transition: background-color 0s 0.13s linear; }
+
+.hamburger-container .hamburger--spring .hamburger-inner::before {
+  top: 10px;
+  transition: top 0.1s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1), transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+
+.hamburger-container .hamburger--spring .hamburger-inner::after {
+  top: 20px;
+  transition: top 0.2s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1), transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+
+.hamburger-container .hamburger--spring.is-active .hamburger-inner {
+  transition-delay: 0.22s;
+  background-color: transparent !important; }
+
+.hamburger-container .hamburger--spring.is-active .hamburger-inner::before {
+  top: 0;
+  transition: top 0.1s 0.15s cubic-bezier(0.33333, 0, 0.66667, 0.33333), transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translate3d(0, 10px, 0) rotate(45deg); }
+
+.hamburger-container .hamburger--spring.is-active .hamburger-inner::after {
+  top: 0;
+  transition: top 0.2s cubic-bezier(0.33333, 0, 0.66667, 0.33333), transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translate3d(0, 10px, 0) rotate(-45deg); }

@@ -250,6 +250,21 @@ const getCompanyEmployees=()=>{
     })
 }
 
+const getCompanyEmployeesAdmin=(companyId)=>{
+    return fetch(urls.api.employee.getEmployees(companyId), {
+        method: "GET",
+        ...ApiHelper.ajaxSettings()
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Çalışanlara ulaşılamadı."),{ code: 402 });
+        }
+    })
+}
+
 const sendTest=(companyId,testSession)=>{
     return fetch(urls.api.test.create(companyId), {
         method: "POST",
@@ -359,6 +374,21 @@ const getResults=(empoyeeId)=>{
     })
 }
 
+const getEmployeeAnswers=(employeeId)=>{
+    return fetch(urls.api.employee.getAnswers(employeeId), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+    }).then(response=>{
+        if(response.ok)
+        {
+            return response.json();
+        }
+        else{
+            throw Object.assign(new Error("Sonuçlara ulaşılamadı"),{ code: 402 });
+        }
+    })
+}
+
 //helper
 let ApiHelper = {}
 
@@ -371,7 +401,8 @@ ApiHelper.functions = {
         create: createCompany,
         changeStatus: changeCompanyStatus,
         update:updateCompany,
-        employees:getCompanyEmployees
+        employees:getCompanyEmployees,
+        employeesAdmin:getCompanyEmployeesAdmin
     },
     companies: {
         get: getAllCompanies
@@ -403,7 +434,8 @@ ApiHelper.functions = {
         getResults:getResults
     },
     employee:{
-        checkUsername:checkUsername
+        checkUsername:checkUsername,
+        getAnswers:getEmployeeAnswers
     }
 }
 

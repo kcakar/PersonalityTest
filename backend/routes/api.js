@@ -98,7 +98,7 @@ router.post('/employee/:id/test',passport.authenticate('jwt', {session: false}),
 router.post('/employee/:id/answer',passport.authenticate('jwt', {session: false}),TestSessionController.createAnswer);
 router.post('/employee/:id/stage/:lang',passport.authenticate('jwt', {session: false}),TestSessionController.getUserStage);
 router.post('/employee/:id/results/',passport.authenticate('jwt', {session: false}),TestSessionController.getResults);
-
+router.post('/user/:userId/answers/',passport.authenticate('jwt', {session: false}),TestSessionController.getAnswers);
 
 
 module.exports = router;

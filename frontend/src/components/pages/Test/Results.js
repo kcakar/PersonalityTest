@@ -66,7 +66,6 @@ class Results extends React.Component{
     }
 
     componentDidMount=()=>{
-        console.log("1")
         ApiHelper.functions.test.getResults()
         .then(result=>{
             this.setState({session:result.result});

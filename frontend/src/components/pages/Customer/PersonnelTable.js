@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table,Pagination,Popup ,Button,Icon,Input} from 'semantic-ui-react'
+import { Table,Pagination,Popup ,Input} from 'semantic-ui-react'
 import moment from 'moment';
 import SendTest from './SendTest';
 import AskCredit from './AskCredit';
@@ -94,23 +94,23 @@ class PersonnelTable extends React.Component{
 
     getCharacterColor=(type)=>{
         switch (type) {
-            case 1:
+            case "1":
                 return "#78909c75";
-            case 2:
+            case "2":
                 return "#8d6e63";
-            case 3:
+            case "3":
                 return "#ef5350";
-            case 4:
+            case "4":
                 return "#a5d6a7";
-            case 5:
+            case "5":
                 return "#ba68c8";
-            case 6:
+            case "6":
                 return "#ffcc80";
-            case 7:
+            case "7":
                 return "#b2ca9d";
-            case 8:
+            case "8":
                 return "#4dd0e1";
-            case 9:
+            case "9":
                 return "#26a69a";
             default:
                 return "#fff";
@@ -122,13 +122,17 @@ class PersonnelTable extends React.Component{
     }
  
     render(){
-        const { column, direction,data } = this.state;
+        let { column, direction,data } = this.state;
+
+        if(this.props.titleFilter){
+            data=data.filter(row=>{return this.props.titleFilter.indexOf(row.title)!==-1})
+        }
 
         return (
         <Table singleLine sortable celled fixed selectable color="orange">
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell className="no-hover" colSpan='3' singleLine>
+                    <Table.HeaderCell className="no-hover" colSpan='4' singleLine>
                         <Input placeholder="Arama..." onChange={this.handleTableFilter} />
                     </Table.HeaderCell>
                     <Table.HeaderCell className="no-hover" colSpan='1' singleLine>
@@ -158,8 +162,8 @@ class PersonnelTable extends React.Component{
                         Test Tarihi
                     </Table.HeaderCell>
                     <Table.HeaderCell
-                        sorted={column === 'characterType' ? direction : null}
-                        onClick={()=>this.handleSort('characterType')}
+                        sorted={column === 'personalityType' ? direction : null}
+                        onClick={()=>this.handleSort('personalityType')}
                         >
                         Karakter Tipi
                     </Table.HeaderCell>
@@ -169,28 +173,38 @@ class PersonnelTable extends React.Component{
                         >
                         Kanat Tipi
                     </Table.HeaderCell>
+                    <Table.HeaderCell
+                        sorted={column === 'altType' ? direction : null}
+                        onClick={()=>this.handleSort('altType')}
+                        >
+                        Kanat Tipi
+                    </Table.HeaderCell>
                     <Table.HeaderCell>
                         İşlemler
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-            {data.map(({ id,name,title, characterType,wingType, dateCompleted, isTestDone}) => 
+            {data.map(({ id,name,title,testSession, dateCompleted}) => 
                 {
-                    let dateText= isTestDone?moment(dateCompleted).format('DD/MM/YYYY, kk:mm'):<span className="red">Test Beklemede</span>
-                    let typetext= isTestDone?`Tip ${characterType}`:`-`;
-                    let wingtext= isTestDone?`Kanat ${wingType}`:`-`;
+                    console.log(testSession)
+                    let {wingType,altType,stage,personalityType}=testSession;
+                    console.log(testSession)
+                    let dateText= stage==="finished"?moment(dateCompleted).format('DD/MM/YYYY, kk:mm'):<span className="red">Test Beklemede</span>
+                    let typetext= stage==="finished"?`Tip ${personalityType}`:`-`;
+                    let wingtext= stage==="finished"?`Kanat ${wingType}`:`-`;
 
                     return <Table.Row key={id}>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{title}</span>} content={title} /></Table.Cell>
                         <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{dateText}</span>} content={dateText} /></Table.Cell>
-                        <Table.Cell style={{backgroundColor:this.getCharacterColor(characterType)}}>{typetext}</Table.Cell>
+                        <Table.Cell style={{backgroundColor:this.getCharacterColor(personalityType)}}>{typetext}</Table.Cell>
                         <Table.Cell>{wingtext}</Table.Cell>
+                        <Table.Cell>{altType}</Table.Cell>
                         <Table.Cell>
-                            {
-                                isTestDone && <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
-                            }
+                            {/* {
+                                stage==="finished" && <Popup style={{opacity:0.9}} basic inverted trigger={<Button compact basic size="tiny"><Icon name='address card' /></Button>} content="Raporu Görüntüle" />
+                            } */}
                         </Table.Cell>
                     </Table.Row>
                     }
@@ -198,7 +212,7 @@ class PersonnelTable extends React.Component{
             </Table.Body>
             <Table.Footer fullWidth>
                 <Table.Row>
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan="7">
                         <Pagination prevItem={null} nextItem={null} onPageChange={this.handlePageChange} totalPages={this.state.totalPages} activePage={this.state.currentPage} />
                     </Table.HeaderCell>
                 </Table.Row>

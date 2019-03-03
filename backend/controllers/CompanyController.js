@@ -12,7 +12,10 @@ CompanyController.getAllCompanies=function(req,res){
         return;
     }
     try{
-        models.user.findAll({where:{role:"company"}}).then(result=>{
+        models.user.findAll({
+            where:{role:"company"},
+            attributes:["id","name","mail","credit","phone","status"]
+        }).then(result=>{
             res.json(result);
         })
         .catch(err=>{
@@ -205,16 +208,20 @@ CompanyController.setStatus=(req,res)=>{
 
 CompanyController.getEmployees=function(req,res){
     if(req.user.role==="admin" || (req.user.role==="company" && req.user.id===parseInt(req.params.id) && req.user.status==="active")){
+        let companyId=req.user.id;
+        if(req.user.role==="admin"){
+            companyId=req.params.id;//this is the company id
+        }
         try{
             models.user.findAll(
                 {
                     where:{
                         role:"employee",
-                        companyId:req.user.id
+                        companyId:companyId
                     },
                     include: [{
                         model: models.testSession,
-                        attributes: ["personalityType", "wingType", "altType"]
+                        attributes: ["personalityType", "wingType", "altType","stage"]
                     }],
                 }).then(result=>{
                 res.json(result);
@@ -232,6 +239,8 @@ CompanyController.getEmployees=function(req,res){
         return;
     }
 }
+
+
 
 
 module.exports = CompanyController;

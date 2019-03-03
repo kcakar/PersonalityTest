@@ -9,7 +9,7 @@ class AdminNavigation extends React.Component {
     const {tabs}=props;
     this.state = {
       visible:false,
-      activeItem:tabs.requests,
+      activeItem:tabs.users,
       tabs
     }
   }

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Container,Transition,Segment,Radio,Progress,Image,Header } from 'semantic-ui-react';
-import { Redirect} from 'react-router-dom';
 import {  toast } from "react-toastify";
 
 import Intro from './Intro';
 import PulseButton from '../../common/PulseButton';
 import ApiHelper from '../../../helpers/ApiHelper';
-import urls from '../../../helpers/URLs';
 import logo from '../../../assets/enneagram.svg';
 
 class Test extends React.Component{

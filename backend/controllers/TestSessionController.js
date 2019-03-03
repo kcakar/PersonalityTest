@@ -503,4 +503,36 @@ TestSessionController.getResults = function(req, res) {
       res.status(400).json({ error: err });
     });
 }
+
+
+TestSessionController.getAnswers = function(req, res) {
+  if(req.user.role!=="admin"){
+    res.sendStatus(401);
+      return;
+  }
+  try{
+      models.userAnswer.findAll(
+          {
+              attributes:["selectedOption"],
+              where:{
+                  userId:req.params.userId
+              },
+              include: [{
+                model: models.question,
+                attributes: ["text", "personalityType", "order"]
+            }],
+          }
+      ).then(result=>{
+          res.json(result);
+      })
+      .catch(err=>{
+          res.status(400).json({error:err});
+      });
+  }
+  catch(err){
+    console.log(err)
+      res.sendStatus(400);
+  }
+}
+
 module.exports = TestSessionController;

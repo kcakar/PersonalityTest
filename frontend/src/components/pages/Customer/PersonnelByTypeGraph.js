@@ -38,7 +38,6 @@ class PersonnelByTypeGraph extends React.Component{
         ]
 
         for(let i=0;i<personnelData.length;i++){
-            console.log(personnelData[i].testSession)
             let {personalityType,wingType}=personnelData[i].testSession;
             if(personalityType && wingType)
             {
@@ -73,6 +72,7 @@ class PersonnelByTypeGraph extends React.Component{
         {
             filteredPersonnel=this.filterDataByTitle(this.props.personnelData,dropdown.value);
         }
+        this.props.handleDropdownChange(dropdown.value);
         let graphData= this.normalizeData(filteredPersonnel);
         this.setState({graphData});
     }

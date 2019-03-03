@@ -48,7 +48,8 @@ const urls={
         },
         employee:{
             getEmployees:(companyId)=>`${server}/company/${companyId}/employees/`,
-            checkUsername:()=>`${server}/user/username/`
+            checkUsername:()=>`${server}/user/username/`,
+            getAnswers:(userId)=>`${server}/user/${userId}/answers/`,
         },
         test:{
             create:(companyId)=>`${server}/company/${companyId}/test/`,

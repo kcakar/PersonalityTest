@@ -16,7 +16,8 @@ class CustomerDasbhoard extends React.Component{
             credit:0,
             waiting:0,
             done:0,
-        }
+        },
+        titleFilter:""
     }
 
     getPersonnelData=()=>{
@@ -56,6 +57,10 @@ class CustomerDasbhoard extends React.Component{
         this.getStatData();
     }
 
+    handleDropdownChange=(title)=>{
+        this.setState({titleFilter:title})
+    }
+
     render(){
         return(
         <section className="customer-dashboard dashboard">
@@ -65,10 +70,10 @@ class CustomerDasbhoard extends React.Component{
                     <Grid divided className="statistics centered" centered>
                         <Grid.Row>
                             <Header textAlign="center" size="huge">Tiplere göre şirket profili</Header>
-                            <PersonnelByTypeGraph personnelData={this.state.data} />
+                            <PersonnelByTypeGraph personnelData={this.state.data} handleDropdownChange={this.handleDropdownChange} />
                         </Grid.Row>
                         <Grid.Row className="customer-table">
-                            <PersonnelTable refreshDashboard={this.refreshDashboard} personnelData={this.state.data} personnelTitles={this.state.titles}/>
+                            <PersonnelTable refreshDashboard={this.refreshDashboard} personnelData={this.state.data} personnelTitles={this.state.titles} titleFilter={this.state.titleFilter}/>
                         </Grid.Row>
                     </Grid>
                 </div>

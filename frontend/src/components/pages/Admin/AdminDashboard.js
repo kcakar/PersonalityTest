@@ -6,8 +6,10 @@ import AdminNavigation from './AdminNavigation';
 import QuestionManagement from './QuestionManagement';
 import CompanyManagement from './CompanyManagement';
 import Settings from './Settings';
+import UserTable from './UserTable';
 
 const tabs={
+    users:"Kullanıcılar",
     requests:"Bekleyen Talepler",
     questions:"Soru Yönetimi",
     companies:"Şirket yönetimi",
@@ -28,7 +30,7 @@ class AdminDashboard extends React.Component{
     componentDidMount(){
         this.setState({
             visible:true,
-            activeTab:tabs.requests,
+            activeTab:tabs.users,
         });
     }
 
@@ -39,6 +41,9 @@ class AdminDashboard extends React.Component{
     render(){
         let content=(<p></p>);
         switch (this.state.activeTab) {
+            case tabs.users:
+            content=(<UserTable/>)
+            break;
             case tabs.requests:
                 content=(<RequestTable/>)
                 break;

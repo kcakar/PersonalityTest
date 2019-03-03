@@ -141,16 +141,10 @@ class CompanyManagement extends React.Component{
                                 Şirket
                             </Table.HeaderCell>
                             <Table.HeaderCell
-                                sorted={column === 'login' ? direction : null}
-                                onClick={()=>this.handleSort('login')}
-                                >
-                                Kullanıcı Adı
-                            </Table.HeaderCell>
-                            <Table.HeaderCell
                                 sorted={column === 'mail' ? direction : null}
                                 onClick={()=>this.handleSort('mail')}
                                 >
-                                E-mail
+                                Kullanıcı Adı
                             </Table.HeaderCell>
                             <Table.HeaderCell
                                 sorted={column === 'phone' ? direction : null}
@@ -174,7 +168,6 @@ class CompanyManagement extends React.Component{
                         {
                             return <Table.Row key={id}>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{name}</span>} content={name} /></Table.Cell>
-                                <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{mail}</span>} content={mail} /></Table.Cell>
                                 <Table.Cell><Popup style={{opacity:0.9}} basic inverted trigger={<span>{phone}</span>} content={phone} /></Table.Cell>
                                 <Table.Cell collapsing><Popup style={{opacity:0.9}} basic inverted trigger={<span>{credit}</span>} content={credit} /></Table.Cell>
