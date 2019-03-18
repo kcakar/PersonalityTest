@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-var whitelist = ['http://localhost:3000', 'https://kcakar.github.io','https://triaakademi.com']
+var whitelist = ['http://localhost:3000', 'https://kcakar.github.io','https://triaakademi.com','https://www.triaakademi.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
