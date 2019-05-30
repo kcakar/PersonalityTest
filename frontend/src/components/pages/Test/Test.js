@@ -121,17 +121,52 @@ class Test extends React.Component{
         }
     }
 
+    handleStage3Answer=()=>{
+        this.saveWingType();
+    }
+
+    saveWingType=()=>{
+        let selectedOption=this.getSelectedWingOption();
+        ApiHelper.functions.test.saveWingType(
+            {
+                stage: "4-1",
+                wingType:selectedOption.wingType
+            },
+            selectedOption
+            )
+        .then(result => {
+            this.setState({deniedOptions:[]},this.getStage)
+        })
+        .catch((err) => {
+            toast.error(err.message, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        })
+    }
+
     handleStage4Answer=()=>{
         let {deniedOptions}=this.state;
         deniedOptions.push(this.state.currentAnswer);
         if(deniedOptions.length!==2)
         {
             this.setState({deniedOptions});
+            this.saveStage4Answer();
             this.getStage(deniedOptions);
         }
         else{//we have decided the personality type. Lets save it.
+            this.saveStage4Answer();
             this.saveAltType();
         }
+    }
+
+    saveStage4Answer=()=>{
+        let selectedOption=this.getSelectedAltOption();
+        ApiHelper.functions.test.saveStage4Answer(selectedOption)
+        .catch((err) => {
+            toast.error(err.message, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        })
     }
 
     savePersonalityType=()=>{
@@ -173,29 +208,20 @@ class Test extends React.Component{
             });
         })
     }
+
+    getSelectedAltOption=()=>{
+        const option= this.state.stageOptions.find(o=>{return o.altType===this.state.currentAnswer});
+        return option;
+    }
     
-    handleStage3Answer=()=>{
-        this.saveWingType();
+    getSelectedWingOption=()=>{
+        const option= this.state.stageOptions.find(o=>{return o.wingType===this.state.currentAnswer});
+        return option;
     }
 
     getOtherWingOption=()=>{
         const option= this.state.stageOptions.find(o=>{return o.wingType!==this.state.currentAnswer});
-        return option.wingType;
-    }
-    
-    saveWingType=()=>{
-        ApiHelper.functions.test.update({
-            stage: "4-1",
-            wingType:this.getOtherWingOption()
-        })
-        .then(result => {
-            this.setState({deniedOptions:[]},this.getStage)
-        })
-        .catch((err) => {
-            toast.error(err.message, {
-                position: toast.POSITION.TOP_CENTER
-            });
-        })
+        return option;
     }
 
     getStage=(deniedOptions=[])=>{

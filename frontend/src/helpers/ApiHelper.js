@@ -309,6 +309,51 @@ const updateTest=(testSession)=>{
     })
 }
 
+const saveWingType=(testSession,option)=>{
+    return fetch(urls.api.test.saveWingType(ApiHelper.user.id), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            testSession,
+            option
+        }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            if(response.status===412)
+            {
+                return response.json().then(data=>{
+                    throw Object.assign(new Error(data.message),{ code: 402 });
+                })
+            }else{
+                throw Object.assign(new Error("Test ile ilgili bir hata oluştu."),{ code: 402 });
+            }
+        }
+    })
+}
+
+const saveStage4Answer=(option)=>{
+    return fetch(urls.api.test.saveStage4Answer(ApiHelper.user.id), {
+        method: "POST",
+        ...ApiHelper.ajaxSettings(),
+        body: JSON.stringify({
+            option
+        }),
+    }).then(response=>{
+        if(!response.ok)
+        {
+            if(response.status===412)
+            {
+                return response.json().then(data=>{
+                    throw Object.assign(new Error(data.message),{ code: 402 });
+                })
+            }else{
+                throw Object.assign(new Error("Test ile ilgili bir hata oluştu."),{ code: 402 });
+            }
+        }
+    })
+}
+
 const checkUsername=(username)=>{
     return fetch(urls.api.employee.checkUsername(), {
         method: "POST",
@@ -334,6 +379,19 @@ const saveAnswer=(answer,nextQuestionId)=>{
         body: JSON.stringify({
             answer,
             nextQuestionId
+        }),
+    }).then(response=>{
+        if(!response.ok)
+            throw Object.assign(new Error("Cevap kaydedilemedi"),{ code: 402 });
+    })
+}
+
+const saveAnswerOnly=(option)=>{
+    return fetch(urls.api.test.saveTestAnswerOnly(ApiHelper.user.id), {
+        ...ApiHelper.ajaxSettings(),
+        method: "POST",
+        body: JSON.stringify({
+            option
         }),
     }).then(response=>{
         if(!response.ok)
@@ -431,7 +489,10 @@ ApiHelper.functions = {
         saveAnswer:saveAnswer,
         update:updateTest,
         getStage:getStage,
-        getResults:getResults
+        getResults:getResults,
+        saveAnswerOnly:saveAnswerOnly,
+        saveWingType:saveWingType,
+        saveStage4Answer:saveStage4Answer
     },
     employee:{
         checkUsername:checkUsername,

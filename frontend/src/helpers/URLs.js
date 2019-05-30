@@ -1,5 +1,5 @@
-// const server="https://personality-test-kcakar.herokuapp.com/api/v1";
-const server="http://localhost:3001/api/v1";
+const server="https://personality-test-kcakar.herokuapp.com/api/v1";
+// const server="http://localhost:3001/api/v1";
 const webpage="https://triaakademi.com/";
 
 const urls={
@@ -55,8 +55,11 @@ const urls={
             create:(companyId)=>`${server}/company/${companyId}/test/`,
             update:(employeeId)=>`${server}/employee/${employeeId}/test/`,
             saveTestAnswer:(employeeId)=>`${server}/employee/${employeeId}/answer/`,
+            saveTestAnswerOnly:(employeeId)=>`${server}/employee/${employeeId}/test-answer/`,
             getStage:(employeeId,lang)=>`${server}/employee/${employeeId}/stage/${lang}`,
-            getResults:(employeeId)=>`${server}/employee/${employeeId}/results/`
+            getResults:(employeeId)=>`${server}/employee/${employeeId}/results/`,
+            saveWingType:(employeeId)=>`${server}/employee/${employeeId}/save-wing-type/`,
+            saveStage4Answer:(employeeId)=>`${server}/employee/${employeeId}/save-stage-4-answer/`,
         }
     },
 

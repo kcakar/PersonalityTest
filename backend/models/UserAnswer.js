@@ -1,8 +1,7 @@
 module.exports = (sequelize, dataTypes) => {
   let UserAnswer = sequelize.define("userAnswer", {
     selectedOption: {
-      type: dataTypes.ENUM,
-      values: ["-2", "-1", "0", "1", "2"],
+      type: dataTypes.STRING(400),
       validate: {
         notEmpty: true
       }

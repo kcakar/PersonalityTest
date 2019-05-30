@@ -99,6 +99,10 @@ router.post('/employee/:id/answer',passport.authenticate('jwt', {session: false}
 router.post('/employee/:id/stage/:lang',passport.authenticate('jwt', {session: false}),TestSessionController.getUserStage);
 router.post('/employee/:id/results/',passport.authenticate('jwt', {session: false}),TestSessionController.getResults);
 router.post('/user/:userId/answers/',passport.authenticate('jwt', {session: false}),TestSessionController.getAnswers);
+router.post('/employee/:id/test-answer',passport.authenticate('jwt', {session: false}),TestSessionController.saveAnswerOnly);
+router.post('/employee/:id/save-wing-type',passport.authenticate('jwt', {session: false}),TestSessionController.saveWingType);
+router.post('/employee/:id/save-stage-4-answer',passport.authenticate('jwt', {session: false}),TestSessionController.saveStage4Answer);
+
 
 
 module.exports = router;

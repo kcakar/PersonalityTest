@@ -128,6 +128,87 @@ TestSessionController.updateTest = function(req, res) {
   }
 };
 
+TestSessionController.saveWingType = function(req, res) {
+  let { id } = req.params;
+  let { testSession,option } = req.body;
+
+  try {
+    if (
+      req.user.role !== "employee" ||
+      req.user.status !== "active" ||
+      req.user.id !== parseInt(id)
+    ) {
+      res.sendStatus(401);
+    } else {
+      models.testSession
+        .update(
+          { ...testSession },
+          {
+            where: { userId: req.user.id }
+          }
+        )
+        .then(r=>{
+          return models.userAnswer.create(
+            { selectedOption:option.text,
+              questionId:option.id,
+              userId: req.user.id 
+            });
+          }
+        )
+        .then(r => {
+          res.sendStatus(200);
+        })
+        .catch(err => {
+          let errors = [];
+          if (err.errors) {
+            errors = err.errors;
+          } else {
+            errors = [{ message: err }];
+          }
+          res.status(400).json({ errors: errors });
+        });
+    }
+  } catch (err) {
+    res.sendStatus(400);
+  }
+};
+
+
+TestSessionController.saveStage4Answer = function(req, res) {
+  let { id } = req.params;
+  let { testSession,option } = req.body;
+
+  try {
+    if (
+      req.user.role !== "employee" ||
+      req.user.status !== "active" ||
+      req.user.id !== parseInt(id)
+    ) {
+      res.sendStatus(401);
+    } else {
+        models.userAnswer.create(
+        { selectedOption:option.text,
+          questionId:option.id,
+          userId: req.user.id 
+        })
+        .then(r => {
+          res.sendStatus(200);
+        })
+        .catch(err => {
+          let errors = [];
+          if (err.errors) {
+            errors = err.errors;
+          } else {
+            errors = [{ message: err }];
+          }
+          res.status(400).json({ errors: errors });
+        });
+    }
+  } catch (err) {
+    res.sendStatus(400);
+  }
+};
+
 TestSessionController.createAnswer = function(req, res) {
   let { id } = req.params;
   let { answer, nextQuestionId } = req.body;
@@ -174,7 +255,8 @@ TestSessionController.createAnswer = function(req, res) {
             } else if (
               defaultQuestions.stage1Length === session.question.order+1
             ) {
-              updateObject.stage = "2-1";
+              // updateObject.stage = "2-1"; //STAGE 2 TAKEOUT
+              updateObject.stage = "3";
             }
 
             return models.testSession.update(updateObject, {
@@ -200,35 +282,42 @@ TestSessionController.createAnswer = function(req, res) {
   }
 };
 
-const calculateStage1Result = (answers, deniedOptions) => {
-  let personalityTypes = [
-    { personalityType: "1", value: 0 },
-    { personalityType: "2", value: 0 },
-    { personalityType: "3", value: 0 },
-    { personalityType: "4", value: 0 },
-    { personalityType: "5", value: 0 },
-    { personalityType: "6", value: 0 },
-    { personalityType: "7", value: 0 },
-    { personalityType: "8", value: 0 },
-    { personalityType: "9", value: 0 }
-  ];
-  answers.map(answer => {
-    personality = personalityTypes.find(
-      t => t["personalityType"] === answer.question.personalityType
-    );
-    personality.value += parseInt(answer.selectedOption);
-  });
+TestSessionController.saveAnswerOnly = function(req,res){
+  let { option } = req.body;
 
-  personalityTypes.sort((a, b) => {
-    return b.value - a.value;
-  });
-  personalityTypes = personalityTypes.splice(0, 4);
-  personalityTypes = personalityTypes.filter(
-    p => deniedOptions.indexOf(p.personalityType) === -1
-  );
-  console.log(personalityTypes);
-  return personalityTypes.map(e => e.personalityType);
-};
+
+  
+  if (
+    req.user.role !== "employee" ||
+    req.user.status !== "active" ||
+    req.user.id !== parseInt(id)
+  ) {
+    res.sendStatus(401);
+  } else {
+      let answer= {
+        userId:req.user.id,
+        questionId:option.closestOption.id,
+        selectedOption:null
+      }
+      models.userAnswer.create(
+        { ...answer, userId: req.user.id },
+      )
+      .then(r => {
+        res.sendStatus(200);
+      })
+      .catch(err => {
+        console.log(err);
+
+        let errors = [];
+        if (err.errors) {
+          errors = err.errors;
+        } else {
+          errors = [{ message: err }];
+        }
+        res.status(400).json({ errors: errors });
+      });
+  }
+}
 
 TestSessionController.saveStage2Answer = function(req, res) {
   let { id, lang } = req.params;
@@ -418,18 +507,99 @@ const dbGetStage2Options = (userId, lang, deniedOptions) => {
     });
 };
 
+const calculateStage1Result = (answers, deniedOptions) => {
+  let personalityTypes = [
+    { personalityType: "1", value: 0 },
+    { personalityType: "2", value: 0 },
+    { personalityType: "3", value: 0 },
+    { personalityType: "4", value: 0 },
+    { personalityType: "5", value: 0 },
+    { personalityType: "6", value: 0 },
+    { personalityType: "7", value: 0 },
+    { personalityType: "8", value: 0 },
+    { personalityType: "9", value: 0 }
+  ];
+  answers.map(answer => {
+    personality = personalityTypes.find(
+      t => t["personalityType"] === answer.question.personalityType
+    );
+    personality.value += parseInt(answer.selectedOption);
+  });
+
+  personalityTypes.sort((a, b) => {
+    return b.value - a.value;
+  });
+  personalityTypes = personalityTypes.splice(0, 4);
+  personalityTypes = personalityTypes.filter(
+    p => deniedOptions.indexOf(p.personalityType) === -1
+  );
+  console.log(personalityTypes);
+  return personalityTypes.map(e => e.personalityType);
+};
+
+const getPersonalityResult=(userId)=>{
+  return models.userAnswer
+    .findAll({
+      where: { userId },
+      include: [
+        {
+          model: models.question,
+          attributes: ["personalityType", "wingType", "altType"]
+        }
+      ]
+    })
+    .then(answers => {
+        let personalityTypes = [
+        { personalityType: "1", value: 0 },
+        { personalityType: "2", value: 0 },
+        { personalityType: "3", value: 0 },
+        { personalityType: "4", value: 0 },
+        { personalityType: "5", value: 0 },
+        { personalityType: "6", value: 0 },
+        { personalityType: "7", value: 0 },
+        { personalityType: "8", value: 0 },
+        { personalityType: "9", value: 0 }
+      ];
+      answers.map(answer => {
+        personality = personalityTypes.find(
+          t => t["personalityType"] === answer.question.personalityType
+        );
+        personality.value += parseInt(answer.selectedOption);
+      });
+
+      personalityTypes.sort((a, b) => {
+        return b.value - a.value;
+      });
+      personalityTypes = personalityTypes.splice(0, 1);
+      console.log(personalityTypes)
+      return personalityTypes[0];
+    });
+}
+
 TestSessionController.getStage3Question = function(req, res, session) {
   let { lang } = req.params;
   let dbOptions = [];
-  models.question
+
+  let personalityTypeVariable=null;
+
+  getPersonalityResult(req.userId)
+  .then(personalityTypeResult=>{
+    personalityTypeVariable=personalityTypeResult.personalityType;
+    return models.testSession.update({personalityType:personalityTypeResult.personalityType}, {
+              where: { userId: req.user.id }
+            });
+  })
+  .then(result=>{
+    return  models.question
     .findAll({
       attributes: ["id", "wingType", "stage", "text"],
       where: {
         language: lang,
         stage: "3",
-        personalityType: session.personalityType
+        personalityType: personalityTypeVariable
       }
     })
+  })
     .then(options => {
       dbOptions = options;
     })
@@ -503,7 +673,6 @@ TestSessionController.getResults = function(req, res) {
       res.status(400).json({ error: err });
     });
 }
-
 
 TestSessionController.getAnswers = function(req, res) {
   if(req.user.role!=="admin"){

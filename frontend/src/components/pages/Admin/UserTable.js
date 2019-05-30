@@ -18,6 +18,7 @@ class UserTable extends React.Component{
             totalPages:0,
             pageSize:10,
             currentPage:1,
+            selectData:[],
             query:""
         }
         this.handlePageChange=this.handlePageChange.bind(this);
@@ -67,6 +68,7 @@ class UserTable extends React.Component{
                 visible:true,
                 data:this.getTablePage(personnelData),
                 totalPages: this.getTotalPageNumber(personnelData),
+                AllData:personnelData,
                 currentPage:1,
                 direction:'ascending'
             });
@@ -82,7 +84,7 @@ class UserTable extends React.Component{
                 visible:true,
                 data:this.getTablePage(requestData),
                 totalPages: this.getTotalPageNumber(requestData),
-                data:requestData,
+                AllData:requestData,
                 currentPage:1,
                 direction:'ascending'
             });
@@ -95,7 +97,7 @@ class UserTable extends React.Component{
     handleSort(clickedColumn){
         const { column, direction } = this.state;
 
-        let sortedData=this.sortByColumn(this.state.data,clickedColumn);
+        let sortedData=this.sortByColumn(this.state.AllData,clickedColumn);
 
         if (column !== clickedColumn) {
             this.updatePage(sortedData,this.state.currentPage,'ascending',clickedColumn);
@@ -109,7 +111,7 @@ class UserTable extends React.Component{
     }
 
     handlePageChange(e, { activePage }){
-        this.updatePage(this.state.data,activePage)
+        this.updatePage(this.state.AllData,activePage)
     }
 
     updatePage(data,activePage,direction=this.state.direction,column=this.state.column,query=this.state.query){
@@ -146,7 +148,7 @@ class UserTable extends React.Component{
 
     handleTableFilter(e,{value})
     {
-        this.updatePage(this.state.data,1,this.state.direction,this.state.column,value)
+        this.updatePage(this.state.AllData,1,this.state.direction,this.state.column,value)
     }
  
     render(){

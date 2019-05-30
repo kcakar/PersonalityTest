@@ -36,10 +36,19 @@ class AnswersModal extends Component {
             return{
                 order:row.question.order,
                 text:row.question.text,
-                selectedOption:row.selectedOption,
+                selectedOption:this.getSelectedOption(row.selectedOption),
                 personalityType:row.question.personalityType
             }
         })
+    }
+
+    getSelectedOption=(selectedOption)=>{
+
+        console.log(selectedOption)
+        if(selectedOption!=="1" &&selectedOption!=="2" &&selectedOption!=="-1" &&selectedOption!=="-2" &&selectedOption!=="0"){
+            selectedOption="En uzak şık";
+        }
+        return selectedOption;
     }
 
     handleClose = () => this.setState({ modalOpen: false ,isNewPass:false,newPass:""})
