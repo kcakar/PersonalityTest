@@ -173,6 +173,40 @@ TestSessionController.saveWingType = function(req, res) {
   }
 };
 
+TestSessionController.saveStage2Answer = function(req, res) {
+  let { id } = req.params;
+  let { testSession,option } = req.body;
+
+  try {
+    if (
+      req.user.role !== "employee" ||
+      req.user.status !== "active" ||
+      req.user.id !== parseInt(id)
+    ) {
+      res.sendStatus(401);
+    } else {
+        models.userAnswer.create(
+        { selectedOption:option.text,
+          questionId:option.id,
+          userId: req.user.id 
+        })
+        .then(r => {
+          res.sendStatus(200);
+        })
+        .catch(err => {
+          let errors = [];
+          if (err.errors) {
+            errors = err.errors;
+          } else {
+            errors = [{ message: err }];
+          }
+          res.status(400).json({ errors: errors });
+        });
+    }
+  } catch (err) {
+    res.sendStatus(400);
+  }
+};
 
 TestSessionController.saveStage4Answer = function(req, res) {
   let { id } = req.params;
@@ -249,14 +283,10 @@ TestSessionController.createAnswer = function(req, res) {
           })
           .then(session => {
             let updateObject = { questionId: nextQuestionId };
-
             if (!session.question) {
               updateObject.startDate = new Date();
-            } else if (
-              defaultQuestions.stage1Length === session.question.order+1
-            ) {
-              // updateObject.stage = "2-1"; //STAGE 2 TAKEOUT
-              updateObject.stage = "3";
+            } else if (defaultQuestions.stage1Length <= session.question.order+1) {
+              updateObject.stage = "2-1"; //STAGE 2 TAKEOUT
             }
 
             return models.testSession.update(updateObject, {
@@ -284,8 +314,6 @@ TestSessionController.createAnswer = function(req, res) {
 
 TestSessionController.saveAnswerOnly = function(req,res){
   let { option } = req.body;
-
-
   
   if (
     req.user.role !== "employee" ||
@@ -318,62 +346,6 @@ TestSessionController.saveAnswerOnly = function(req,res){
       });
   }
 }
-
-TestSessionController.saveStage2Answer = function(req, res) {
-  let { id, lang } = req.params;
-  let nextStage = null;
-  let dbTestSession = null;
-  let dbOptions = [];
-  try {
-    if (
-      req.user.role !== "employee" ||
-      req.user.status !== "active" ||
-      req.user.id !== parseInt(id)
-    ) {
-      res.sendStatus(401);
-    } else {
-      //find the test session
-      return models.testSession
-        .findOne({
-          where: { userId: req.user.id }
-        })
-        .then(testSession => {
-          dbTestSession = testSession;
-          switch (testSession.stage) {
-            case "1":
-              //stage 1 is finished. calculate the result to decide next question
-              nextStage = "2-1";
-              return dbGetStage2_1Options(req.user.id, lang);
-              break;
-
-            default:
-              break;
-          }
-        })
-        .then(options => {
-          dbOptions = options;
-          //set new stage for the test session
-          return dbTestSession.update({ stage: nextStage });
-        })
-        .then(result => {
-          res.status(200).json({ options: dbOptions });
-        })
-        .catch(err => {
-          console.log(err);
-          let errors = [];
-          if (err.errors) {
-            errors = err.errors;
-          } else {
-            errors = [{ message: err }];
-          }
-          res.status(400).json({ errors: errors });
-        });
-    }
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(400);
-  }
-};
 
 TestSessionController.getUserStage = function(req, res) {
   let { id, lang } = req.params;
@@ -456,7 +428,7 @@ TestSessionController.getStage2Question = function(req, res, session) {
   let { lang } = req.params;
   let { deniedOptions } = req.body;
   let dbOptions = [];
-
+  //save stage2 answer here using denied options
   dbGetStage2Options(req.user.id, lang, deniedOptions)
     .then(options => {
       dbOptions = options;
@@ -533,7 +505,6 @@ const calculateStage1Result = (answers, deniedOptions) => {
   personalityTypes = personalityTypes.filter(
     p => deniedOptions.indexOf(p.personalityType) === -1
   );
-  console.log(personalityTypes);
   return personalityTypes.map(e => e.personalityType);
 };
 
@@ -560,6 +531,7 @@ const getPersonalityResult=(userId)=>{
         { personalityType: "8", value: 0 },
         { personalityType: "9", value: 0 }
       ];
+
       answers.map(answer => {
         personality = personalityTypes.find(
           t => t["personalityType"] === answer.question.personalityType
@@ -570,8 +542,7 @@ const getPersonalityResult=(userId)=>{
       personalityTypes.sort((a, b) => {
         return b.value - a.value;
       });
-      personalityTypes = personalityTypes.splice(0, 1);
-      console.log(personalityTypes)
+
       return personalityTypes[0];
     });
 }
@@ -582,7 +553,7 @@ TestSessionController.getStage3Question = function(req, res, session) {
 
   let personalityTypeVariable=null;
 
-  getPersonalityResult(req.userId)
+  getPersonalityResult(req.user.id)
   .then(personalityTypeResult=>{
     personalityTypeVariable=personalityTypeResult.personalityType;
     return models.testSession.update({personalityType:personalityTypeResult.personalityType}, {

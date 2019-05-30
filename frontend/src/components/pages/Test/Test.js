@@ -114,12 +114,24 @@ class Test extends React.Component{
         if(deniedOptions.length!==3)
         {
             this.setState({deniedOptions});
+            // this.saveStage2Answer();
             this.getStage(deniedOptions);
+            // this.saveStage2Answer();
         }
         else{//we have decided the personality type. Lets save it.
             this.savePersonalityType();
         }
     }
+
+    // saveStage2Answer=()=>{
+    //     let selectedOption=this.getSelectedAltOption();
+    //     ApiHelper.functions.test.saveStage2Answer(selectedOption)
+    //     .catch((err) => {
+    //         toast.error(err.message, {
+    //             position: toast.POSITION.TOP_CENTER
+    //         });
+    //     })
+    // }
 
     handleStage3Answer=()=>{
         this.saveWingType();
