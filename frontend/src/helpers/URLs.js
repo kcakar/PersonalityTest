@@ -1,6 +1,6 @@
 const server="https://personality-test-kcakar.herokuapp.com/api/v1";
 // const server="http://localhost:3001/api/v1";
-const webpage="https://triaakademi.com/";
+const webpage="http://www.bitatesti.com";
 
 const urls={
     webpage,
