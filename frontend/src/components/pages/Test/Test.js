@@ -280,19 +280,19 @@ class Test extends React.Component{
                                     <div className="answers-container">
                                         <div className="answers">
                                             <div className="answer">
-                                                <Radio label={options.option5} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  2} onChange={()=>this.selectAnwser(2)} />
+                                                <Radio label={options.option5} name='radioGroup' value={4} checked={this.state.currentAnswer ===  4} onChange={()=>this.selectAnwser(4)} />
                                             </div>
                                             <div className="answer">
-                                                <Radio label={options.option4} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  1} onChange={()=>this.selectAnwser(1)} />
+                                                <Radio label={options.option4} name='radioGroup' value={3} checked={this.state.currentAnswer ===  3} onChange={()=>this.selectAnwser(3)} />
                                             </div>
                                             <div className="answer">
-                                                <Radio label={options.option3} name='radioGroup' value={-1} checked={this.state.currentAnswer ===  0} onChange={()=>this.selectAnwser(0)} />
+                                                <Radio label={options.option3} name='radioGroup' value={2} checked={this.state.currentAnswer ===  2} onChange={()=>this.selectAnwser(2)} />
                                             </div>
                                             <div className="answer">
-                                                <Radio label={options.option2} name='radioGroup' value={-1} checked={this.state.currentAnswer === -1} onChange={()=>this.selectAnwser(-1)} />
+                                                <Radio label={options.option2} name='radioGroup' value={1} checked={this.state.currentAnswer === 1} onChange={()=>this.selectAnwser(1)} />
                                             </div>
                                             <div className="answer">
-                                                <Radio label={options.option1} name='radioGroup' value={-2} checked={this.state.currentAnswer === -2} onChange={()=>this.selectAnwser(-2)}/>
+                                                <Radio label={options.option1} name='radioGroup' value={0} checked={this.state.currentAnswer === 0} onChange={()=>this.selectAnwser(0)}/>
                                             </div>
                                         </div>
                                     </div>
