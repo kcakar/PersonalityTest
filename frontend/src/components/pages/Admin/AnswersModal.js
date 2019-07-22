@@ -44,10 +44,31 @@ class AnswersModal extends Component {
 
     getSelectedOption=(selectedOption)=>{
 
-        console.log(selectedOption)
-        if(selectedOption!=="1" &&selectedOption!=="2" &&selectedOption!=="-1" &&selectedOption!=="-2" &&selectedOption!=="0"){
-            selectedOption="En uzak şık";
+        // if(selectedOption!=="1" &&selectedOption!=="2" &&selectedOption!=="-1" &&selectedOption!=="-2" &&selectedOption!=="0"){
+        //     selectedOption="En uzak şık";
+        // }
+
+        switch (selectedOption) {
+            case "0":
+                selectedOption="Kesinlikle katılmıyorum";
+                break;
+            case "1":
+                selectedOption="Katılmıyorum";
+                break;
+            case "2":
+                selectedOption="Kararsızım";
+                break;
+            case "3":
+                selectedOption="Katılıyorum";
+                break;
+            case "4":
+                selectedOption="Kesinlikle katılıyorum";
+                break;
+            default:
+                selectedOption="En uzak şık"
+                break;
         }
+
         return selectedOption;
     }
 
